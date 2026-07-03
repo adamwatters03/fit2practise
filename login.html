@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in — Fit to Practise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/F2P-logo-09-2.png">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/site.js"></script>
+<style>
+  .f2pin { width: 100%; padding: 14px 16px; border: 1px solid #E0D9CC; border-radius: 12px; font-family: 'Hanken Grotesk'; font-size: 15px; color: #20122F; outline: none; background: #FBF8F1; transition: border-color .15s ease; }
+  .f2pin:focus { border-color: #1C8A5E; background: #fff; }
+  @media (max-width: 860px) { .lg-brand { display: none !important; } }
+</style>
+</head>
+<body>
+<div id="site-header" data-active="login"></div>
+
+<section style="padding:48px 0 90px;">
+  <div style="max-width:980px;margin:0 auto;padding:0 24px;">
+    <div class="js-rv from-s" style="display:flex;border-radius:28px;overflow:hidden;border:1px solid #ECE6DA;box-shadow:0 40px 90px -50px rgba(30,18,48,0.5);background:#fff;">
+      <div class="lg-brand" style="flex:1 1 380px;background:linear-gradient(160deg,#1E9466,#0F6647);padding:48px 40px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-width:0;">
+        <img src="assets/img/F2P-logo-08-2.png" alt="Fit to Practise" style="height:44px;width:auto;align-self:flex-start;">
+        <div>
+          <div style="font-family:'Schibsted Grotesk';font-size:54px;line-height:0.6;color:rgba(255,255,255,0.4);height:30px;">“</div>
+          <p style="font-size:18px;line-height:1.6;color:#fff;margin:0 0 18px;">The mentorship work was so appreciated and acknowledged during the hearing — the panel gave me another chance. Thank you for everything.</p>
+          <div style="display:flex;align-items:center;gap:12px;"><img src="assets/img/coach-choose2.jpg" alt="David Warner" style="width:46px;height:46px;border-radius:50%;object-fit:cover;"><div><div style="font-weight:700;">David Warner</div><div style="font-size:13px;color:rgba(255,255,255,0.8);">Someone We Helped</div></div></div>
+        </div>
+        <div style="display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,0.85);"><span>Lifetime access</span><span>1:1 mentorship</span></div>
+      </div>
+      <div style="flex:1 1 420px;padding:44px 40px;min-width:0;">
+        <div style="display:flex;gap:6px;background:#F4F0E6;border-radius:14px;padding:5px;margin-bottom:28px;">
+          <button id="tabLogin" class="btn" style="flex:1;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:11px;border-radius:10px;background:#FFFFFF;color:#20122F;">Login</button>
+          <button id="tabReg" class="btn" style="flex:1;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:11px;border-radius:10px;background:transparent;color:#6B6275;">Register</button>
+        </div>
+        <h1 id="lgHeading" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:28px;margin:0 0 6px;color:#20122F;">Welcome back</h1>
+        <p id="lgSub" style="font-size:15px;color:#6B6275;margin:0 0 24px;">Log in to continue your learning journey.</p>
+        <form id="lgForm" style="display:flex;flex-direction:column;gap:14px;">
+          <div id="nameField" style="display:none;"><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Full name</label><input id="lgName" class="f2pin" placeholder="Jane Smith"></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Email address</label><input id="lgEmail" type="email" class="f2pin" placeholder="you@example.com" required></div>
+          <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Password</label><input id="lgPw" type="password" class="f2pin" placeholder="••••••••" required></div>
+          <button type="submit" class="btn" style="margin-top:6px;background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:16px;padding:15px;border-radius:13px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);"><span id="lgCta">Log in</span></button>
+        </form>
+        <p style="text-align:center;font-size:13.5px;color:#9A92A4;margin:20px 0 0;"><span id="lgPrompt">Don't have an account?</span> <button id="lgToggle" style="background:none;border:none;color:#1C8A5E;font-weight:700;font-family:'Hanken Grotesk';font-size:13.5px;cursor:pointer;">Register</button></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script>
+(function () {
+  var tab = 'login';
+  var els = {
+    tabLogin: document.getElementById('tabLogin'), tabReg: document.getElementById('tabReg'),
+    heading: document.getElementById('lgHeading'), sub: document.getElementById('lgSub'),
+    cta: document.getElementById('lgCta'), prompt: document.getElementById('lgPrompt'),
+    toggle: document.getElementById('lgToggle'), nameField: document.getElementById('nameField'),
+    form: document.getElementById('lgForm'), name: document.getElementById('lgName'),
+    email: document.getElementById('lgEmail'), pw: document.getElementById('lgPw')
+  };
+  function paint() {
+    var reg = tab === 'register';
+    els.tabLogin.style.background = reg ? 'transparent' : '#FFFFFF';
+    els.tabLogin.style.color = reg ? '#6B6275' : '#20122F';
+    els.tabReg.style.background = reg ? '#FFFFFF' : 'transparent';
+    els.tabReg.style.color = reg ? '#20122F' : '#6B6275';
+    els.heading.textContent = reg ? 'Create your account' : 'Welcome back';
+    els.sub.textContent = reg ? 'Join Fit to Practise and start learning today.' : 'Log in to continue your learning journey.';
+    els.cta.textContent = reg ? 'Create account' : 'Log in';
+    els.prompt.textContent = reg ? 'Already have an account?' : "Don't have an account?";
+    els.toggle.textContent = reg ? 'Log in' : 'Register';
+    els.nameField.style.display = reg ? 'block' : 'none';
+  }
+  els.tabLogin.addEventListener('click', function () { tab = 'login'; paint(); });
+  els.tabReg.addEventListener('click', function () { tab = 'register'; paint(); });
+  els.toggle.addEventListener('click', function () { tab = tab === 'register' ? 'login' : 'register'; paint(); });
+  els.form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = tab === 'register' ? (els.name.value || 'Member') : ((els.email.value.split('@')[0]) || 'Member');
+    try { localStorage.setItem('f2p_user', JSON.stringify({ name: name, email: els.email.value })); window.dispatchEvent(new Event('f2p-change')); } catch (e2) {}
+    location.href = 'my-courses.html';
+  });
+  paint();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile — Fit to Practise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/F2P-logo-09-2.png">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/site.js"></script>
+<style>
+  .f2pin { width: 100%; padding: 12px 14px; border: 1px solid #E0D9CC; border-radius: 11px; font-family: 'Hanken Grotesk'; font-size: 14.5px; color: #20122F; outline: none; background: #FBF8F1; transition: border-color .15s ease; }
+  .f2pin:focus { border-color: #1C8A5E; background: #fff; }
+  @media (max-width: 880px) { .pf-grid { grid-template-columns: 1fr !important; } .pf-stats { grid-template-columns: 1fr 1fr !important; } }
+</style>
+</head>
+<body>
+<div id="site-header" data-active="profile"></div>
+
+<section style="padding:34px 0 80px;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <!-- Profile header -->
+    <div style="position:relative;overflow:hidden;border-radius:26px;background:linear-gradient(150deg,#2C1A4A,#1B0F2E);padding:34px 34px;color:#fff;">
+      <div aria-hidden="true" style="position:absolute;top:-90px;right:-50px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(28,138,94,0.3),transparent 68%);"></div>
+      <div style="position:relative;display:flex;align-items:center;gap:22px;flex-wrap:wrap;">
+        <div id="pfInitials" style="width:84px;height:84px;border-radius:50%;background:linear-gradient(150deg,#1E9466,#0F6647);display:flex;align-items:center;justify-content:center;font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#fff;flex-shrink:0;box-shadow:0 14px 30px -12px rgba(0,0,0,0.5);">JS</div>
+        <div style="flex:1;min-width:0;">
+          <h1 id="pfName" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:clamp(24px,3vw,32px);margin:0;color:#fff;">Jane Smith</h1>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:14px;color:#C9C2D6;">
+            <span id="pfEmail">jane.smith@example.com</span><span style="opacity:.4;">·</span><span id="pfReg">NMC</span><span style="opacity:.4;">·</span><span>Member since 2025</span>
+          </div>
+        </div>
+        <a href="my-courses.html" class="btn" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);color:#fff;font-weight:600;font-size:14px;padding:11px 20px;border-radius:999px;">My learning →</a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="pf-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px;">
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:20px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#9A92A4;font-weight:600;">Enrolled</div><div id="stEnrolled" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;margin-top:6px;">0</div></div>
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:20px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#9A92A4;font-weight:600;">Completed</div><div id="stDone" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;margin-top:6px;">0</div></div>
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:20px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#9A92A4;font-weight:600;">Hours</div><div id="stHours" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;margin-top:6px;">0h</div></div>
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:20px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#9A92A4;font-weight:600;">Certificates</div><div id="stCerts" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;margin-top:6px;">0</div></div>
+    </div>
+
+    <div class="pf-grid" style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:22px;margin-top:22px;">
+      <!-- Left: account details -->
+      <div style="display:flex;flex-direction:column;gap:22px;">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:28px;">
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:20px;margin:0 0 20px;color:#20122F;">Account details</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Full name</label><input id="inName" class="f2pin"></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Email</label><input id="inEmail" type="email" class="f2pin"></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Phone</label><input id="inPhone" class="f2pin" placeholder="07…"></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Regulator</label><select id="inReg" class="f2pin"><option>NMC</option><option>HCPC</option><option>GMC</option><option>GDC</option><option>Other</option></select></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Registration PIN</label><input id="inPin" class="f2pin" placeholder="e.g. 12A3456E"></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Profession</label><input id="inRole" class="f2pin" placeholder="Registered Nurse"></div>
+          </div>
+          <div style="margin-top:16px;"><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">About you</label><textarea id="inBio" class="f2pin" rows="3" style="resize:vertical;"></textarea></div>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:20px;">
+            <button id="saveBtn" class="btn" style="background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:13px 26px;border-radius:12px;cursor:pointer;box-shadow:0 12px 26px -12px rgba(28,138,94,0.6);">Save changes</button>
+            <span id="savedMsg" style="display:none;color:#15724C;font-weight:600;font-size:14px;">✓ Saved</span>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:28px;">
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:20px;margin:0 0 6px;color:#20122F;">Notifications</h2>
+          <p style="font-size:14px;color:#6B6275;margin:0 0 18px;">Choose what you'd like to hear from us about.</p>
+          <div id="toggles"></div>
+        </div>
+      </div>
+
+      <!-- Right: learning progress -->
+      <div style="display:flex;flex-direction:column;gap:22px;">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:28px;">
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:20px;margin:0 0 4px;color:#20122F;">Course progress</h2>
+          <p style="font-size:14px;color:#6B6275;margin:0 0 20px;">Your completion across enrolled courses.</p>
+          <div id="progList"></div>
+        </div>
+
+        <!-- Achievements -->
+        <div style="background:linear-gradient(160deg,#1E9466,#0F6647);border-radius:22px;padding:28px;color:#fff;">
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:20px;margin:0 0 16px;">Achievements</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;align-items:center;gap:13px;"><span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:18px;">🏆</span><div><div style="font-weight:700;font-size:15px;"><span id="acCerts">0</span> certificates earned</div><div style="font-size:13px;color:rgba(255,255,255,0.8);">Keep going to unlock more</div></div></div>
+            <div style="display:flex;align-items:center;gap:13px;"><span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:18px;">📚</span><div><div style="font-weight:700;font-size:15px;"><span id="acHours">0h</span> of learning</div><div style="font-size:13px;color:rgba(255,255,255,0.8);">Across <span id="acEnrolled">0</span> courses</div></div></div>
+            <div style="display:flex;align-items:center;gap:13px;"><span style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:18px;">⭐</span><div><div style="font-weight:700;font-size:15px;"><span id="acAvg">0%</span> avg. completion</div><div style="font-size:13px;color:rgba(255,255,255,0.8);">Across your learning</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script>
+(function () {
+  var F = window.F2P;
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (ch) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]; }); }
+
+  // Load stored identity/profile
+  var base = {};
+  try { var u = JSON.parse(localStorage.getItem('f2p_user') || 'null'); if (u) base = { name: u.name || '', email: u.email || '' }; } catch (e) {}
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('f2p_profile') || '{}') || {}; } catch (e) {}
+  var m = Object.assign({}, base, saved);
+
+  var model = {
+    name: m.name || 'Jane Smith', email: m.email || 'jane.smith@example.com',
+    phone: m.phone || '', regulator: m.regulator || 'NMC', pin: m.pin || '',
+    role: m.role || 'Registered Nurse', bio: m.bio || '',
+    notif: m.notif || { updates: true, reminders: true, newsletter: false }
+  };
+
+  var inName = document.getElementById('inName'), inEmail = document.getElementById('inEmail'),
+      inPhone = document.getElementById('inPhone'), inReg = document.getElementById('inReg'),
+      inPin = document.getElementById('inPin'), inRole = document.getElementById('inRole'),
+      inBio = document.getElementById('inBio');
+  inName.value = model.name; inEmail.value = model.email; inPhone.value = model.phone;
+  inReg.value = model.regulator; inPin.value = model.pin; inRole.value = model.role; inBio.value = model.bio;
+
+  var TDEF = [
+    ['updates', 'Course updates', 'New lessons and improvements to your courses'],
+    ['reminders', 'Learning reminders', 'Gentle nudges to keep your progress going'],
+    ['newsletter', 'Newsletter & offers', 'Tips, news and 20% off your next course']
+  ];
+  function renderToggles() {
+    document.getElementById('toggles').innerHTML = TDEF.map(function (t) {
+      var on = !!model.notif[t[0]];
+      return '<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid #F0EBE0;">' +
+        '<div><div style="font-weight:600;font-size:15px;color:#20122F;">' + esc(t[1]) + '</div><div style="font-size:13px;color:#9A92A4;">' + esc(t[2]) + '</div></div>' +
+        '<button data-toggle="' + t[0] + '" style="flex-shrink:0;width:48px;height:28px;border-radius:999px;border:none;cursor:pointer;background:' + (on ? '#1C8A5E' : '#D8D2C5') + ';position:relative;transition:background .2s ease;"><span style="position:absolute;top:3px;left:' + (on ? '23px' : '3px') + ';width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:left .2s ease;"></span></button>' +
+      '</div>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-toggle]'), function (b) {
+      b.addEventListener('click', function () {
+        var k = b.getAttribute('data-toggle');
+        model.notif[k] = !model.notif[k];
+        renderToggles();
+        hideSaved();
+      });
+    });
+  }
+
+  function renderProgress() {
+    var ids = F.getEnrolled();
+    var prog = F.getProgress();
+    var items = ids.map(function (id) { return F.courseById(id); }).filter(Boolean).map(function (c) {
+      return { c: c, pct: Math.round(prog[c.id] || 0) };
+    });
+    var avg = items.length ? Math.round(items.reduce(function (s, i) { return s + i.pct; }, 0) / items.length) : 0;
+    var hours = items.reduce(function (s, i) { return s + i.c.hours; }, 0);
+    var done = items.filter(function (i) { return i.pct >= 100; }).length;
+
+    document.getElementById('stEnrolled').textContent = items.length;
+    document.getElementById('stDone').textContent = done;
+    document.getElementById('stHours').textContent = hours + 'h';
+    document.getElementById('stCerts').textContent = done;
+    document.getElementById('acCerts').textContent = done;
+    document.getElementById('acHours').textContent = hours + 'h';
+    document.getElementById('acEnrolled').textContent = items.length;
+    document.getElementById('acAvg').textContent = avg + '%';
+
+    var pl = document.getElementById('progList');
+    if (!items.length) {
+      pl.innerHTML = '<p style="font-size:14.5px;color:#9A92A4;margin:0;">No courses yet. <a href="courses.html" style="color:#1C8A5E;font-weight:700;">Browse courses →</a></p>';
+      return;
+    }
+    pl.innerHTML = '<div style="display:flex;flex-direction:column;gap:18px;">' + items.map(function (it) {
+      var barColor = it.pct >= 100 ? '#15724C' : '#1C8A5E';
+      return '<div><div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;"><span style="font-weight:600;font-size:14.5px;color:#20122F;line-height:1.3;">' + esc(it.c.title) + '</span><span style="font-size:13px;font-weight:700;color:#15724C;white-space:nowrap;">' + it.pct + '%</span></div><div style="height:8px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div style="height:100%;border-radius:999px;background:' + barColor + ';width:' + it.pct + '%;"></div></div></div>';
+    }).join('') + '</div>';
+  }
+
+  function updateHeader() {
+    var initials = (inName.value || 'JS').trim().split(/\s+/).map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase();
+    document.getElementById('pfInitials').textContent = initials || 'JS';
+    document.getElementById('pfName').textContent = inName.value;
+    document.getElementById('pfEmail').textContent = inEmail.value;
+    document.getElementById('pfReg').textContent = inReg.value;
+  }
+
+  var savedT;
+  function hideSaved() { document.getElementById('savedMsg').style.display = 'none'; }
+  [inName, inEmail, inPhone, inReg, inPin, inRole, inBio].forEach(function (el) {
+    el.addEventListener('input', function () { updateHeader(); hideSaved(); });
+    el.addEventListener('change', function () { updateHeader(); hideSaved(); });
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', function () {
+    var data = {
+      name: inName.value, email: inEmail.value, phone: inPhone.value, regulator: inReg.value,
+      pin: inPin.value, role: inRole.value, bio: inBio.value, notif: model.notif
+    };
+    try {
+      localStorage.setItem('f2p_profile', JSON.stringify(data));
+      localStorage.setItem('f2p_user', JSON.stringify({ name: data.name, email: data.email }));
+      window.dispatchEvent(new Event('f2p-change'));
+    } catch (e) {}
+    var msg = document.getElementById('savedMsg');
+    msg.style.display = 'inline'; clearTimeout(savedT);
+    savedT = setTimeout(function () { msg.style.display = 'none'; }, 2200);
+  });
+
+  window.addEventListener('f2p-change', renderProgress);
+  window.addEventListener('storage', renderProgress);
+  updateHeader();
+  renderToggles();
+  renderProgress();
+})();
+</script>
+</body>
+</html>

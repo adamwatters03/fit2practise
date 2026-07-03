@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My learning — Fit to Practise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/F2P-logo-09-2.png">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/site.js"></script>
+<style>
+  @media (max-width:640px){ .mc-stats { grid-template-columns: 1fr 1fr !important; } }
+</style>
+</head>
+<body>
+<div id="site-header" data-active="mycourses"></div>
+
+<section style="padding:36px 0 80px;">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <div>
+        <div id="welcome" style="font-size:14px;color:#9A92A4;margin-bottom:6px;">Welcome back</div>
+        <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.025em;font-size:clamp(30px,4vw,46px);margin:0;color:#20122F;">My learning</h1>
+      </div>
+      <a href="courses.html" class="btn" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:12px 24px;border-radius:999px;box-shadow:0 10px 24px -12px rgba(28,138,94,0.6);">Browse more courses</a>
+    </div>
+
+    <div class="mc-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;">
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div id="stEnrolled" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:32px;color:#20122F;">0</div><div style="font-size:13.5px;color:#6B6275;margin-top:4px;">Courses enrolled</div></div>
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div id="stProgress" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:32px;color:#20122F;">0%</div><div style="font-size:13.5px;color:#6B6275;margin-top:4px;">Avg. completion</div></div>
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div id="stHours" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:32px;color:#20122F;">0h</div><div style="font-size:13.5px;color:#6B6275;margin-top:4px;">Hours of learning</div></div>
+      <div style="background:#1C8A5E;border-radius:18px;padding:22px;"><div id="stDone" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:32px;color:#fff;">0</div><div style="font-size:13.5px;color:rgba(255,255,255,0.9);margin-top:4px;">Completed</div></div>
+    </div>
+
+    <div id="mcBody"></div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script>
+(function () {
+  var F = window.F2P;
+  var body = document.getElementById('mcBody');
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (ch) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]; }); }
+
+  var name = '';
+  try { var u = JSON.parse(localStorage.getItem('f2p_user') || 'null'); if (u && u.name) name = u.name; } catch (e) {}
+  document.getElementById('welcome').textContent = 'Welcome back' + (name ? ', ' + name : '');
+
+  function render() {
+    var ids = F.getEnrolled();
+    var prog = F.getProgress();
+    var items = ids.map(function (id) { return F.courseById(id); }).filter(Boolean).map(function (c) {
+      var pct = Math.round(prog[c.id] || 0);
+      return { c: c, pct: pct };
+    });
+    var avg = items.length ? Math.round(items.reduce(function (s, i) { return s + i.pct; }, 0) / items.length) : 0;
+    var hours = items.reduce(function (s, i) { return s + i.c.hours; }, 0);
+    var done = items.filter(function (i) { return i.pct >= 100; }).length;
+
+    document.getElementById('stEnrolled').textContent = items.length;
+    document.getElementById('stProgress').textContent = avg + '%';
+    document.getElementById('stHours').textContent = hours + 'h';
+    document.getElementById('stDone').textContent = done;
+
+    if (!items.length) {
+      body.innerHTML = '<div style="background:#fff;border:1px solid #ECE6DA;border-radius:24px;padding:56px 32px;text-align:center;margin-top:26px;">' +
+        '<div style="font-size:44px;margin-bottom:10px;">🎓</div>' +
+        '<h2 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:24px;margin:0 0 8px;color:#20122F;">You\'re not enrolled yet</h2>' +
+        '<p style="font-size:16px;color:#6B6275;margin:0 0 22px;">Pick your first course and start learning at your own pace.</p>' +
+        '<a href="courses.html" class="btn" style="display:inline-block;background:#1C8A5E;color:#fff;font-weight:700;font-size:16px;padding:14px 30px;border-radius:999px;">Browse Courses</a></div>';
+      return;
+    }
+
+    var rows = items.map(function (it) {
+      var c = it.c, pct = it.pct;
+      var barColor = pct >= 100 ? '#15724C' : '#1C8A5E';
+      var action = pct >= 100 ? 'Review' : (pct > 0 ? 'Continue' : 'Start');
+      return '' +
+        '<div class="lift" style="display:flex;gap:20px;align-items:center;background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:16px;flex-wrap:wrap;">' +
+          '<img src="' + c.img + '" alt="' + esc(c.title) + '" style="width:150px;height:100px;border-radius:14px;object-fit:cover;flex-shrink:0;background:#EFEAE0;">' +
+          '<div style="flex:1 1 280px;min-width:0;">' +
+            '<div style="font-size:12px;color:#9A92A4;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">' + esc(c.category) + '</div>' +
+            '<div style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:18px;color:#20122F;margin:4px 0 12px;line-height:1.25;">' + esc(c.title) + '</div>' +
+            '<div style="display:flex;align-items:center;gap:12px;"><div style="flex:1;height:9px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div style="height:100%;border-radius:999px;background:' + barColor + ';width:' + pct + '%;"></div></div><span style="font-size:13px;font-weight:700;color:#15724C;white-space:nowrap;">' + pct + '%</span></div>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">' +
+            '<button data-continue="' + c.id + '" data-pct="' + pct + '" class="btn" style="background:#1C8A5E;color:#fff;border:none;font-family:\'Hanken Grotesk\';font-weight:700;font-size:14.5px;padding:11px 22px;border-radius:12px;cursor:pointer;">' + action + '</button>' +
+            '<a href="course.html?c=' + c.id + '" style="text-align:center;font-size:13px;color:#6B6275;font-weight:600;">Details</a>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+
+    body.innerHTML = '<h2 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:22px;margin:38px 0 18px;color:#20122F;">Continue learning</h2>' +
+      '<div style="display:flex;flex-direction:column;gap:16px;">' + rows + '</div>';
+
+    Array.prototype.forEach.call(body.querySelectorAll('[data-continue]'), function (b) {
+      b.addEventListener('click', function () {
+        var cur = parseInt(b.getAttribute('data-pct'), 10) || 0;
+        F.setProgress(b.getAttribute('data-continue'), cur >= 100 ? 100 : Math.min(100, cur + 25));
+      });
+    });
+  }
+
+  window.addEventListener('f2p-change', render);
+  window.addEventListener('storage', render);
+  render();
+})();
+</script>
+</body>
+</html>

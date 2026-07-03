@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your cart — Fit to Practise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/F2P-logo-09-2.png">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/site.js"></script>
+<style>
+  @media (max-width: 880px) { .ct-grid { flex-direction: column !important; } .ct-aside { position: static !important; width: 100% !important; } }
+</style>
+</head>
+<body>
+<div id="site-header" data-active="cart"></div>
+
+<section style="padding:34px 0 80px;">
+  <div style="max-width:1120px;margin:0 auto;padding:0 24px;">
+    <div style="font-size:13.5px;color:#9A92A4;margin-bottom:14px;"><a href="courses.html" style="color:#9A92A4;">Courses</a> <span style="margin:0 6px;">›</span> <span style="color:#1C8A5E;font-weight:600;">Cart</span></div>
+    <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.025em;font-size:clamp(30px,4vw,46px);margin:0 0 28px;color:#20122F;">Your cart</h1>
+    <div id="cartRoot"></div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script>
+(function () {
+  var F = window.F2P;
+  var root = document.getElementById('cartRoot');
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (ch) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]; }); }
+
+  function render() {
+    var ids = F.getCart();
+    var items = ids.map(function (id) { return F.courseById(id); }).filter(Boolean);
+
+    if (!items.length) {
+      root.innerHTML = '' +
+        '<div style="background:#fff;border:1px solid #ECE6DA;border-radius:24px;padding:56px 32px;text-align:center;">' +
+          '<div style="font-size:44px;margin-bottom:10px;">🛒</div>' +
+          '<h2 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:24px;margin:0 0 8px;color:#20122F;">Your cart is empty</h2>' +
+          '<p style="font-size:16px;color:#6B6275;margin:0 0 22px;">Browse our courses and start your learning journey today.</p>' +
+          '<a href="courses.html" class="btn" style="display:inline-block;background:#1C8A5E;color:#fff;font-weight:700;font-size:16px;padding:14px 30px;border-radius:999px;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">Browse Courses</a>' +
+        '</div>';
+      return;
+    }
+
+    var subtotal = items.reduce(function (s, c) { return s + c.price; }, 0);
+    var discount = items.length >= 2 ? Math.round(subtotal * 0.2 * 100) / 100 : 0;
+    var total = Math.round((subtotal - discount) * 100) / 100;
+
+    var rows = items.map(function (c) {
+      var meta = c.sessions + (c.sessions === 1 ? ' session' : ' sessions');
+      return '' +
+        '<div style="display:flex;gap:18px;align-items:center;background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:14px;">' +
+          '<a href="course.html?c=' + c.id + '" style="flex-shrink:0;"><img src="' + c.img + '" alt="' + esc(c.title) + '" style="width:108px;height:80px;border-radius:12px;object-fit:cover;display:block;background:#EFEAE0;"></a>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="font-size:12px;color:#9A92A4;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">' + esc(c.category) + '</div>' +
+            '<a href="course.html?c=' + c.id + '"><div style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:17px;color:#20122F;line-height:1.25;margin:3px 0;">' + esc(c.title) + '</div></a>' +
+            '<div style="font-size:13.5px;color:#6B6275;">' + esc(c.author) + ' · ' + esc(meta) + '</div>' +
+          '</div>' +
+          '<div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:8px;">' +
+            '<div style="font-family:\'Schibsted Grotesk\';font-weight:800;font-size:20px;color:#20122F;">£' + c.price + '</div>' +
+            '<button data-remove="' + c.id + '" style="background:transparent;border:none;color:#B0566A;font-family:\'Hanken Grotesk\';font-size:13px;font-weight:600;cursor:pointer;">Remove</button>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+
+    root.innerHTML = '' +
+      '<div class="ct-grid" style="display:flex;gap:30px;align-items:flex-start;">' +
+        '<div style="flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:14px;">' + rows +
+          '<a href="courses.html" style="font-weight:600;font-size:14.5px;color:#1C8A5E;margin-top:6px;">← Continue browsing courses</a>' +
+        '</div>' +
+        '<aside class="ct-aside" style="flex-shrink:0;width:340px;position:sticky;top:90px;">' +
+          '<div style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:26px;box-shadow:0 30px 70px -40px rgba(30,18,48,0.4);">' +
+            '<h3 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:19px;margin:0 0 18px;color:#20122F;">Order summary</h3>' +
+            '<div style="display:flex;justify-content:space-between;font-size:15px;color:#5C5369;margin-bottom:10px;"><span>Subtotal (' + items.length + ')</span><span>£' + subtotal.toFixed(2) + '</span></div>' +
+            '<div style="display:flex;justify-content:space-between;font-size:15px;color:#1C8A5E;margin-bottom:10px;font-weight:600;"><span>Member discount</span><span>–£' + discount.toFixed(2) + '</span></div>' +
+            '<div style="border-top:1px solid #F0EBE0;margin:14px 0;"></div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;"><span style="font-weight:700;font-size:16px;color:#20122F;">Total</span><span style="font-family:\'Schibsted Grotesk\';font-weight:800;font-size:28px;color:#20122F;">£' + total.toFixed(2) + '</span></div>' +
+            '<button id="checkoutBtn" class="btn" style="width:100%;background:#1C8A5E;color:#fff;border:none;font-family:\'Hanken Grotesk\';font-weight:700;font-size:16px;padding:15px;border-radius:14px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">Checkout securely</button>' +
+            '<p style="text-align:center;font-size:12.5px;color:#9A92A4;margin:14px 0 0;">By checking out you agree to our Terms &amp; Conditions. 14-day refund policy applies.</p>' +
+          '</div>' +
+        '</aside>' +
+      '</div>';
+
+    Array.prototype.forEach.call(root.querySelectorAll('[data-remove]'), function (b) {
+      b.addEventListener('click', function () { F.removeFromCart(b.getAttribute('data-remove')); });
+    });
+    document.getElementById('checkoutBtn').addEventListener('click', function () {
+      F.enrollCart();
+      location.href = 'my-courses.html';
+    });
+  }
+
+  window.addEventListener('f2p-change', render);
+  window.addEventListener('storage', render);
+  render();
+})();
+</script>
+</body>
+</html>

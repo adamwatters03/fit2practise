@@ -1,25 +1,69 @@
-# CODING AGENTS: READ THIS FIRST
+# Fit to Practise
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+Marketing website **and** learning/analytics portal for [Fit to Practise](https://fit2practise.com) — mentorship and courses that help UK healthcare professionals regain and maintain their Fitness to Practise.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+Built as a fast, dependency-free **static site** (plain HTML/CSS/JS) so it deploys to Vercel with zero configuration and no build step. Recreated pixel-for-pixel from the Claude Design prototypes in `project/`, with all interactivity wired up for real.
 
-## What you should do — IMPORTANT
+## Pages
 
-**Read the chat transcripts first.** There are 1 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+| File | What it is |
+|------|------------|
+| `index.html` | Home — hero, stats, features, popular courses, mentorship, portal showcase, testimonial, FAQ, CTAs, newsletter |
+| `courses.html` | Course catalogue with category filter, live search, add-to-cart |
+| `course.html` | Course detail (`?c=<id>`) — curriculum, outcomes, sticky buy card |
+| `cart.html` | Cart with member discount (20% off 2+) and checkout |
+| `my-courses.html` | Learner dashboard — enrolled courses, progress bars, learning stats |
+| `login.html` | Login / Register (tabbed) |
+| `profile.html` | Editable account details, notification toggles, progress, achievements |
+| `about.html` | Founder, mission, board of advisors |
+| `faqs.html` | FAQ accordion |
+| `articles.html` | Articles / blog grid |
+| `contact.html` | Contact form + details |
+| `portal.html` | Role-based portal — **Learner** dashboard/courses/schedule/instructors/profile/activity, and **Business owner** analytics + members table |
 
-**Read `project/Fit to Practise Home v2.dc.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+## How it works
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+- **Shared UI** — `assets/js/site.js` injects the header/footer into every inner page, drives the animations (scroll-reveal, parallax, sticky-shrink header), and keeps the cart badge live. `assets/css/site.css` holds all shared styles and animation keyframes.
+- **State** — `assets/js/cart.js` exposes `window.F2P`, the course catalogue plus cart / enrolment / progress state, persisted in `localStorage`. Pages listen for the `f2p-change` event to stay in sync (including across tabs). No backend required.
+- **The journey is connected:** Home → Courses → Course detail → Add to cart → Cart → Checkout → My Courses, with progress, enrolment, and profile all persisted client-side. Log in via the portal to see the learner dashboard, or the business-owner analytics/members views.
+- **Animations** are a progressive enhancement: content is fully visible without JS (or with reduced-motion), and animates in when JS runs.
 
-## About the design files
+## Images
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+All imagery is served locally from `assets/img/` (nothing hotlinks the old WordPress site).
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+> ⚠️ The images currently in `assets/img/` are lightweight, brand-coloured **placeholders** — the build environment's network policy could not reach `fit2practise.com` to download the originals. To pull in the real brand photos, run this once from a machine that can reach the live site:
+>
+> ```bash
+> bash scripts/fetch-images.sh
+> ```
+>
+> It downloads each photo/logo/avatar into `assets/img/` under the exact filenames the pages already reference — no code changes needed. Then commit the updated images.
 
-## Bundle contents
+## Run locally
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `Website modernization project` project files (HTML prototypes, assets, components)
+It's static, so any static server works:
+
+```bash
+python3 -m http.server 8000
+# then open http://localhost:8000
+```
+
+## Deploy to Vercel
+
+No configuration needed — Vercel serves the repo as a static site. Import the GitHub repo and deploy, or:
+
+```bash
+npx vercel
+```
+
+## Notes for going live
+
+- **Payments** — checkout is a front-end flow that enrols instantly so My Courses populates. Wire it to Stripe (or your processor) before taking real payments.
+- **Forms** — the contact and newsletter forms are front-end mocks (they show a confirmation). Connect them to your email/form service.
+- **Placeholder content** — the homepage stats (`00+`), FAQ answers, and Articles posts are drafts; swap in your real numbers/copy.
+- **Portal** — a front-end demo. Login accepts any details; the role (learner vs owner) is what changes the views. Analytics figures and the members list are realistic demo data.
+
+## Design source
+
+The original Claude Design prototypes and conversation are kept in `project/` and `chats/` for reference. The production site was recreated from them; those files are not part of the deployed site.

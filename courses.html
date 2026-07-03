@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Courses — Fit to Practise</title>
+<meta name="description" content="Clinically relevant, affordable Fitness to Practise courses built by professionals who have been through the process themselves.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/F2P-logo-09-2.png">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/site.js"></script>
+</head>
+<body>
+<div id="site-header" data-active="courses"></div>
+
+<!-- Page head -->
+<section style="padding:38px 0 8px;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
+    <div style="font-size:13.5px;color:#9A92A4;margin-bottom:14px;"><a href="index.html" style="color:#9A92A4;">Home</a> <span style="margin:0 6px;">›</span> <span style="color:#1C8A5E;font-weight:600;">Courses</span></div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+      <div class="js-rv from-l">
+        <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.025em;line-height:1.05;font-size:clamp(34px,4.6vw,52px);margin:0;color:#20122F;">Explore our courses</h1>
+        <p style="font-size:17px;line-height:1.6;color:#5C5369;margin:12px 0 0;max-width:560px;">Clinically relevant, affordable courses built by professionals who have been through the Fitness to Practise process themselves.</p>
+      </div>
+      <div class="js-rv from-r" style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #ECE6DA;border-radius:999px;padding:7px 8px 7px 18px;box-shadow:0 14px 30px -24px rgba(30,18,48,0.5);">
+        <span style="color:#9A92A4;">⌕</span>
+        <input id="searchInput" placeholder="Search courses…" style="border:none;outline:none;background:transparent;font-family:'Hanken Grotesk';font-size:14.5px;width:170px;color:#20122F;">
+      </div>
+    </div>
+    <div id="chips" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;"></div>
+  </div>
+</section>
+
+<!-- Grid -->
+<section style="padding:30px 0 80px;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
+    <p id="count" style="font-size:14px;color:#8A8194;margin:0 0 20px;">0 courses</p>
+    <div id="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;"></div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<div id="toast" style="display:none;position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:200;background:#271640;color:#fff;font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:999px;box-shadow:0 20px 44px -16px rgba(0,0,0,0.5);align-items:center;gap:10px;"></div>
+
+<script>
+(function () {
+  var F = window.F2P;
+  var CATS = ['All', 'NMC', 'Reflective Practice', 'Confidence', 'Hearings'];
+  var state = { cat: 'All', q: '' };
+  try { var p = new URLSearchParams(location.search).get('q'); if (p) state.q = p; } catch (e) {}
+
+  var grid = document.getElementById('grid');
+  var chipsEl = document.getElementById('chips');
+  var countEl = document.getElementById('count');
+  var searchEl = document.getElementById('searchInput');
+  var toastEl = document.getElementById('toast');
+  var toastT;
+  searchEl.value = state.q;
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+
+  function toast(msg) {
+    toastEl.innerHTML = '✓ ' + esc(msg) + ' <a href="cart.html" style="color:#5BD6A0;font-weight:700;">View cart</a>';
+    toastEl.style.display = 'flex';
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toastEl.style.display = 'none'; }, 1900);
+  }
+
+  function renderChips() {
+    chipsEl.innerHTML = CATS.map(function (name) {
+      var active = state.cat === name;
+      return '<button data-cat="' + esc(name) + '" style="border:1px solid ' + (active ? '#1C8A5E' : '#E3DCCD') + ';background:' + (active ? '#1C8A5E' : '#FFFFFF') + ';color:' + (active ? '#FFFFFF' : '#3A2F4A') + ';font-family:\'Hanken Grotesk\';font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;cursor:pointer;transition:transform .15s ease;" onmouseover="this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.transform=\'none\'">' + esc(name) + '</button>';
+    }).join('');
+    Array.prototype.forEach.call(chipsEl.querySelectorAll('button'), function (b) {
+      b.addEventListener('click', function () { state.cat = b.getAttribute('data-cat'); render(); });
+    });
+  }
+
+  function render() {
+    var q = state.q.toLowerCase().trim();
+    var cart = F.getCart();
+    var list = F.COURSES.filter(function (c) {
+      return (state.cat === 'All' || c.category === state.cat) &&
+        (!q || c.title.toLowerCase().indexOf(q) > -1 || c.category.toLowerCase().indexOf(q) > -1 || c.author.toLowerCase().indexOf(q) > -1);
+    });
+    countEl.textContent = list.length + (list.length === 1 ? ' course' : ' courses');
+    grid.innerHTML = list.map(function (c) {
+      var inCart = cart.indexOf(c.id) > -1;
+      var meta = c.sessions + (c.sessions === 1 ? ' session' : ' sessions') + ' · ' + c.hours + 'h';
+      var action = inCart
+        ? '<a href="cart.html" style="flex:1;text-align:center;background:#E7F2EC;color:#15724C;font-weight:700;font-size:14px;padding:11px;border-radius:12px;">In cart ✓</a>'
+        : '<button data-add="' + c.id + '" class="btn" style="flex:1;background:#1C8A5E;color:#fff;border:none;font-family:\'Hanken Grotesk\';font-weight:700;font-size:14px;padding:11px;border-radius:12px;cursor:pointer;">Add to cart</button>';
+      return '' +
+        '<div class="lift" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;">' +
+          '<a href="course.html?c=' + c.id + '" style="position:relative;display:block;aspect-ratio:16/10;overflow:hidden;">' +
+            '<img src="' + c.img + '" alt="' + esc(c.title) + '" style="width:100%;height:100%;object-fit:cover;background:#EFEAE0;">' +
+            '<span style="position:absolute;top:12px;left:12px;background:#fff;color:#15724C;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;">£' + c.price + '</span>' +
+            '<span style="position:absolute;top:12px;right:12px;background:rgba(39,22,64,0.78);color:#fff;font-weight:600;font-size:11.5px;padding:4px 11px;border-radius:999px;">' + esc(c.category) + '</span>' +
+          '</a>' +
+          '<div style="padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;">' +
+            '<div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:#9A92A4;margin-bottom:9px;"><span style="color:#C99A2E;font-weight:700;">★ ' + c.rating.toFixed(1) + '</span><span>·</span><span>' + esc(meta) + '</span></div>' +
+            '<a href="course.html?c=' + c.id + '"><h3 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:18.5px;line-height:1.25;margin:0 0 14px;color:#20122F;">' + esc(c.title) + '</h3></a>' +
+            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;"><img src="' + c.avatar + '" alt="' + esc(c.author) + '" style="width:26px;height:26px;border-radius:50%;background:#EFEAE0;"><span style="font-size:13px;color:#6B6275;">' + esc(c.author) + '</span></div>' +
+            '<div style="margin-top:auto;display:flex;gap:9px;">' + action +
+              '<a href="course.html?c=' + c.id + '" class="btn" style="width:46px;display:flex;align-items:center;justify-content:center;border:1px solid #E0D9CC;border-radius:12px;color:#20122F;font-size:16px;">→</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+    Array.prototype.forEach.call(grid.querySelectorAll('[data-add]'), function (b) {
+      b.addEventListener('click', function () { F.addToCart(b.getAttribute('data-add')); toast('Added to cart'); });
+    });
+  }
+
+  searchEl.addEventListener('input', function () { state.q = searchEl.value; render(); });
+  window.addEventListener('f2p-change', render);
+  window.addEventListener('storage', render);
+  renderChips();
+  render();
+})();
+</script>
+</body>
+</html>

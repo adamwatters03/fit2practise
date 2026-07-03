@@ -1,0 +1,109 @@
+/* ============================================================
+   Fit to Practise — shared site styles
+   Brand: deep plum #271640 / #1B0F2E · emerald #1C8A5E / #15724C
+          cream #F4F0E6 · gold #C99A2E
+   Type:  Schibsted Grotesk (headings) · Hanken Grotesk (body)
+   ============================================================ */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #F4F0E6;
+  font-family: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  color: #1E1230;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+::selection { background: rgba(28,138,94,0.22); }
+
+/* ---------- keyframes ---------- */
+@keyframes f2pRise  { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: none; } }
+@keyframes f2pInL   { from { opacity: 0; transform: translateX(-46px); } to { opacity: 1; transform: none; } }
+@keyframes f2pInR   { from { opacity: 0; transform: translateX(46px); } to { opacity: 1; transform: none; } }
+@keyframes f2pInS   { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: none; } }
+@keyframes f2pFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-13px); } }
+@keyframes f2pSpin  { to { transform: rotate(360deg); } }
+@keyframes f2pFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- scroll reveal (progressive enhancement) ----------
+   Default: everything visible (works with no JS / reduced motion).
+   When JS is active it adds `.reveal-on` to <html>; elements then start
+   hidden and animate in when they enter the viewport (class `.in`). */
+.js-rv { opacity: 1; }
+html.reveal-on .js-rv { opacity: 0; }
+html.reveal-on .js-rv.in           { animation: f2pRise .8s cubic-bezier(.16,1,.3,1) both; }
+html.reveal-on .js-rv.from-l.in    { animation-name: f2pInL; }
+html.reveal-on .js-rv.from-r.in    { animation-name: f2pInR; }
+html.reveal-on .js-rv.from-s.in    { animation-name: f2pInS; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  html.reveal-on .js-rv { opacity: 1; }
+  html.reveal-on .js-rv.in { animation: none; }
+  .floaty { animation: none !important; }
+}
+
+/* ---------- micro-interactions ---------- */
+.lift { transition: transform .2s ease, box-shadow .2s ease; }
+.lift:hover { transform: translateY(-6px); box-shadow: 0 28px 60px -30px rgba(30,18,48,0.4); }
+.btn { transition: transform .15s ease, box-shadow .15s ease; }
+.btn:hover { transform: translateY(-2px); }
+.floaty { animation: f2pFloat 6.5s ease-in-out infinite; }
+.udl {
+  background-image: linear-gradient(#1C8A5E,#1C8A5E);
+  background-size: 0% 2px; background-repeat: no-repeat; background-position: 0 100%;
+  transition: background-size .3s ease;
+}
+.udl:hover { background-size: 100% 2px; color: #1C8A5E; }
+
+/* ---------- decorative fixed shapes (behind every page) ---------- */
+.f2p-shapes {
+  position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden;
+}
+.f2p-shapes span { position: absolute; display: block; }
+.f2p-shapes .r1 { top: -120px; right: -90px; width: 380px; height: 380px; border-radius: 50%; border: 1.5px solid rgba(39,22,64,0.05); }
+.f2p-shapes .r2 { top: 100px; left: -90px; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(28,138,94,0.07), transparent 70%); }
+.f2p-shapes .r3 { bottom: -130px; left: 14%; width: 320px; height: 320px; border-radius: 50%; border: 1.5px dashed rgba(28,138,94,0.08); }
+
+/* ============================================================
+   Shared HEADER (injected by site.js)
+   ============================================================ */
+.shx { font-family: 'Hanken Grotesk', system-ui, sans-serif; position: sticky; top: 0; z-index: 90;
+  background: rgba(244,240,230,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid #E7E1D4; }
+.shx * { box-sizing: border-box; }
+.shx a { text-decoration: none; color: inherit; }
+.shx-inner { max-width: 1280px; margin: 0 auto; padding: 13px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.shx-nav { display: flex; align-items: center; gap: 28px; font-weight: 500; font-size: 15px; color: #3A2F4A; }
+.shx-udl { background-image: linear-gradient(#1C8A5E,#1C8A5E); background-size: 0% 2px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .3s ease; }
+.shx-udl:hover { background-size: 100% 2px; color: #1C8A5E; }
+.shx-udl.active { color: #1C8A5E; font-weight: 600; }
+.shx-lift { transition: transform .18s ease, box-shadow .18s ease; }
+.shx-lift:hover { transform: translateY(-2px); }
+.shx-burger { display: none; width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E3DCCD; background: #fff; cursor: pointer; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
+.shx-burger span { width: 18px; height: 2px; background: #271640; border-radius: 2px; }
+.shx-mobile { padding: 8px 24px 16px; }
+.shx-mobile-inner { background: #fff; border: 1px solid #ECE6DA; border-radius: 16px; padding: 8px; display: flex; flex-direction: column; box-shadow: 0 24px 50px -30px rgba(30,18,48,0.4); }
+.shx-mobile a { padding: 12px 14px; border-radius: 11px; }
+@media (max-width: 940px) {
+  .shx-nav { display: none; }
+  .shx-burger { display: flex; }
+  .shx-hidem { display: none; }
+}
+
+/* ============================================================
+   Shared FOOTER (injected by site.js)
+   ============================================================ */
+.sfx { font-family: 'Hanken Grotesk', system-ui, sans-serif; background: #1B0F2E; color: #C9C2D6; padding: 60px 0 28px; }
+.sfx a { text-decoration: none; color: inherit; }
+.sfx-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.sfx-grid { display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr; gap: 38px; }
+.sfx h4 { font-family: 'Schibsted Grotesk'; font-weight: 700; font-size: 15px; color: #fff; margin: 0 0 15px; }
+.sfx-col { display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; }
+.sfx-udl { color: #A79EB5; background-image: linear-gradient(#5BD6A0,#5BD6A0); background-size: 0% 1.5px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .3s ease; }
+.sfx-udl:hover { background-size: 100% 1.5px; color: #5BD6A0; }
+.sfx-bottom { margin-top: 42px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.09); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #8A8194; }
+@media (max-width: 760px) { .sfx-grid { grid-template-columns: 1fr 1fr; } }

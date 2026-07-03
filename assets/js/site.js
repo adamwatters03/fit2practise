@@ -15,7 +15,7 @@
   var NAV = [
     ['index.html', 'Home', 'home'],
     ['courses.html', 'Courses', 'courses'],
-    ['my-courses.html', 'My Courses', 'mycourses'],
+    ['mentorship.html', 'Mentorship', 'mentorship'],
     ['about.html', 'About', 'about'],
     ['faqs.html', 'FAQs', 'faqs'],
     ['articles.html', 'Articles', 'articles'],
@@ -41,7 +41,7 @@
       var cls = 'shx-udl' + (n[2] === active ? ' active' : '');
       return '<a class="' + cls + '" href="' + n[0] + '">' + n[1] + '</a>';
     }).join('');
-    var mobile = NAV.concat([['portal.html', 'Login / Register', 'portal']]).map(function (n) {
+    var mobile = NAV.concat([['my-courses.html', 'My Courses', 'mycourses'], ['portal.html', 'Login / Register', 'portal']]).map(function (n) {
       return '<a href="' + n[0] + '">' + n[1] + '</a>';
     }).join('');
     return '' +
@@ -69,15 +69,15 @@
         '<div class="sfx-grid">' +
           '<div><img src="' + LOGO_DARK + '" alt="Fit to Practise" style="height:44px;width:auto;margin-bottom:14px;"><p style="font-size:14.5px;line-height:1.6;color:#A79EB5;max-width:300px;margin:0;">We are passionate about helping healthcare professionals regain and maintain their Fitness to Practise.</p></div>' +
           '<div><h4>Explore</h4><div class="sfx-col">' +
-            '<a class="sfx-udl" href="index.html">Home</a><a class="sfx-udl" href="courses.html">Courses</a><a class="sfx-udl" href="my-courses.html">My Courses</a><a class="sfx-udl" href="about.html">About</a>' +
+            '<a class="sfx-udl" href="index.html">Home</a><a class="sfx-udl" href="courses.html">Courses</a><a class="sfx-udl" href="mentorship.html">Mentorship</a><a class="sfx-udl" href="about.html">About</a><a class="sfx-udl" href="articles.html">Articles</a>' +
           '</div></div>' +
           '<div><h4>Account</h4><div class="sfx-col">' +
-            '<a class="sfx-udl" href="portal.html">Login / Register</a><a class="sfx-udl" href="profile.html">Profile</a><a class="sfx-udl" href="cart.html">Cart</a><a class="sfx-udl" href="faqs.html">FAQs</a>' +
+            '<a class="sfx-udl" href="portal.html">Login / Register</a><a class="sfx-udl" href="my-courses.html">My Courses</a><a class="sfx-udl" href="profile.html">Profile</a><a class="sfx-udl" href="cart.html">Cart</a>' +
           '</div></div>' +
-          '<div><h4>Get in touch</h4><a class="sfx-udl" href="mailto:hello@fit2practise.com" style="font-size:14.5px;">hello@fit2practise.com</a></div>' +
+          '<div><h4>Get in touch</h4><div class="sfx-col"><a class="sfx-udl" href="contact.html">Contact</a><a class="sfx-udl" href="faqs.html">FAQs</a><a class="sfx-udl" href="mailto:hello@fit2practise.com">hello@fit2practise.com</a></div></div>' +
         '</div>' +
         '<div class="sfx-bottom"><span>Copyright — Fit to Practise — All Rights Reserved</span>' +
-          '<div style="display:flex;gap:20px;"><a class="sfx-udl" href="#">Privacy Policy</a><a class="sfx-udl" href="#">Terms &amp; Conditions</a></div>' +
+          '<div style="display:flex;gap:20px;flex-wrap:wrap;"><a class="sfx-udl" href="privacy.html">Privacy Policy</a><a class="sfx-udl" href="terms.html">Terms &amp; Conditions</a><a class="sfx-udl" href="refunds.html">Refund &amp; Returns</a></div>' +
         '</div>' +
       '</div></footer>';
   }

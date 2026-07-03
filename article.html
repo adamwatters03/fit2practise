@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Article — Fit to Practise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/F2P-logo-09-2.png">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/site.js"></script>
+<style>
+  .prose p { font-size:17px; line-height:1.75; color:#3A2F4A; margin:0 0 18px; }
+  .prose h2 { font-family:'Schibsted Grotesk'; font-weight:700; font-size:24px; color:#20122F; margin:34px 0 12px; }
+  .prose ul { padding-left:22px; margin:0 0 18px; }
+  .prose li { font-size:17px; line-height:1.7; color:#3A2F4A; margin:6px 0; }
+</style>
+</head>
+<body>
+<div id="site-header" data-active="articles"></div>
+
+<article id="article"></article>
+
+<div id="site-footer"></div>
+
+<script>
+(function () {
+  var IMG = 'assets/img/';
+  var POSTS = {
+    'nmc-referral': {
+      cat: 'Featured', read: '8 min read', img: IMG + 'Nurse-Smiling-750x500.jpg',
+      title: 'Receiving an NMC referral: your first five steps',
+      lead: 'A referral letter can feel overwhelming. Here is a calm, practical guide to the very first things to do — and what not to do — when you first hear from your regulator.',
+      body: [
+        ['p', 'Opening a letter from your regulator is one of the most stressful moments in a healthcare career. Your heart races, and it is easy to react on emotion. The most important thing to remember is this: a referral is the start of a process, not a verdict. Taking a few calm, deliberate steps now will put you in the best possible position.'],
+        ['h2', '1. Read it carefully, then put it down'],
+        ['p', 'Read the letter once to understand what is being alleged and what is being asked of you, then step away. Do not reply immediately or in anger. You will think far more clearly after a night\'s sleep.'],
+        ['h2', '2. Note every deadline'],
+        ['p', 'Regulators work to timescales. Write down any dates by which you need to respond, and give yourself plenty of time to prepare rather than rushing at the last minute.'],
+        ['h2', '3. Tell the people who can support you'],
+        ['p', 'Speak to your union or professional indemnity provider as early as possible. Consider reaching out for mentorship from someone who has been through the process — having a steady voice beside you makes an enormous difference.'],
+        ['h2', '4. Start gathering your evidence'],
+        ['p', 'Keep a folder of anything relevant: reflective notes, training records, and testimonials. The earlier you start, the calmer and more complete your response will be.'],
+        ['h2', '5. Look after yourself'],
+        ['p', 'This is a marathon, not a sprint. Protect your wellbeing, lean on people you trust, and remember that many professionals come through this and return to practice stronger than before.']
+      ]
+    },
+    'reflection-standards': {
+      cat: 'Reflective Practice', read: '5 min read', img: IMG + 'Reflection-Writing-1-750x500.jpg',
+      title: 'How to write a reflection that meets regulatory standards',
+      lead: 'Structure, tone and the key elements panels look for in a strong reflective piece.',
+      body: [
+        ['p', 'A strong reflection is not about saying the right words — it is about genuinely demonstrating insight. Panels want to see that you understand what happened, why it mattered, and how you have changed as a result.'],
+        ['h2', 'Use a clear structure'],
+        ['p', 'A simple, honest structure works best: what happened, how you felt, what you have learned, and what you will do differently. Keep it specific to your own practice rather than writing in generalities.'],
+        ['h2', 'Show insight, not just remorse'],
+        ['p', 'Saying sorry is not enough. Demonstrate that you understand the impact on patients and colleagues, and connect your learning back to your professional Code of Conduct.'],
+        ['h2', 'Evidence the change'],
+        ['ul', ['Reference the specific training or reading you have undertaken.', 'Describe concrete changes to your day-to-day practice.', 'Explain how you would handle a similar situation now.']],
+        ['p', 'Written well, a reflection turns a difficult experience into clear evidence of a safe, thoughtful professional.']
+      ]
+    },
+    'hearing-what-happens': {
+      cat: 'Hearings', read: '6 min read', img: IMG + 'Healthcare-professional-on-laptop-750x500.jpg',
+      title: 'What actually happens at a Fitness to Practise hearing',
+      lead: 'A walk-through of the room, the people, and the order of events on the day.',
+      body: [
+        ['p', 'Fear of the unknown is one of the hardest parts of a hearing. Knowing what to expect on the day removes a great deal of that anxiety.'],
+        ['h2', 'Who is in the room'],
+        ['p', 'A panel usually includes registrant and lay members, supported by a legal adviser. There will be a case presenter, and you may be represented too. Everyone is there to consider the facts fairly.'],
+        ['h2', 'The order of events'],
+        ['ul', ['The allegations are read and the facts are considered.', 'Evidence and witnesses are heard from both sides.', 'The panel considers whether your fitness to practise is impaired.', 'If so, it decides on an appropriate outcome.']],
+        ['p', 'Hearings can feel formal, but they move at a measured pace. Take your time, ask for breaks if you need them, and remember that preparation is your best friend.']
+      ]
+    },
+    'rebuild-confidence': {
+      cat: 'Confidence', read: '4 min read', img: IMG + 'Rebuilding-Confidence-750x500.jpg',
+      title: 'Rebuilding your confidence after a suspension',
+      lead: 'Small, practical steps to return to practice feeling steady and prepared.',
+      body: [
+        ['p', 'Returning to practice after time away can be daunting. Confidence is rebuilt in small steps, not all at once.'],
+        ['h2', 'Start with the basics'],
+        ['p', 'Refresh your knowledge, revisit key policies, and give yourself permission to ask questions. Nobody expects you to remember everything on day one.'],
+        ['h2', 'Lean on support'],
+        ['p', 'A mentor or supervised return can make a world of difference. Talking through your worries with someone who understands helps put them in perspective.'],
+        ['p', 'Be patient and kind to yourself. Confidence returns with each shift you complete safely and well.']
+      ]
+    },
+    'the-code-explained': {
+      cat: 'NMC', read: '7 min read', img: IMG + 'Code-of-Conduct-750x500.jpg',
+      title: 'The Code, explained: what each section means for you',
+      lead: 'A plain-English breakdown of the NMC Code and how it applies in practice.',
+      body: [
+        ['p', 'The Code can feel abstract until you connect it to real, everyday practice. Broadly, it is built around four themes.'],
+        ['h2', 'Prioritise people'],
+        ['p', 'Put the interests of the people in your care first, treat them with dignity, and respect their right to be involved in decisions about their care.'],
+        ['h2', 'Practise effectively'],
+        ['p', 'Work within your competence, keep your knowledge up to date, and communicate clearly with colleagues and patients.'],
+        ['h2', 'Preserve safety'],
+        ['p', 'Recognise and work within your limits, raise concerns, and act without delay if you believe someone is at risk.'],
+        ['h2', 'Promote professionalism and trust'],
+        ['p', 'Uphold the reputation of your profession through your behaviour, honesty, and accountability — online as well as in person.']
+      ]
+    },
+    'mentorship-outcome': {
+      cat: 'Mentorship', read: '5 min read', img: IMG + 'Group-Brainstorming-Graphic-2.jpg',
+      title: 'How mentorship changes the outcome of a hearing',
+      lead: 'Why having someone who has been through it makes a real difference.',
+      body: [
+        ['p', 'Facing a hearing alone is hard. A mentor who has walked the same path brings both practical guidance and genuine reassurance.'],
+        ['h2', 'Practical preparation'],
+        ['p', 'A good mentor helps you prepare your reflections, organise your evidence, and anticipate the questions a panel might ask — so nothing catches you off guard.'],
+        ['h2', 'Emotional steadiness'],
+        ['p', 'Just as importantly, mentorship helps you stay grounded. Panels respond to insight and composure, and both are far easier to show when you feel supported.'],
+        ['p', 'Time and again, the professionals we support tell us that having someone in their corner changed how they experienced — and came through — the process.']
+      ]
+    },
+    'mental-health': {
+      cat: 'Wellbeing', read: '6 min read', img: IMG + 'Healthcare-Professional-on-Laptop.jpg',
+      title: 'Looking after your mental health during an investigation',
+      lead: 'Practical wellbeing strategies for a stressful and uncertain time.',
+      body: [
+        ['p', 'An investigation can stretch over many months, and the uncertainty takes a toll. Protecting your mental health is not a luxury — it is essential.'],
+        ['h2', 'Keep a routine'],
+        ['p', 'Structure helps. Try to keep regular sleep, movement, and moments of rest, even when everything else feels up in the air.'],
+        ['h2', 'Talk to someone'],
+        ['ul', ['Confide in people you trust.', 'Speak to your GP if things feel overwhelming.', 'Consider mentorship or counselling for dedicated support.']],
+        ['p', 'You are more than this process. Reaching out is a sign of strength, and support is always available.']
+      ]
+    }
+  };
+  var ORDER = ['nmc-referral', 'reflection-standards', 'hearing-what-happens', 'rebuild-confidence', 'the-code-explained', 'mentorship-outcome', 'mental-health'];
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+
+  var id;
+  try { id = new URLSearchParams(location.search).get('id'); } catch (e) {}
+  if (!id || !POSTS[id]) id = ORDER[0];
+  var post = POSTS[id];
+  document.title = post.title + ' — Fit to Practise';
+
+  var bodyHtml = post.body.map(function (b) {
+    if (b[0] === 'h2') return '<h2>' + esc(b[1]) + '</h2>';
+    if (b[0] === 'ul') return '<ul>' + b[1].map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>';
+    return '<p>' + esc(b[1]) + '</p>';
+  }).join('');
+
+  var related = ORDER.filter(function (k) { return k !== id; }).slice(0, 3).map(function (k) {
+    var p = POSTS[k];
+    return '<a href="article.html?id=' + k + '" class="lift" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:20px;overflow:hidden;">' +
+      '<img src="' + p.img + '" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;">' +
+      '<div style="padding:18px 20px 22px;"><div style="font-size:12.5px;color:#15724C;font-weight:700;margin-bottom:8px;">' + esc(p.cat) + '</div><h3 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:17px;line-height:1.3;margin:0;color:#20122F;">' + esc(p.title) + '</h3></div></a>';
+  }).join('');
+
+  document.getElementById('article').innerHTML = '' +
+    '<section style="position:relative;background:linear-gradient(rgba(27,15,46,0.72),rgba(27,15,46,0.88)),url(\'' + post.img + '\') center/cover;color:#fff;">' +
+      '<div style="max-width:860px;margin:0 auto;padding:60px 24px 66px;text-align:center;">' +
+        '<div style="font-size:13.5px;color:rgba(255,255,255,0.7);margin-bottom:16px;"><a href="index.html" style="color:rgba(255,255,255,0.7);">Home</a> <span style="margin:0 6px;">›</span> <a href="articles.html" style="color:rgba(255,255,255,0.7);">Articles</a> <span style="margin:0 6px;">›</span> <span style="color:#5BD6A0;font-weight:600;">' + esc(post.cat) + '</span></div>' +
+        '<span style="display:inline-block;background:rgba(91,214,160,0.18);color:#5BD6A0;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;">' + esc(post.cat) + ' · ' + esc(post.read) + '</span>' +
+        '<h1 style="font-family:\'Schibsted Grotesk\';font-weight:800;letter-spacing:-0.025em;line-height:1.1;font-size:clamp(30px,4.2vw,46px);margin:18px auto 0;max-width:760px;">' + esc(post.title) + '</h1>' +
+      '</div>' +
+    '</section>' +
+    '<section style="background:#F4F0E6;"><div style="max-width:760px;margin:0 auto;padding:52px 24px 40px;">' +
+      '<div class="prose"><p style="font-size:19px;color:#20122F;font-weight:500;">' + esc(post.lead) + '</p>' + bodyHtml + '</div>' +
+      '<div style="display:flex;align-items:center;gap:14px;margin-top:36px;padding-top:24px;border-top:1px solid #E7E1D4;">' +
+        '<img src="' + IMG + 'cathryn.jpg" alt="Fit to Practise" style="width:48px;height:48px;border-radius:50%;object-fit:cover;">' +
+        '<div><div style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:15px;color:#20122F;">The Fit to Practise team</div><div style="font-size:13px;color:#8A8194;">Healthcare professionals supporting your journey</div></div>' +
+      '</div>' +
+    '</div></section>' +
+    '<section style="background:#F4F0E6;"><div style="max-width:1200px;margin:0 auto;padding:20px 24px 40px;">' +
+      '<a href="articles.html" style="font-weight:600;font-size:14.5px;color:#1C8A5E;">← All articles</a>' +
+      '<h2 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:24px;margin:20px 0 18px;color:#20122F;">Keep reading</h2>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px;">' + related + '</div>' +
+    '</div></section>' +
+    '<section style="background:#F4F0E6;"><div style="max-width:1200px;margin:0 auto;padding:10px 24px 70px;">' +
+      '<div style="background:linear-gradient(150deg,#1E9466,#0F6647);border-radius:24px;padding:42px;text-align:center;color:#fff;">' +
+        '<h2 style="font-family:\'Schibsted Grotesk\';font-weight:800;font-size:clamp(24px,3vw,32px);margin:0;">Need support with your process?</h2>' +
+        '<p style="font-size:16.5px;line-height:1.6;color:rgba(255,255,255,0.9);margin:12px auto 22px;max-width:520px;">Explore our clinically relevant courses or reach out for 1:1 mentorship from professionals who have been there.</p>' +
+        '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;"><a href="courses.html" class="btn" style="background:#fff;color:#15724C;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Browse courses</a><a href="mentorship.html" class="btn" style="background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.3);color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Get mentorship</a></div>' +
+      '</div>' +
+    '</div></section>';
+})();
+</script>
+</body>
+</html>

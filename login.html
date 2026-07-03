@@ -46,6 +46,10 @@
           <button type="submit" class="btn" style="margin-top:6px;background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:16px;padding:15px;border-radius:13px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);"><span id="lgCta">Log in</span></button>
         </form>
         <p style="text-align:center;font-size:13.5px;color:#9A92A4;margin:20px 0 0;"><span id="lgPrompt">Don't have an account?</span> <button id="lgToggle" style="background:none;border:none;color:#1C8A5E;font-weight:700;font-family:'Hanken Grotesk';font-size:13.5px;cursor:pointer;">Register</button></p>
+        <div style="margin-top:18px;padding:12px 14px;background:#E7F2EC;border:1px solid #C9E6D6;border-radius:12px;text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#15724C;text-transform:uppercase;letter-spacing:0.05em;">All-access demo login</div>
+          <div style="font-size:13.5px;color:#20122F;margin-top:4px;">Sign in with <button id="fillDemo" style="background:none;border:none;padding:0;font-family:'Hanken Grotesk';font-weight:700;color:#1C8A5E;cursor:pointer;text-decoration:underline;">member@fit2practise.com</button> (any password) to unlock every course.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -80,10 +84,19 @@
   els.tabLogin.addEventListener('click', function () { tab = 'login'; paint(); });
   els.tabReg.addEventListener('click', function () { tab = 'register'; paint(); });
   els.toggle.addEventListener('click', function () { tab = tab === 'register' ? 'login' : 'register'; paint(); });
+  var fillDemo = document.getElementById('fillDemo');
+  if (fillDemo) fillDemo.addEventListener('click', function () {
+    if (tab !== 'login') { tab = 'login'; paint(); }
+    els.email.value = 'member@fit2practise.com'; els.pw.value = 'fit2practise'; els.email.focus();
+  });
   els.form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var name = tab === 'register' ? (els.name.value || 'Member') : ((els.email.value.split('@')[0]) || 'Member');
-    try { localStorage.setItem('f2p_user', JSON.stringify({ name: name, email: els.email.value })); window.dispatchEvent(new Event('f2p-change')); } catch (e2) {}
+    var email = els.email.value;
+    var name = tab === 'register' ? (els.name.value || 'Member') : ((email.split('@')[0]) || 'Member');
+    try { localStorage.setItem('f2p_user', JSON.stringify({ name: name, email: email })); } catch (e2) {}
+    // Demo all-access account: unlock every course on sign-in.
+    try { if (window.F2P) window.F2P.grantIfAllAccess(email); } catch (e3) {}
+    try { window.dispatchEvent(new Event('f2p-change')); } catch (e4) {}
     location.href = 'my-courses.html';
   });
   paint();

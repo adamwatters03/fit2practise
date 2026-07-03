@@ -93,11 +93,21 @@
     localStorage.setItem(PROGRESS_KEY, JSON.stringify(prog)); notify();
   }
 
+  // ----- all-access demo account -----
+  // Logging in with this email unlocks (enrols) every course. Front-end demo only.
+  var ALL_ACCESS_EMAILS = ['member@fit2practise.com'];
+  function enrollAll() { COURSES.forEach(function (c) { enroll(c.id); }); }
+  function grantIfAllAccess(email) {
+    if (email && ALL_ACCESS_EMAILS.indexOf(String(email).trim().toLowerCase()) > -1) { enrollAll(); return true; }
+    return false;
+  }
+
   window.F2P = {
     COURSES: COURSES, courseById: courseById,
     getCart: getCart, cartCount: cartCount, inCart: inCart, setCart: setCart,
     addToCart: addToCart, removeFromCart: removeFromCart, cartTotal: cartTotal,
     getEnrolled: getEnrolled, isEnrolled: isEnrolled, enrollCart: enrollCart, enroll: enroll,
+    enrollAll: enrollAll, grantIfAllAccess: grantIfAllAccess, ALL_ACCESS_EMAILS: ALL_ACCESS_EMAILS,
     getProgress: getProgress, setProgress: setProgress
   };
 })();

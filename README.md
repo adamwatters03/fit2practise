@@ -16,9 +16,13 @@ Built as a fast, dependency-free **static site** (plain HTML/CSS/JS) so it deplo
 | `login.html` | Login / Register (tabbed) |
 | `profile.html` | Editable account details, notification toggles, progress, achievements |
 | `about.html` | Founder, mission, board of advisors |
+| `mentorship.html` | 1:1 mentorship — how it works, mentors, CTA |
 | `faqs.html` | FAQ accordion |
 | `articles.html` | Articles / blog grid |
+| `article.html` | Article detail (`?id=<slug>`) — 7 posts + related |
 | `contact.html` | Contact form + details |
+| `privacy.html` · `terms.html` · `refunds.html` | Legal pages (template copy — have reviewed before relying on them) |
+| `404.html` | Not-found page (Vercel serves it automatically for unknown routes) |
 | `portal.html` | Role-based portal — **Learner** dashboard/courses/schedule/instructors/profile/activity, and **Business owner** analytics + members table |
 
 ## How it works
@@ -63,6 +67,15 @@ npx vercel
 - **Forms** — the contact and newsletter forms are front-end mocks (they show a confirmation). Connect them to your email/form service.
 - **Placeholder content** — the homepage stats (`00+`), FAQ answers, and Articles posts are drafts; swap in your real numbers/copy.
 - **Portal** — a front-end demo. Login accepts any details; the role (learner vs owner) is what changes the views. Analytics figures and the members list are realistic demo data.
+
+## All-access demo login
+
+Sign in on **`login.html`** (or as a **Learner** in the portal) with:
+
+- **Email:** `member@fit2practise.com`
+- **Password:** anything
+
+…and every course is unlocked (enrolled) so you can see the full My Courses / dashboard experience. This is defined in `assets/js/cart.js` (`ALL_ACCESS_EMAILS`) — front-end only; wire it to real auth/entitlements when you add a backend.
 
 ## Design source
 

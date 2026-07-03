@@ -10,6 +10,7 @@
 <link rel="icon" href="assets/img/F2P-logo-09-2.png">
 <link rel="stylesheet" href="assets/css/site.css">
 <script src="assets/js/cart.js"></script>
+<script src="assets/js/icons.js"></script>
 <script src="assets/js/site.js"></script>
 <style>
   @media (max-width: 880px) { .ct-grid { flex-direction: column !important; } .ct-aside { position: static !important; width: 100% !important; } }
@@ -41,7 +42,7 @@
     if (!items.length) {
       root.innerHTML = '' +
         '<div style="background:#fff;border:1px solid #ECE6DA;border-radius:24px;padding:56px 32px;text-align:center;">' +
-          '<div style="font-size:44px;margin-bottom:10px;">🛒</div>' +
+          '<div style="color:#1C8A5E;margin-bottom:12px;">' + window.F2PIcon('cart', { size: 46, stroke: 1.6 }) + '</div>' +
           '<h2 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:24px;margin:0 0 8px;color:#20122F;">Your cart is empty</h2>' +
           '<p style="font-size:16px;color:#6B6275;margin:0 0 22px;">Browse our courses and start your learning journey today.</p>' +
           '<a href="courses.html" class="btn" style="display:inline-block;background:#1C8A5E;color:#fff;font-weight:700;font-size:16px;padding:14px 30px;border-radius:999px;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">Browse Courses</a>' +

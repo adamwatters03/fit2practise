@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F4F0E6; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1E1230; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  ::selection { background: rgba(28,138,94,0.22); }
+  @keyframes f2pRise { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: none; } }
+  @keyframes f2pInL { from { opacity: 0; transform: translateX(-46px); } to { opacity: 1; transform: none; } }
+  @keyframes f2pInR { from { opacity: 0; transform: translateX(46px); } to { opacity: 1; transform: none; } }
+  @keyframes f2pInS { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: none; } }
+  @keyframes f2pFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-13px); } }
+  @keyframes f2pSpin { to { transform: rotate(360deg); } }
+  .js-rv.in { animation: f2pRise .8s cubic-bezier(.16,1,.3,1) both; }
+  .js-rv.from-l.in { animation-name: f2pInL; }
+  .js-rv.from-r.in { animation-name: f2pInR; }
+  .js-rv.from-s.in { animation-name: f2pInS; }
+  .f2p-header { transition: padding .3s ease, background .3s ease, box-shadow .3s ease; }
+  .f2p-header.shrunk { padding-top: 9px; padding-bottom: 9px; background: rgba(244,240,230,0.92); box-shadow: 0 8px 30px -20px rgba(30,18,48,0.55); }
+  .floaty { animation: f2pFloat 6.5s ease-in-out infinite; }
+  .nav-desktop { display: flex; }
+  .nav-burger { display: none; }
+  .lift { transition: transform .2s ease, box-shadow .2s ease; }
+  .lift:hover { transform: translateY(-6px); box-shadow: 0 28px 60px -30px rgba(30,18,48,0.4); }
+  .udl { background-image: linear-gradient(#1C8A5E,#1C8A5E); background-size: 0% 2px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .3s ease; }
+  .udl:hover { background-size: 100% 2px; color: #1C8A5E; }
+  @media (max-width: 920px) {
+    .nav-desktop { display: none; }
+    .nav-burger { display: flex; }
+    .hero-grid { flex-direction: column !important; }
+    .split { flex-direction: column !important; }
+    .hide-md { display: none !important; }
+    .sec { padding-top: 64px !important; padding-bottom: 64px !important; }
+  }
+  @media (max-width: 600px) {
+    .stat-row { flex-wrap: wrap !important; }
+    .dual-cta { flex-direction: column !important; }
+  }
+</style>
+</helmet>
+
+<div style="position:relative;">
+
+
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;">
+    <div style="position:absolute;top:-120px;right:-90px;width:380px;height:380px;border-radius:50%;border:1.5px solid rgba(39,22,64,0.05);"></div>
+    <div style="position:absolute;top:100px;left:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(28,138,94,0.07),transparent 70%);"></div>
+    <div style="position:absolute;bottom:-130px;left:14%;width:320px;height:320px;border-radius:50%;border:1.5px dashed rgba(28,138,94,0.08);"></div>
+  </div>
+
+  <!-- ===================== HEADER ===================== -->
+  <header id="f2pHeader" class="f2p-header" style="position:sticky;top:0;z-index:80;background:rgba(244,240,230,0.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding-top:16px;padding-bottom:16px;">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="display:flex;align-items:center;flex-shrink:0;"><img src="https://fit2practise.com/wp-content/uploads/2025/03/F2P-logo-09-2.png" alt="Fit to Practise" style="height:44px;width:auto;display:block;"></a>
+      <nav class="nav-desktop" style="align-items:center;gap:30px;font-weight:500;font-size:15px;color:#3A2F4A;">
+        <a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="color:#1C8A5E;font-weight:600;">Home</a>
+        <a class="udl" href="About.dc.html">About</a>
+        <a class="udl" href="Courses.dc.html">Courses</a>
+        <a class="udl" href="FAQs.dc.html">FAQs</a>
+        <a class="udl" href="Articles.dc.html">Articles</a>
+        <a class="udl" href="Contact.dc.html">Contact</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;">
+        <a href="Fit%20to%20Practise%20Portal.dc.html" class="hide-md" style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:#3A2F4A;"><span style="width:30px;height:30px;border-radius:50%;background:#E7F2EC;display:flex;align-items:center;justify-content:center;font-size:14px;">👤</span>Log in</a>
+        <a href="Courses.dc.html" class="lift" style="background:#1C8A5E;color:#fff;font-weight:600;font-size:15px;padding:11px 22px;border-radius:999px;box-shadow:0 8px 20px rgba(28,138,94,0.3);">Enroll Now</a>
+        <button class="nav-burger" onClick="{{ onMenu }}" style="display:none;width:44px;height:44px;border-radius:12px;border:1px solid #E3DCCD;background:#fff;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:4px;">
+          <span style="width:18px;height:2px;background:#271640;border-radius:2px;"></span>
+          <span style="width:18px;height:2px;background:#271640;border-radius:2px;"></span>
+          <span style="width:18px;height:2px;background:#271640;border-radius:2px;"></span>
+        </button>
+      </div>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:1260px;margin:10px auto 0;padding:14px 26px;">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:10px;display:flex;flex-direction:column;box-shadow:0 24px 50px -30px rgba(30,18,48,0.4);">
+          <a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="padding:12px 14px;border-radius:12px;font-weight:600;color:#1C8A5E;">Home</a>
+          <a href="About.dc.html" style="padding:12px 14px;border-radius:12px;">About</a>
+          <a href="Courses.dc.html" style="padding:12px 14px;border-radius:12px;">Courses</a>
+          <a href="FAQs.dc.html" style="padding:12px 14px;border-radius:12px;">FAQs</a>
+          <a href="Articles.dc.html" style="padding:12px 14px;border-radius:12px;">Articles</a>
+          <a href="Contact.dc.html" style="padding:12px 14px;border-radius:12px;">Contact</a>
+          <a href="Fit%20to%20Practise%20Portal.dc.html" style="padding:12px 14px;border-radius:12px;">Login / Register</a>
+        </div>
+      </div>
+    </sc-if>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="sec" style="padding:18px 0 70px;" data-screen-label="Hero">
+    <div style="max-width:1560px;margin:0 auto;padding:0 14px;">
+      <div style="position:relative;border-radius:34px;overflow:hidden;background:linear-gradient(150deg,#1E9466 0%,#178255 52%,#0F6647 100%);padding:58px clamp(28px,4vw,68px) 40px;">
+        <div aria-hidden="true" style="position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.14),transparent 65%);"></div>
+        <div aria-hidden="true" data-px="0.05" style="position:absolute;bottom:-60px;left:30%;width:260px;height:260px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.12);"></div>
+        <div class="hero-grid" style="position:relative;display:flex;gap:46px;align-items:center;flex-wrap:wrap;">
+          <!-- Left -->
+          <div class="js-rv from-l" style="flex:1 1 460px;min-width:300px;">
+            <span style="display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.28);padding:8px 15px;border-radius:999px;font-weight:600;font-size:12.5px;letter-spacing:0.1em;text-transform:uppercase;color:#EAFBF2;">🩺 Enhance your career</span>
+            <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.028em;line-height:1.02;font-size:clamp(40px,5.6vw,64px);margin:20px 0 0;color:#fff;">Teaching, Supporting, <span style="color:#C9F4DF;">keeping you</span> fit to practise</h1>
+            <p style="font-size:18px;line-height:1.62;color:rgba(255,255,255,0.86);max-width:520px;margin:22px 0 0;">Mentorship and courses from fellow healthcare professionals who bring real-world experience and practical insights.</p>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:32px;">
+              <a href="Courses.dc.html" class="lift" style="background:#fff;color:#15724C;font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px;box-shadow:0 12px 28px -12px rgba(0,0,0,0.45);">Get Courses</a>
+              <a href="https://video.pictory.ai/1736591224715/20250502083736135b8wraSS6OVfTndC" style="display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600;font-size:15.5px;">
+                <span class="lift" style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;"><span style="width:0;height:0;border-left:12px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px;"></span></span>
+                How it works
+              </a>
+            </div>
+            <!-- trusted -->
+            <div class="hide-md" style="margin-top:42px;border-top:1px solid rgba(255,255,255,0.16);padding-top:22px;display:flex;align-items:center;gap:26px;flex-wrap:wrap;">
+              <span style="font-size:13px;color:rgba(255,255,255,0.78);max-width:130px;line-height:1.4;">Trusted by healthcare professionals across the UK</span>
+              <div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap;font-family:'Schibsted Grotesk';font-weight:700;color:rgba(255,255,255,0.62);font-size:15px;">
+                <span>NMC</span><span>HCPC</span><span>GMC</span><span>NHS</span>
+              </div>
+            </div>
+          </div>
+          <!-- Right visual -->
+          <div class="js-rv from-r" style="flex:1 1 400px;min-width:300px;position:relative;">
+            <div style="position:relative;border-radius:26px;overflow:hidden;box-shadow:0 40px 90px -40px rgba(0,0,0,0.6);border:5px solid rgba(255,255,255,0.5);">
+              <img src="https://fit2practise.com/wp-content/uploads/2026/03/Nurse-Smiling-750x500.jpg" alt="Healthcare professional learning" style="width:100%;display:block;aspect-ratio:4/3.4;object-fit:cover;">
+            </div>
+            <!-- floating glass card 1 -->
+            <div data-px="-0.07" class="floaty" style="position:absolute;top:24px;left:-26px;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border-radius:18px;padding:14px 16px;box-shadow:0 24px 50px -22px rgba(0,0,0,0.45);display:flex;align-items:center;gap:13px;max-width:230px;">
+              <div style="position:relative;width:50px;height:50px;border-radius:50%;flex-shrink:0;background:conic-gradient(#1C8A5E 82%, #E3EFE8 0);display:flex;align-items:center;justify-content:center;"><div style="width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Schibsted Grotesk';font-weight:700;font-size:12.5px;color:#15724C;">82%</div></div>
+              <div><div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#9A92A4;font-weight:600;">Reflection Writing</div><div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:14px;color:#20122F;line-height:1.2;margin-top:3px;">Sessions 7 / 15</div></div>
+            </div>
+            <!-- floating glass card 2 -->
+            <div data-px="0.09" style="position:absolute;bottom:18px;right:-22px;background:#fff;border-radius:18px;padding:13px 15px;box-shadow:0 24px 50px -22px rgba(0,0,0,0.45);display:flex;align-items:center;gap:11px;max-width:240px;">
+              <img src="https://fit2practise.com/wp-content/uploads/2025/04/Rebuilding-Confidence-750x500.jpg" alt="" style="width:46px;height:46px;border-radius:12px;object-fit:cover;flex-shrink:0;">
+              <div><div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:13.5px;color:#20122F;line-height:1.2;">Rebuilding Confidence</div><div style="display:flex;align-items:center;gap:6px;margin-top:5px;"><span style="background:#E7F2EC;color:#15724C;font-weight:700;font-size:11px;padding:2px 8px;border-radius:999px;">£25</span><span style="font-size:11px;color:#9A92A4;">Cathryn W.</span></div></div>
+            </div>
+            <span style="position:absolute;top:-26px;right:6px;font-family:'Caveat';font-weight:700;font-size:30px;color:#fff;transform:rotate(-8deg);">wow!</span>
+            <span style="position:absolute;top:-8px;right:84px;color:#C9F4DF;font-size:22px;">✦</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STAT BAND ===================== -->
+  <section class="sec" style="padding:46px 0 30px;">
+    <div style="max-width:1060px;margin:0 auto;padding:0 26px;text-align:center;">
+      <span class="js-rv" style="display:inline-block;background:#E7F2EC;color:#15724C;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;transform:rotate(-1.5deg);">Why Fit to Practise</span>
+      <h2 class="js-rv" style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.18;font-size:clamp(26px,3.4vw,38px);margin:18px auto 0;max-width:760px;color:#20122F;">We are passionate about helping healthcare professionals <span style="color:#1C8A5E;">regain and maintain</span> their Fitness to Practise</h2>
+      <div class="js-rv stat-row" style="display:flex;justify-content:center;gap:14px;margin-top:42px;flex-wrap:wrap;">
+        <div style="flex:1 1 200px;max-width:260px;background:#FBF8F1;border:1px solid #ECE6DA;border-radius:20px;padding:26px 20px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:40px;color:#20122F;line-height:1;">00+</div><div style="font-size:14px;color:#6B6275;margin-top:9px;line-height:1.4;">Years experience in healthcare</div></div>
+        <div style="flex:1 1 200px;max-width:260px;background:#FBF8F1;border:1px solid #ECE6DA;border-radius:20px;padding:26px 20px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:40px;color:#20122F;line-height:1;">00+</div><div style="font-size:14px;color:#6B6275;margin-top:9px;line-height:1.4;">Nurses &amp; midwives mentored</div></div>
+        <div style="flex:1 1 200px;max-width:260px;background:#FBF8F1;border:1px solid #ECE6DA;border-radius:20px;padding:26px 20px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:40px;color:#20122F;line-height:1;">00+</div><div style="font-size:14px;color:#6B6275;margin-top:9px;line-height:1.4;">FtP hearings supported</div></div>
+        <div style="flex:1 1 200px;max-width:260px;background:#1C8A5E;border-radius:20px;padding:26px 20px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:40px;color:#fff;line-height:1;">00%</div><div style="font-size:14px;color:rgba(255,255,255,0.9);margin-top:9px;line-height:1.4;">Satisfaction rate</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURE GRID ===================== -->
+  <section class="sec" style="padding:64px 0;background:repeating-linear-gradient(135deg, rgba(39,22,64,0.03) 0, rgba(39,22,64,0.03) 1px, transparent 1px, transparent 16px), #FBF9F4;">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;">
+      <div class="js-rv" style="text-align:center;max-width:680px;margin:0 auto;">
+        <span style="display:inline-block;background:#F1ECF4;color:#5B3E86;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;transform:rotate(1.5deg);">What to Expect</span>
+        <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.12;font-size:clamp(28px,3.6vw,42px);margin:16px 0 0;color:#20122F;">What to Expect from Our Support</h2>
+        <p style="font-size:17.5px;line-height:1.6;color:#5C5369;margin:14px 0 0;">We will customise our support to your individual needs. It's relevant and up-to-date because of our insight into healthcare.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:44px;">
+        <div class="js-rv from-s lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:30px 28px;"><div style="width:54px;height:54px;border-radius:15px;background:#1C8A5E;display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 12px 24px -10px rgba(28,138,94,0.6);"><div style="width:20px;height:20px;border-radius:6px;background:#fff;"></div></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:20px;margin:0 0 7px;color:#20122F;">Online Courses</h3><p style="font-size:15px;line-height:1.6;color:#6B6275;margin:0 0 16px;">Comprehensive, flexible learning at your pace.</p><a href="Courses.dc.html" class="udl" style="font-weight:700;font-size:14px;color:#1C8A5E;">Start Now! →</a></div>
+        <div class="js-rv from-s lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:30px 28px;"><div style="width:54px;height:54px;border-radius:15px;background:#271640;display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 12px 24px -10px rgba(39,22,64,0.6);"><div style="width:20px;height:20px;border-radius:50%;background:#fff;"></div></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:20px;margin:0 0 7px;color:#20122F;">1-2-1 Mentorship</h3><p style="font-size:15px;line-height:1.6;color:#6B6275;margin:0 0 16px;">Tailored guidance, direct from industry experts.</p><a href="Courses.dc.html" class="udl" style="font-weight:700;font-size:14px;color:#1C8A5E;">Start Now! →</a></div>
+        <div class="js-rv from-s lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:30px 28px;"><div style="width:54px;height:54px;border-radius:15px;background:#C99A2E;display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 12px 24px -10px rgba(201,154,46,0.6);"><div style="width:20px;height:20px;background:#fff;transform:rotate(45deg);"></div></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:20px;margin:0 0 7px;color:#20122F;">Affordable Training</h3><p style="font-size:15px;line-height:1.6;color:#6B6275;margin:0 0 16px;">High-quality, cost-effective educational opportunities.</p><a href="Courses.dc.html" class="udl" style="font-weight:700;font-size:14px;color:#1C8A5E;">Start Now! →</a></div>
+        <div class="js-rv from-s lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:30px 28px;"><div style="width:54px;height:54px;border-radius:15px;background:#5B3E86;display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 12px 24px -10px rgba(91,62,134,0.6);"><div style="width:22px;height:22px;border:3px solid #fff;border-radius:50%;"></div></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:20px;margin:0 0 7px;color:#20122F;">Lifetime Access</h3><p style="font-size:15px;line-height:1.6;color:#6B6275;margin:0 0 16px;">Learn at your own pace, on mobile and desktop.</p><a href="Courses.dc.html" class="udl" style="font-weight:700;font-size:14px;color:#1C8A5E;">Start Now! →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== POPULAR COURSES ===================== -->
+  <section class="sec" style="padding:50px 0 64px;" data-screen-label="Courses">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;">
+      <div class="js-rv" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+        <div>
+          <span style="display:inline-block;background:#E7F2EC;color:#15724C;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;transform:rotate(-1.5deg);">Our Best Courses</span>
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.1;font-size:clamp(28px,3.6vw,42px);margin:16px 0 0;color:#20122F;">Explore our most popular courses</h2>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #ECE6DA;border-radius:999px;padding:7px 7px 7px 18px;box-shadow:0 14px 30px -22px rgba(30,18,48,0.5);">
+          <input type="text" placeholder="Search courses…" style="border:none;outline:none;background:transparent;font-family:'Hanken Grotesk';font-size:14.5px;width:150px;color:#20122F;">
+          <a href="Courses.dc.html" class="lift" style="width:38px;height:38px;border-radius:50%;background:#1C8A5E;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:15px;">→</span></a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:38px;">
+        <!-- Card -->
+        <a href="Course%20Detail.dc.html?c=navigating" class="js-rv lift" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;">
+          <div style="position:relative;aspect-ratio:16/10;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2026/03/Nurse-Smiling-750x500.jpg" alt="Navigating Your FtP Journey" style="width:100%;height:100%;object-fit:cover;"><span style="position:absolute;top:12px;left:12px;background:#fff;color:#15724C;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;">£25</span></div>
+          <div style="padding:18px 20px 22px;display:flex;flex-direction:column;flex:1;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#9A92A4;margin-bottom:9px;"><span style="display:inline-flex;align-items:center;gap:4px;color:#C99A2E;font-weight:700;">★ 5.0</span><span>·</span><span>NMC</span></div>
+            <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18.5px;line-height:1.25;margin:0 0 14px;color:#20122F;">Navigating Your FtP Journey</h3>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid #F0EBE0;"><img src="https://secure.gravatar.com/avatar/e0596093fee00ed2385fc78ed41e12e01288a3131233361dba9a3e1b3139e2f5?s=51&d=mm&r=g" alt="Adam Watters" style="width:26px;height:26px;border-radius:50%;"><span style="font-size:13px;color:#6B6275;">Adam Watters</span></div>
+          </div>
+        </a>
+        <a href="Course%20Detail.dc.html?c=conduct" class="js-rv lift" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;">
+          <div style="position:relative;aspect-ratio:16/10;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2025/07/Code-of-Conduct-750x500.jpg" alt="Code of Conduct" style="width:100%;height:100%;object-fit:cover;"><span style="position:absolute;top:12px;left:12px;background:#fff;color:#15724C;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;">£25</span></div>
+          <div style="padding:18px 20px 22px;display:flex;flex-direction:column;flex:1;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#9A92A4;margin-bottom:9px;"><span style="display:inline-flex;align-items:center;gap:4px;color:#C99A2E;font-weight:700;">★ 5.0</span><span>·</span><span>NMC</span></div>
+            <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18.5px;line-height:1.25;margin:0 0 14px;color:#20122F;">Code of Conduct</h3>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid #F0EBE0;"><img src="https://secure.gravatar.com/avatar/f2751a284394e7a922fa52c1c575be655d9094359323268157a3416186762053?s=51&d=mm&r=g" alt="Cathryn Watters" style="width:26px;height:26px;border-radius:50%;"><span style="font-size:13px;color:#6B6275;">Cathryn Watters</span></div>
+          </div>
+        </a>
+        <a href="Course%20Detail.dc.html?c=reflection" class="js-rv lift" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;">
+          <div style="position:relative;aspect-ratio:16/10;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2025/04/Reflection-Writing-1-750x500.jpg" alt="Reflection Writing" style="width:100%;height:100%;object-fit:cover;"><span style="position:absolute;top:12px;left:12px;background:#fff;color:#15724C;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;">£15</span></div>
+          <div style="padding:18px 20px 22px;display:flex;flex-direction:column;flex:1;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#9A92A4;margin-bottom:9px;"><span style="display:inline-flex;align-items:center;gap:4px;color:#C99A2E;font-weight:700;">★ 5.0</span><span>·</span><span>Reflective practice</span></div>
+            <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18.5px;line-height:1.25;margin:0 0 14px;color:#20122F;">Reflection Writing for the FtP Process</h3>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid #F0EBE0;"><img src="https://secure.gravatar.com/avatar/f2751a284394e7a922fa52c1c575be655d9094359323268157a3416186762053?s=51&d=mm&r=g" alt="Cathryn Watters" style="width:26px;height:26px;border-radius:50%;"><span style="font-size:13px;color:#6B6275;">Cathryn Watters</span></div>
+          </div>
+        </a>
+        <a href="Course%20Detail.dc.html?c=rebuilding" class="js-rv lift" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;">
+          <div style="position:relative;aspect-ratio:16/10;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2025/04/Rebuilding-Confidence-750x500.jpg" alt="Rebuilding Confidence" style="width:100%;height:100%;object-fit:cover;"><span style="position:absolute;top:12px;left:12px;background:#fff;color:#15724C;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;">£25</span></div>
+          <div style="padding:18px 20px 22px;display:flex;flex-direction:column;flex:1;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#9A92A4;margin-bottom:9px;"><span style="display:inline-flex;align-items:center;gap:4px;color:#C99A2E;font-weight:700;">★ 5.0</span><span>·</span><span>Confidence</span></div>
+            <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18.5px;line-height:1.25;margin:0 0 14px;color:#20122F;">Rebuilding Confidence Following FtP</h3>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid #F0EBE0;"><img src="https://secure.gravatar.com/avatar/f2751a284394e7a922fa52c1c575be655d9094359323268157a3416186762053?s=51&d=mm&r=g" alt="Cathryn Watters" style="width:26px;height:26px;border-radius:50%;"><span style="font-size:13px;color:#6B6275;">Cathryn Watters</span></div>
+          </div>
+        </a>
+        <a href="Course%20Detail.dc.html?c=hearing" class="js-rv lift" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;">
+          <div style="position:relative;aspect-ratio:16/10;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2025/06/Healthcare-professional-on-laptop-750x500.jpg" alt="Attending a hearing" style="width:100%;height:100%;object-fit:cover;"><span style="position:absolute;top:12px;left:12px;background:#fff;color:#15724C;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;">£10</span></div>
+          <div style="padding:18px 20px 22px;display:flex;flex-direction:column;flex:1;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#9A92A4;margin-bottom:9px;"><span style="display:inline-flex;align-items:center;gap:4px;color:#C99A2E;font-weight:700;">★ 5.0</span><span>·</span><span>Hearings</span></div>
+            <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18.5px;line-height:1.25;margin:0 0 14px;color:#20122F;">Attending a FtP Hearing — what to expect</h3>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid #F0EBE0;"><img src="https://secure.gravatar.com/avatar/f2751a284394e7a922fa52c1c575be655d9094359323268157a3416186762053?s=51&d=mm&r=g" alt="Cathryn Watters" style="width:26px;height:26px;border-radius:50%;"><span style="font-size:13px;color:#6B6275;">Cathryn Watters</span></div>
+          </div>
+        </a>
+        <!-- View all tile -->
+        <a href="Courses.dc.html" class="js-rv lift" style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;background:linear-gradient(160deg,#271640,#1B0F2E);border-radius:22px;padding:28px;color:#fff;min-height:220px;">
+          <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:18px;">→</div>
+          <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:22px;line-height:1.2;margin:0 0 8px;">See all courses</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#C9C2D6;margin:0;">Browse the full catalogue and start learning today.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DARK MENTORSHIP SECTION ===================== -->
+  <section class="sec" style="padding:30px 0 64px;">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;">
+      <div style="position:relative;background:linear-gradient(160deg,#2C1A4A 0%,#22123B 58%,#1B0F2E 100%);border-radius:30px;overflow:hidden;padding:54px 48px;">
+        <div aria-hidden="true" data-px="0.06" style="position:absolute;top:-120px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(28,138,94,0.3),transparent 68%);"></div>
+        <div class="split" style="position:relative;display:flex;gap:48px;align-items:center;flex-wrap:wrap;">
+          <div class="js-rv from-l" style="flex:1 1 400px;min-width:300px;position:relative;">
+            <div style="border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);box-shadow:0 40px 80px -40px rgba(0,0,0,0.7);"><img src="https://fit2practise.com/wp-content/uploads/2025/09/Group-Brainstorming-Graphic-2.jpg" alt="Mentorship" style="width:100%;display:block;"></div>
+            <div data-px="-0.08" style="position:absolute;bottom:-20px;left:-18px;background:#1C8A5E;color:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 20px 40px -18px rgba(0,0,0,0.6);"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:24px;line-height:1;">1.2M+</div><div style="font-size:12px;color:rgba(255,255,255,0.9);margin-top:3px;">learners supported</div></div>
+          </div>
+          <div class="js-rv from-r" style="flex:1 1 400px;min-width:300px;">
+            <span style="display:inline-block;background:rgba(91,214,160,0.16);color:#5BD6A0;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;">Online Learning</span>
+            <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.1;font-size:clamp(26px,3.4vw,38px);margin:16px 0 0;color:#fff;">Supporting student learning in your course</h2>
+            <p style="font-size:16.5px;line-height:1.62;color:#C9C2D6;margin:14px 0 22px;">Through 1:1 mentorship we will guide and direct you, giving easy to understand feedback and adapting techniques that suit your needs.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;">
+              <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);color:#EDE9F2;font-size:14px;font-weight:500;padding:9px 16px;border-radius:999px;">Easy accessibility</span>
+              <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);color:#EDE9F2;font-size:14px;font-weight:500;padding:9px 16px;border-radius:999px;">Lifetime Access</span>
+              <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);color:#EDE9F2;font-size:14px;font-weight:500;padding:9px 16px;border-radius:999px;">Passionate mentorship</span>
+              <span style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);color:#EDE9F2;font-size:14px;font-weight:500;padding:9px 16px;border-radius:999px;">Lived experience</span>
+            </div>
+            <a href="Courses.dc.html" class="lift" style="display:inline-block;background:#1C8A5E;color:#fff;font-weight:700;font-size:16px;padding:14px 28px;border-radius:999px;box-shadow:0 14px 30px -12px rgba(28,138,94,0.7);">View All Courses</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PORTAL SHOWCASE ===================== -->
+  <section class="sec" style="padding:34px 0 64px;">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;">
+      <div class="split" style="display:flex;gap:52px;align-items:center;flex-wrap:wrap;">
+        <div class="js-rv from-l" style="flex:1 1 400px;min-width:300px;">
+          <span style="display:inline-block;background:#E7F2EC;color:#15724C;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;transform:rotate(-1.5deg);">Your Learning Portal</span>
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.1;font-size:clamp(26px,3.4vw,40px);margin:16px 0 0;color:#20122F;">Everything in one place when you log in</h2>
+          <p style="font-size:17px;line-height:1.62;color:#5C5369;margin:16px 0 24px;">Your profile is a full learning dashboard — track course progress, keep up with your schedule, and pick up mentorship right where you left off. It's the same portal our team uses to support you.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+            <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#3A2F4A;"><span style="width:24px;height:24px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">✓</span>Track your progress across every course</div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#3A2F4A;"><span style="width:24px;height:24px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">✓</span>See your schedule and upcoming sessions</div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#3A2F4A;"><span style="width:24px;height:24px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">✓</span>Business owners get analytics &amp; member insights</div>
+          </div>
+          <a href="Fit%20to%20Practise%20Portal.dc.html" class="lift" style="display:inline-block;background:#1C8A5E;color:#fff;font-weight:700;font-size:16px;padding:14px 30px;border-radius:999px;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">Open your portal →</a>
+        </div>
+        <!-- Mini dashboard mockup (matches portal) -->
+        <div class="js-rv from-r" style="flex:1 1 460px;min-width:300px;">
+          <a href="Fit%20to%20Practise%20Portal.dc.html" class="lift" style="display:block;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;box-shadow:0 40px 90px -50px rgba(30,18,48,0.5);">
+            <!-- window bar -->
+            <div style="display:flex;align-items:center;gap:7px;padding:14px 18px;border-bottom:1px solid #F0EBE0;background:#FBF9F4;">
+              <span style="width:11px;height:11px;border-radius:50%;background:#E4B7B7;"></span><span style="width:11px;height:11px;border-radius:50%;background:#EAD7A8;"></span><span style="width:11px;height:11px;border-radius:50%;background:#B8DCC6;"></span>
+              <span style="margin-left:12px;font-size:12px;color:#9A92A4;">Fit to Practise — Portal</span>
+            </div>
+            <div style="display:flex;">
+              <!-- sidebar -->
+              <div style="width:58px;flex-shrink:0;background:#fff;border-right:1px solid #F0EBE0;padding:16px 0;display:flex;flex-direction:column;align-items:center;gap:14px;">
+                <span style="width:30px;height:30px;border-radius:9px;background:#1C8A5E;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;">▦</span>
+                <span style="font-size:15px;opacity:.5;">📖</span><span style="font-size:15px;opacity:.5;">🎓</span><span style="font-size:15px;opacity:.5;">👤</span><span style="font-size:15px;opacity:.5;">📈</span>
+              </div>
+              <!-- content -->
+              <div style="flex:1;padding:16px;background:#F4F0E6;">
+                <div style="display:flex;gap:10px;margin-bottom:12px;">
+                  <div style="flex:1;background:#E7F2EC;border-radius:12px;padding:12px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:19px;color:#20122F;">01</div><div style="font-size:10px;color:#6B6275;">Completed</div></div>
+                  <div style="flex:1;background:#FBEFD3;border-radius:12px;padding:12px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:19px;color:#20122F;">01</div><div style="font-size:10px;color:#6B6275;">In progress</div></div>
+                  <div style="flex:1;background:#271640;border-radius:12px;padding:12px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:19px;color:#fff;">03</div><div style="font-size:10px;color:rgba(255,255,255,0.8);">To start</div></div>
+                </div>
+                <div style="display:flex;gap:10px;">
+                  <div style="flex:1.4;background:#fff;border:1px solid #ECE6DA;border-radius:12px;padding:12px;">
+                    <div style="font-size:11px;font-weight:700;color:#20122F;margin-bottom:8px;">Learning activity</div>
+                    <svg viewBox="0 0 200 70" style="width:100%;height:auto;display:block;"><polyline points="6,54 40,34 74,44 108,22 142,36 176,14 196,26" fill="none" stroke="#1C8A5E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline><polyline points="6,58 40,50 74,40 108,46 142,30 176,38 196,20" fill="none" stroke="#D9A62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+                  </div>
+                  <div style="flex:1;background:#fff;border:1px solid #ECE6DA;border-radius:12px;padding:12px;text-align:center;">
+                    <div style="font-size:11px;font-weight:700;color:#20122F;margin-bottom:6px;">Progress</div>
+                    <svg viewBox="0 0 60 60" style="width:64px;height:64px;transform:rotate(-90deg);"><circle cx="30" cy="30" r="24" fill="none" stroke="#EFEAE0" stroke-width="8"></circle><circle cx="30" cy="30" r="24" fill="none" stroke="#1C8A5E" stroke-width="8" stroke-linecap="round" stroke-dasharray="121 151"></circle></svg>
+                    <div style="margin-top:-46px;margin-bottom:26px;font-family:'Schibsted Grotesk';font-weight:800;font-size:15px;color:#20122F;">80%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CLINICALLY RELEVANT SPLIT ===================== -->
+  <section class="sec" style="padding:34px 0 64px;">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;">
+      <div class="split" style="display:flex;gap:56px;align-items:center;flex-wrap:wrap;">
+        <div class="js-rv from-l" style="flex:1 1 400px;min-width:300px;position:relative;">
+          <div style="border-radius:200px 200px 24px 24px;overflow:hidden;border:1px solid #ECE6DA;box-shadow:0 36px 80px -44px rgba(30,18,48,0.5);"><img src="https://fit2practise.com/wp-content/uploads/2025/09/Reflection-Writing-1.jpg" alt="Clinically relevant courses" style="width:100%;display:block;aspect-ratio:4/4.4;object-fit:cover;"></div>
+          <div data-px="0.08" class="floaty" style="position:absolute;bottom:26px;left:-22px;background:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 22px 44px -20px rgba(30,18,48,0.5);"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#9A92A4;font-weight:600;">Free course</div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:20px;color:#15724C;margin-top:3px;">£0 to start</div></div>
+          <span style="position:absolute;top:14px;right:-6px;color:#1C8A5E;font-size:26px;">✦</span>
+        </div>
+        <div class="js-rv from-r" style="flex:1 1 400px;min-width:300px;">
+          <span style="display:inline-block;background:#E7F2EC;color:#15724C;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;transform:rotate(-1.5deg);">Distance Learning</span>
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.1;font-size:clamp(26px,3.4vw,40px);margin:16px 0 0;color:#20122F;">Clinically relevant online courses</h2>
+          <p style="font-size:17px;line-height:1.62;color:#5C5369;margin:16px 0 24px;">Online courses can sometimes seem dry and not relevant to our individual experience. Our courses will relate back to your professional Code of Conduct as well as your workplace experience.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:30px;">
+            <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#3A2F4A;"><span style="width:24px;height:24px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">✓</span>Bespoke to the unique situations students face</div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#3A2F4A;"><span style="width:24px;height:24px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">✓</span>Learn from professionals who've been through it</div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#3A2F4A;"><span style="width:24px;height:24px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">✓</span>Lifetime access on mobile and desktop</div>
+          </div>
+          <a href="Courses.dc.html" class="lift" style="display:inline-block;background:#271640;color:#fff;font-weight:700;font-size:16px;padding:14px 28px;border-radius:999px;">Start For Free</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TESTIMONIAL ===================== -->
+  <section class="sec" style="padding:34px 0 64px;">
+    <div style="max-width:1060px;margin:0 auto;padding:0 26px;text-align:center;">
+      <span class="js-rv" style="display:inline-block;background:#F1ECF4;color:#5B3E86;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;transform:rotate(1.5deg);">Testimonial</span>
+      <h2 class="js-rv" style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.16;font-size:clamp(26px,3.4vw,38px);margin:16px auto 0;max-width:680px;color:#20122F;">See why people trust us through the <span style="color:#1C8A5E;">hardest moments</span></h2>
+      <div class="js-rv from-s" style="position:relative;background:#fff;border:1px solid #ECE6DA;border-radius:26px;padding:46px 44px;margin-top:36px;box-shadow:0 30px 70px -44px rgba(30,18,48,0.4);text-align:left;">
+        <div aria-hidden="true" style="position:absolute;top:24px;right:30px;font-family:'Schibsted Grotesk';font-size:90px;line-height:1;color:#E7F2EC;">”</div>
+        <p style="position:relative;font-size:19px;line-height:1.7;color:#3A2F4A;margin:0 0 16px;max-width:760px;">I am so grateful to wake up this morning and knowing that I have not been removed from the register. The mentorship work have been so appreciated and acknowledged during the hearing hence the panel gave me another chance.</p>
+        <p style="position:relative;font-size:19px;line-height:1.7;color:#3A2F4A;margin:0 0 28px;max-width:760px;">I want to say a big thank you for all your support Cathryn. I got a 9 months suspension without review. I take it as a win. 🏆 Thank you for everything!</p>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <img src="https://fit2practise.com/wp-content/uploads/2025/02/coach-choose2.jpg" alt="David Warner" style="width:54px;height:54px;border-radius:50%;object-fit:cover;">
+          <div><div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:17px;color:#20122F;">David Warner</div><div style="font-size:13.5px;color:#8A8194;">Someone We Helped</div></div>
+        </div>
+      </div>
+      <p class="js-rv" style="font-size:14.5px;color:#8A8194;margin:22px 0 0;">Not a member yet? <a href="Profile.dc.html" class="udl" style="color:#1C8A5E;font-weight:700;">Register now</a></p>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section id="faq" class="sec" style="padding:34px 0 64px;" data-screen-label="FAQ">
+    <div style="max-width:920px;margin:0 auto;padding:0 26px;">
+      <div class="js-rv" style="text-align:center;">
+        <span style="display:inline-block;background:#E7F2EC;color:#15724C;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;">FAQ</span>
+        <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.12;font-size:clamp(28px,3.6vw,42px);margin:16px 0 0;color:#20122F;">Got questions? We've got answers</h2>
+      </div>
+      <div class="js-rv" style="margin-top:34px;display:flex;flex-direction:column;gap:12px;">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;overflow:hidden;">
+          <button onClick="{{ onFaq0 }}" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'Hanken Grotesk';"><span style="font-weight:700;font-size:16.5px;color:#20122F;">What is the Fitness to Practise process?</span><span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;">{{ faqIcon0 }}</span></button>
+          <sc-if value="{{ faqOpen0 }}" hint-placeholder-val="{{ false }}"><div style="padding:0 22px 22px;font-size:15.5px;line-height:1.65;color:#6B6275;max-width:720px;">Fitness to Practise is the process your regulator uses to make sure healthcare professionals are safe to work. We help you understand each stage, prepare your evidence, and approach it with confidence.</div></sc-if>
+        </div>
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;overflow:hidden;">
+          <button onClick="{{ onFaq1 }}" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'Hanken Grotesk';"><span style="font-weight:700;font-size:16.5px;color:#20122F;">Are your courses relevant to my regulator?</span><span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;">{{ faqIcon1 }}</span></button>
+          <sc-if value="{{ faqOpen1 }}" hint-placeholder-val="{{ false }}"><div style="padding:0 22px 22px;font-size:15.5px;line-height:1.65;color:#6B6275;max-width:720px;">Our courses relate back to your professional Code of Conduct as well as your workplace experience, so the learning is always grounded in real, clinically relevant practice.</div></sc-if>
+        </div>
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;overflow:hidden;">
+          <button onClick="{{ onFaq2 }}" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'Hanken Grotesk';"><span style="font-weight:700;font-size:16.5px;color:#20122F;">Do you offer 1-2-1 mentorship?</span><span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;">{{ faqIcon2 }}</span></button>
+          <sc-if value="{{ faqOpen2 }}" hint-placeholder-val="{{ false }}"><div style="padding:0 22px 22px;font-size:15.5px;line-height:1.65;color:#6B6275;max-width:720px;">Yes. Through 1:1 mentorship we guide and direct you, giving easy to understand feedback and adapting techniques that suit your needs.</div></sc-if>
+        </div>
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;overflow:hidden;">
+          <button onClick="{{ onFaq3 }}" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'Hanken Grotesk';"><span style="font-weight:700;font-size:16.5px;color:#20122F;">Can I access courses on multiple devices?</span><span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;">{{ faqIcon3 }}</span></button>
+          <sc-if value="{{ faqOpen3 }}" hint-placeholder-val="{{ false }}"><div style="padding:0 22px 22px;font-size:15.5px;line-height:1.65;color:#6B6275;max-width:720px;">Absolutely — you get lifetime access on mobile and desktop, so you can learn at your own pace, whenever and wherever suits you.</div></sc-if>
+        </div>
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;overflow:hidden;">
+          <button onClick="{{ onFaq4 }}" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'Hanken Grotesk';"><span style="font-weight:700;font-size:16.5px;color:#20122F;">Is my information kept confidential?</span><span style="flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;">{{ faqIcon4 }}</span></button>
+          <sc-if value="{{ faqOpen4 }}" hint-placeholder-val="{{ false }}"><div style="padding:0 22px 22px;font-size:15.5px;line-height:1.65;color:#6B6275;max-width:720px;">Yes. Your information will never be shared with any third party, and everything you share with your mentor is treated in the strictest confidence.</div></sc-if>
+        </div>
+      </div>
+      <div class="js-rv" style="text-align:center;margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="FAQs.dc.html" style="background:#fff;border:1px solid #E0D9CC;color:#20122F;font-weight:600;font-size:15px;padding:12px 24px;border-radius:999px;">See more FAQs</a>
+        <a href="Contact.dc.html" class="lift" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:12px 24px;border-radius:999px;">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DUAL CTA ===================== -->
+  <section class="sec" style="padding:34px 0 64px;">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;">
+      <div class="js-rv" style="text-align:center;max-width:640px;margin:0 auto 36px;">
+        <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.12;font-size:clamp(28px,3.6vw,42px);margin:0;color:#20122F;">What are you looking for?</h2>
+        <p style="font-size:17px;line-height:1.6;color:#5C5369;margin:14px 0 0;">Whether you want to teach with us or learn from us, there's a place for you at Fit to Practise.</p>
+      </div>
+      <div class="dual-cta" style="display:flex;gap:22px;flex-wrap:wrap;">
+        <div class="js-rv from-l lift" style="flex:1 1 360px;min-width:300px;background:#fff;border:1px solid #ECE6DA;border-radius:26px;padding:40px 36px;">
+          <div style="width:54px;height:54px;border-radius:15px;background:#F1ECF4;display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><div style="width:22px;height:22px;border:3px solid #5B3E86;border-radius:6px;"></div></div>
+          <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:24px;margin:0 0 8px;color:#20122F;">Do you want to teach here?</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:#6B6275;margin:0 0 24px;">Come teach with us and become an instructor today. Share your lived experience and help others through the process.</p>
+          <a href="mailto:hello@fit2practise.com" style="display:inline-block;background:#271640;color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Get started</a>
+        </div>
+        <div class="js-rv from-r lift" style="flex:1 1 360px;min-width:300px;background:linear-gradient(160deg,#1E9466,#0F6647);border-radius:26px;padding:40px 36px;color:#fff;">
+          <div style="width:54px;height:54px;border-radius:15px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><div style="width:22px;height:22px;border:3px solid #fff;border-radius:50%;"></div></div>
+          <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:24px;margin:0 0 8px;">Do you want to learn here?</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:rgba(255,255,255,0.9);margin:0 0 24px;">Explore our courses and pick the ones that suit you. Start learning with us and take the next step in your career.</p>
+          <a href="Courses.dc.html" style="display:inline-block;background:#fff;color:#15724C;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Enroll now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA BANNER ===================== -->
+  <section class="sec" style="padding:24px 0 70px;">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;">
+      <div class="js-rv from-s" style="position:relative;overflow:hidden;border-radius:30px;background:linear-gradient(rgba(27,15,46,0.86),rgba(27,15,46,0.9)),url('https://fit2practise.com/wp-content/uploads/2025/09/Healthcare-Professional-on-Laptop.jpg') center/cover;padding:54px 48px;">
+        <div aria-hidden="true" data-px="0.05" style="position:absolute;top:-100px;right:6%;width:300px;height:300px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.16);"></div>
+        <div style="position:relative;display:flex;gap:30px;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+          <div style="max-width:620px;">
+            <h2 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.02em;line-height:1.08;font-size:clamp(26px,3.6vw,40px);margin:0;color:#fff;">Let's find your perfect course today!</h2>
+            <p style="font-size:17px;line-height:1.6;color:rgba(255,255,255,0.9);margin:14px 0 0;">Enjoy the top notch learning methods and achieve next level skills. You are the creator of your own career — and we will guide you through it.</p>
+          </div>
+          <a href="Courses.dc.html" class="lift" style="background:#fff;color:#15724C;font-weight:700;font-size:17px;padding:16px 34px;border-radius:999px;box-shadow:0 16px 34px -14px rgba(0,0,0,0.5);white-space:nowrap;">Join Free Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER + NEWSLETTER ===================== -->
+  <footer style="background:#1B0F2E;color:#C9C2D6;padding:64px 0 30px;">
+    <div style="max-width:1260px;margin:0 auto;padding:0 26px;">
+      <div class="js-rv" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:24px;padding:36px;display:flex;gap:30px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:54px;">
+        <div style="flex:1 1 360px;min-width:280px;">
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:clamp(22px,2.6vw,30px);margin:0;color:#fff;">Subscribe to our newsletter</h2>
+          <p style="font-size:15px;line-height:1.55;color:#A79EB5;margin:10px 0 0;">Sign up to receive updates, promotions, and sneak peeks of upcoming courses. Plus 20% off your next course.</p>
+        </div>
+        <div style="flex:1 1 320px;min-width:280px;">
+          <form onSubmit="{{ onSubscribe }}" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <input type="email" required="required" value="{{ email }}" onInput="{{ onEmail }}" placeholder="Enter your email" style="flex:1 1 200px;min-width:0;padding:14px 18px;border:1px solid rgba(255,255,255,0.16);border-radius:999px;font-family:'Hanken Grotesk';font-size:15px;color:#fff;outline:none;background:rgba(255,255,255,0.06);">
+            <button type="submit" class="lift" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:14px 26px;border:none;border-radius:999px;cursor:pointer;">Subscribe Now</button>
+          </form>
+          <sc-if value="{{ subscribed }}" hint-placeholder-val="{{ false }}"><p style="font-size:13.5px;color:#5BD6A0;font-weight:600;margin:12px 0 0;">Thanks — you're on the list! Check your inbox.</p></sc-if>
+          <p style="font-size:12.5px;color:#8A8194;margin:12px 0 0;">Your information will never be shared with any third party.</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:40px;">
+        <div>
+          <img src="https://fit2practise.com/wp-content/uploads/2025/04/F2P-logo-08-2.png" alt="Fit to Practise" style="height:46px;width:auto;margin-bottom:16px;">
+          <p style="font-size:14.5px;line-height:1.6;color:#A79EB5;max-width:300px;margin:0;">We are passionate about helping healthcare professionals regain and maintain their Fitness to Practise.</p>
+        </div>
+        <div>
+          <h4 style="font-family:'Schibsted Grotesk';font-weight:600;font-size:15px;color:#fff;margin:0 0 16px;">Explore</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px;">
+            <a class="udl" href="Fit%20to%20Practise%20Home%20v2.dc.html" style="color:#A79EB5;">Home</a>
+            <a class="udl" href="#" style="color:#A79EB5;">Blog</a>
+            <a class="udl" href="#" style="color:#A79EB5;">Privacy Policy</a>
+            <a class="udl" href="Courses.dc.html" style="color:#A79EB5;">Courses</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family:'Schibsted Grotesk';font-weight:600;font-size:15px;color:#fff;margin:0 0 16px;">Resources</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px;">
+            <a class="udl" href="#" style="color:#A79EB5;">Terms &amp; Conditions</a>
+            <a class="udl" href="Profile.dc.html" style="color:#A79EB5;">Profile</a>
+            <a class="udl" href="Cart.dc.html" style="color:#A79EB5;">Checkout</a>
+            <a class="udl" href="#" style="color:#A79EB5;">Refund &amp; Returns</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family:'Schibsted Grotesk';font-weight:600;font-size:15px;color:#fff;margin:0 0 16px;">Get in touch</h4>
+          <a class="udl" href="mailto:hello@fit2practise.com" style="color:#A79EB5;font-size:14.5px;">hello@fit2practise.com</a>
+        </div>
+      </div>
+      <div style="margin-top:46px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.09);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px;color:#8A8194;">
+        <span>Copyright — Fit to Practise — All Rights Reserved</span>
+        <div style="display:flex;gap:20px;"><a class="udl" href="#" style="color:#8A8194;">Privacy Policy</a><a class="udl" href="#" style="color:#8A8194;">Terms &amp; Conditions</a></div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1260,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { faq: 0, email: '', subscribed: false, menuOpen: false };
+
+  componentDidMount() {
+    // Scroll-reveal (progressive enhancement; default state is visible)
+    try {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      document.querySelectorAll('.js-rv').forEach(el => io.observe(el));
+      this._io = io;
+    } catch (err) {}
+
+    // Parallax + sticky header (discrete, scroll-driven)
+    const header = document.getElementById('f2pHeader');
+    const pxEls = Array.from(document.querySelectorAll('[data-px]'));
+    let ticking = false;
+    const frame = () => {
+      ticking = false;
+      const vh = window.innerHeight || 800;
+      if (header) { if (window.scrollY > 16) header.classList.add('shrunk'); else header.classList.remove('shrunk'); }
+      for (const el of pxEls) {
+        const sp = parseFloat(el.getAttribute('data-px')) || 0;
+        const r = el.getBoundingClientRect();
+        const off = ((r.top + r.height / 2) - vh / 2) * sp;
+        el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)';
+      }
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    this._onScroll = onScroll;
+    requestAnimationFrame(frame);
+  }
+
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+    if (this._onScroll) { window.removeEventListener('scroll', this._onScroll); window.removeEventListener('resize', this._onScroll); }
+  }
+
+  toggleFaq(i) { this.setState(s => ({ faq: s.faq === i ? null : i })); }
+
+  renderVals() {
+    const open = this.state.faq;
+    const v = {
+      menuOpen: this.state.menuOpen,
+      onMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      email: this.state.email,
+      subscribed: this.state.subscribed,
+      onEmail: (e) => this.setState({ email: e.target.value, subscribed: false }),
+      onSubscribe: (e) => { e.preventDefault(); if (this.state.email) this.setState({ subscribed: true }); },
+    };
+    for (let i = 0; i < 5; i++) {
+      v['faqOpen' + i] = open === i;
+      v['faqIcon' + i] = open === i ? '–' : '+';
+      v['onFaq' + i] = () => this.toggleFaq(i);
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

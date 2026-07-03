@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F4F0E6; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1E1230; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  .btn { transition: transform .15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  .lift { transition: transform .2s ease, box-shadow .2s ease; }
+  .lift:hover { transform: translateY(-5px); box-shadow: 0 26px 56px -30px rgba(30,18,48,0.4); }
+  @media (max-width:880px){ .ab-split { flex-direction: column !important; } }
+</style>
+</helmet>
+<div>
+  <dc-import name="Site Header" active="about" hint-size="100%,72px"></dc-import>
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;">
+    <div style="position:absolute;top:-120px;right:-90px;width:380px;height:380px;border-radius:50%;border:1.5px solid rgba(39,22,64,0.05);"></div>
+    <div style="position:absolute;top:100px;left:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(28,138,94,0.07),transparent 70%);"></div>
+    <div style="position:absolute;bottom:-130px;left:14%;width:320px;height:320px;border-radius:50%;border:1.5px dashed rgba(28,138,94,0.08);"></div>
+  </div>
+
+
+  <!-- Founder -->
+  <section style="padding:40px 0 60px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <div style="font-size:13.5px;color:#9A92A4;margin-bottom:22px;"><a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="color:#9A92A4;">Home</a> <span style="margin:0 6px;">›</span> <span style="color:#1C8A5E;font-weight:600;">About</span></div>
+      <div class="ab-split" style="display:flex;gap:56px;align-items:center;flex-wrap:wrap;">
+        <div style="flex:1 1 360px;min-width:300px;position:relative;">
+          <div style="border-radius:220px 220px 24px 24px;overflow:hidden;border:1px solid #ECE6DA;box-shadow:0 36px 80px -44px rgba(30,18,48,0.5);"><img src="https://fit2practise.com/wp-content/uploads/2025/03/cathryn.jpg" alt="Cathryn Watters" style="width:100%;display:block;aspect-ratio:4/4.6;object-fit:cover;"></div>
+        </div>
+        <div style="flex:1 1 420px;min-width:300px;">
+          <span style="display:inline-block;background:#E7F2EC;color:#15724C;font-weight:700;font-size:12.5px;letter-spacing:0.05em;padding:7px 16px;border-radius:999px;transform:rotate(-1.5deg);">Learn About Our Founder</span>
+          <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.025em;line-height:1.08;font-size:clamp(30px,4vw,46px);margin:18px 0 0;color:#20122F;">Who is Cathryn Watters? Why did she start Fit to Practise?</h1>
+          <p style="font-size:17px;line-height:1.65;color:#5C5369;margin:18px 0 0;">Fitness to Practise was born out of the need to help health professionals become better educated about the fitness to practise process. So how do we help?</p>
+          <div style="display:flex;flex-direction:column;gap:12px;margin:22px 0 26px;">
+            <div style="display:flex;align-items:flex-start;gap:12px;font-size:15.5px;color:#3A2F4A;line-height:1.5;"><span style="width:22px;height:22px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px;">✓</span>Courses that are bespoke to the unique situations students are facing</div>
+            <div style="display:flex;align-items:flex-start;gap:12px;font-size:15.5px;color:#3A2F4A;line-height:1.5;"><span style="width:22px;height:22px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px;">✓</span>Learn from experienced professionals who have gone through the process before</div>
+            <div style="display:flex;align-items:flex-start;gap:12px;font-size:15.5px;color:#3A2F4A;line-height:1.5;"><span style="width:22px;height:22px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px;">✓</span>Learn at your own pace, with lifetime access on mobile and desktop</div>
+          </div>
+          <a href="Courses.dc.html" class="btn" style="display:inline-block;background:#1C8A5E;color:#fff;font-weight:700;font-size:16px;padding:14px 28px;border-radius:999px;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">Explore Learning</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission band -->
+  <section style="padding:20px 0 60px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:26px;padding:44px;">
+        <div class="ab-split" style="display:flex;gap:48px;align-items:center;flex-wrap:wrap;">
+          <div style="flex:1 1 380px;min-width:280px;">
+            <span style="font-weight:700;font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;color:#1C8A5E;">About us</span>
+            <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.12;font-size:clamp(26px,3.2vw,36px);margin:12px 0 0;color:#20122F;">About Fit to Practise</h2>
+            <p style="font-size:16.5px;line-height:1.65;color:#5C5369;margin:14px 0 0;">Learn more about the people behind Fitness to Practise and how Cathryn Watters has created a business around helping those going through the fitness to practise process.</p>
+          </div>
+          <div style="flex:1 1 300px;min-width:260px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="background:#F4F0E6;border:1px solid #ECE6DA;border-radius:14px;padding:16px 18px;font-weight:600;font-size:15px;color:#20122F;display:flex;align-items:center;gap:10px;"><span style="color:#1C8A5E;">✓</span>Expert Instructors</div>
+            <div style="background:#F4F0E6;border:1px solid #ECE6DA;border-radius:14px;padding:16px 18px;font-weight:600;font-size:15px;color:#20122F;display:flex;align-items:center;gap:10px;"><span style="color:#1C8A5E;">✓</span>Lifetime Access</div>
+            <div style="background:#F4F0E6;border:1px solid #ECE6DA;border-radius:14px;padding:16px 18px;font-weight:600;font-size:15px;color:#20122F;display:flex;align-items:center;gap:10px;"><span style="color:#1C8A5E;">✓</span>Remote Learning</div>
+            <div style="background:#F4F0E6;border:1px solid #ECE6DA;border-radius:14px;padding:16px 18px;font-weight:600;font-size:15px;color:#20122F;display:flex;align-items:center;gap:10px;"><span style="color:#1C8A5E;">✓</span>Self Development</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advisors -->
+  <section style="padding:20px 0 70px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <div style="text-align:center;max-width:680px;margin:0 auto 40px;">
+        <span style="display:inline-block;background:#F1ECF4;color:#5B3E86;font-weight:700;font-size:12.5px;letter-spacing:0.05em;padding:7px 16px;border-radius:999px;">Get Support</span>
+        <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.12;font-size:clamp(28px,3.6vw,40px);margin:16px 0 0;color:#20122F;">Meet our advisors</h2>
+        <p style="font-size:17px;line-height:1.6;color:#5C5369;margin:14px 0 0;">A board of advisors who can help with the specific support you may need — whether HR or employment issues, addiction and recovery, or professional mentorship.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;">
+        <div class="lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2025/05/Simon-Holborn.jpg" alt="Simon Holborn" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;"><div style="padding:20px;"><div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;color:#20122F;">Simon Holborn</div><div style="font-size:13px;color:#1C8A5E;font-weight:600;margin:2px 0 10px;">Board Member</div><p style="font-size:13.5px;line-height:1.55;color:#6B6275;margin:0;">Wealth of experience representing people in employment and regulatory investigations. An HR and Health &amp; Safety specialist, and previously a nurse.</p></div></div>
+        <div class="lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2025/05/Kenny-Headshot.jpg" alt="Kenny Brady" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;"><div style="padding:20px;"><div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;color:#20122F;">Kenny Brady</div><div style="font-size:13px;color:#1C8A5E;font-weight:600;margin:2px 0 10px;">Board Member</div><p style="font-size:13.5px;line-height:1.55;color:#6B6275;margin:0;">Safeguarding lead for the group, working in toxicology providing drug testing and training to the NHS, criminal justice and treatment services.</p></div></div>
+        <div class="lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2025/05/Maria-Headshot.jpg" alt="Maria Trewern" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;"><div style="padding:20px;"><div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;color:#20122F;">Maria Trewern</div><div style="font-size:13px;color:#1C8A5E;font-weight:600;margin:2px 0 10px;">Board Member</div><p style="font-size:13.5px;line-height:1.55;color:#6B6275;margin:0;">A registered nurse for over 34 years with a wide and varied career across clinical and operational management and strategic service improvement.</p></div></div>
+        <div class="lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="https://fit2practise.com/wp-content/uploads/2025/06/Ruth-Headshot.jpg" alt="Ruth Rowse" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;"><div style="padding:20px;"><div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;color:#20122F;">Ruth Rowse</div><div style="font-size:13px;color:#1C8A5E;font-weight:600;margin:2px 0 10px;">Board Member</div><p style="font-size:13.5px;line-height:1.55;color:#6B6275;margin:0;">Qualified Therapeutic Radiographer and university lecturer with 15+ years in education, passionate about nurturing students to be their best.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Become instructor -->
+  <section style="padding:0 0 76px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <div style="position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(150deg,#1E9466,#0F6647);padding:50px 44px;text-align:center;">
+        <div aria-hidden="true" style="position:absolute;top:-90px;left:8%;width:260px;height:260px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.16);"></div>
+        <div style="position:relative;max-width:620px;margin:0 auto;">
+          <span style="display:inline-block;background:rgba(255,255,255,0.16);color:#EAFBF2;font-weight:700;font-size:12.5px;letter-spacing:0.05em;padding:7px 16px;border-radius:999px;">Online Certification</span>
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-size:clamp(26px,3.4vw,38px);margin:16px 0 0;color:#fff;">Want to help? Become an instructor</h2>
+          <p style="font-size:17px;line-height:1.6;color:rgba(255,255,255,0.9);margin:14px 0 26px;">Come teach with us and become an instructor today. Share your lived experience and help others through the process.</p>
+          <a href="mailto:hello@fit2practise.com" class="btn" style="display:inline-block;background:#fff;color:#15724C;font-weight:700;font-size:16px;padding:15px 32px;border-radius:999px;box-shadow:0 14px 30px -14px rgba(0,0,0,0.45);">Get Started Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Site Footer" hint-size="100%,360px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

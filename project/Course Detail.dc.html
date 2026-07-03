@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F4F0E6; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1E1230; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  .btn { transition: transform .15s ease, box-shadow .15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  @media (max-width: 900px) { .cd-grid { flex-direction: column !important; } .cd-aside { position: static !important; width: 100% !important; } }
+</style>
+</helmet>
+<div>
+  <dc-import name="Site Header" active="courses" hint-size="100%,72px"></dc-import>
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;">
+    <div style="position:absolute;top:-120px;right:-90px;width:380px;height:380px;border-radius:50%;border:1.5px solid rgba(39,22,64,0.05);"></div>
+    <div style="position:absolute;top:100px;left:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(28,138,94,0.07),transparent 70%);"></div>
+    <div style="position:absolute;bottom:-130px;left:14%;width:320px;height:320px;border-radius:50%;border:1.5px dashed rgba(28,138,94,0.08);"></div>
+  </div>
+
+
+  <section style="padding:34px 0 70px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <div style="font-size:13.5px;color:#9A92A4;margin-bottom:20px;"><a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="color:#9A92A4;">Home</a> <span style="margin:0 6px;">›</span> <a href="Courses.dc.html" style="color:#9A92A4;">Courses</a> <span style="margin:0 6px;">›</span> <span style="color:#1C8A5E;font-weight:600;">{{ category }}</span></div>
+
+      <sc-if value="{{ loaded }}" hint-placeholder-val="{{ false }}">
+      <div class="cd-grid" style="display:flex;gap:40px;align-items:flex-start;">
+        <!-- Main -->
+        <div style="flex:1 1 auto;min-width:0;">
+          <span style="display:inline-block;background:#E7F2EC;color:#15724C;font-weight:700;font-size:12px;letter-spacing:0.05em;padding:6px 14px;border-radius:999px;">{{ category }}</span>
+          <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.025em;line-height:1.08;font-size:clamp(30px,4vw,46px);margin:16px 0 0;color:#20122F;">{{ title }}</h1>
+          <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:18px 0 0;font-size:14.5px;color:#6B6275;">
+            <span style="color:#C99A2E;font-weight:700;">★ {{ rating }} <span style="color:#9A92A4;font-weight:400;">({{ reviews }} reviews)</span></span>
+            <span style="display:flex;align-items:center;gap:7px;"><img data-img="{{ avatar }}" style="width:24px;height:24px;border-radius:50%;background:#EFEAE0;">{{ author }}</span>
+            <span>{{ meta }}</span>
+          </div>
+          <div style="border-radius:24px;overflow:hidden;border:1px solid #ECE6DA;margin-top:26px;box-shadow:0 30px 70px -44px rgba(30,18,48,0.45);"><img data-img="{{ img }}" alt="{{ title }}" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#EFEAE0;"></div>
+
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:24px;margin:38px 0 12px;color:#20122F;">About this course</h2>
+          <p style="font-size:16.5px;line-height:1.7;color:#5C5369;margin:0;">{{ blurb }}</p>
+          <p style="font-size:16.5px;line-height:1.7;color:#5C5369;margin:14px 0 0;">You'll learn at your own pace with lifetime access on mobile and desktop, and every lesson relates back to your professional Code of Conduct as well as your real workplace experience.</p>
+
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:24px;margin:36px 0 16px;color:#20122F;">What you'll learn</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;">
+            <sc-for list="{{ outcomes }}" as="o" hint-placeholder-count="4">
+              <div style="display:flex;align-items:flex-start;gap:11px;font-size:15.5px;color:#3A2F4A;line-height:1.5;"><span style="width:22px;height:22px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px;">✓</span>{{ o }}</div>
+            </sc-for>
+          </div>
+
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:24px;margin:38px 0 16px;color:#20122F;">Course content</h2>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ curriculum }}" as="row" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #ECE6DA;border-radius:14px;padding:15px 18px;">
+                <span style="width:32px;height:32px;border-radius:9px;background:#F1ECF4;color:#5B3E86;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;">{{ row.n }}</span>
+                <span style="font-weight:600;font-size:15.5px;color:#20122F;flex:1;">{{ row.title }}</span>
+                <span style="font-size:13px;color:#9A92A4;">{{ row.len }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- Instructor -->
+          <div style="display:flex;gap:18px;align-items:center;background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;margin-top:34px;">
+            <img data-img="{{ avatar }}" alt="{{ author }}" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;background:#EFEAE0;">
+            <div><div style="font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#9A92A4;font-weight:600;">Your instructor</div><div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;color:#20122F;margin-top:3px;">{{ author }}</div><p style="font-size:14.5px;line-height:1.55;color:#6B6275;margin:6px 0 0;">A fellow healthcare professional bringing real-world experience and practical, lived insight into the Fitness to Practise process.</p></div>
+          </div>
+        </div>
+
+        <!-- Aside / buy card -->
+        <aside class="cd-aside" style="flex-shrink:0;width:340px;position:sticky;top:90px;">
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:24px;padding:26px;box-shadow:0 30px 70px -40px rgba(30,18,48,0.4);">
+            <div style="display:flex;align-items:baseline;gap:10px;"><span style="font-family:'Schibsted Grotesk';font-weight:800;font-size:40px;color:#20122F;">{{ priceLabel }}</span><span style="font-size:14px;color:#9A92A4;">one-off · lifetime access</span></div>
+            <div style="display:flex;flex-direction:column;gap:11px;margin:22px 0;">
+              <sc-if value="{{ enrolled }}" hint-placeholder-val="{{ false }}">
+                <a href="My%20Courses.dc.html" class="btn" style="text-align:center;background:#271640;color:#fff;font-weight:700;font-size:16px;padding:15px;border-radius:14px;">Go to my course →</a>
+              </sc-if>
+              <sc-if value="{{ notEnrolled }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ onBuy }}" class="btn" style="background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:16px;padding:15px;border-radius:14px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">Buy now</button>
+                <sc-if value="{{ inCart }}" hint-placeholder-val="{{ false }}">
+                  <a href="Cart.dc.html" style="text-align:center;background:#E7F2EC;color:#15724C;font-weight:700;font-size:15px;padding:13px;border-radius:14px;">In cart — view cart ✓</a>
+                </sc-if>
+                <sc-if value="{{ notInCart }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ onAdd }}" class="btn" style="background:#fff;color:#20122F;border:1px solid #E0D9CC;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:13px;border-radius:14px;cursor:pointer;">Add to cart</button>
+                </sc-if>
+              </sc-if>
+            </div>
+            <div style="border-top:1px solid #F0EBE0;padding-top:18px;display:flex;flex-direction:column;gap:11px;font-size:14px;color:#5C5369;">
+              <div style="display:flex;align-items:center;gap:10px;"><span style="color:#1C8A5E;">✓</span> Lifetime access on all devices</div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="color:#1C8A5E;">✓</span> {{ meta }}</div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="color:#1C8A5E;">✓</span> Certificate of completion</div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="color:#1C8A5E;">✓</span> Learn at your own pace</div>
+            </div>
+          </div>
+          <p style="text-align:center;font-size:13px;color:#9A92A4;margin:14px 0 0;">Secure checkout · 14-day refund policy</p>
+        </aside>
+      </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <dc-import name="Site Footer" hint-size="100%,360px"></dc-import>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:200;background:#271640;color:#fff;font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:999px;box-shadow:0 20px 44px -16px rgba(0,0,0,0.5);">✓ {{ toast }} <a href="Cart.dc.html" style="color:#5BD6A0;font-weight:700;margin-left:6px;">View cart</a></div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { id: null, cartIds: [], enrolledIds: [], toast: '' };
+  async componentDidMount() {
+    this._m = await import('./cart.js');
+    let id = null;
+    try { id = new URLSearchParams(location.search).get('c'); } catch (e) {}
+    if (!id || !this._m.courseById(id)) id = this._m.COURSES[0].id;
+    this._sync = () => { try { this.setState({ cartIds: this._m.getCart(), enrolledIds: this._m.getEnrolled() }); } catch (e) {} };
+    window.addEventListener('f2p-change', this._sync);
+    window.addEventListener('storage', this._sync);
+    this.setState({ id, cartIds: this._m.getCart(), enrolledIds: this._m.getEnrolled() });
+    this.swapImgs();
+  }
+  componentDidUpdate() { this.swapImgs(); }
+  swapImgs() { requestAnimationFrame(() => { try { document.querySelectorAll('img[data-img]').forEach(im => { const v = im.getAttribute('data-img'); if (v && v.indexOf('{{') < 0 && im.getAttribute('src') !== v) im.setAttribute('src', v); }); } catch (e) {} }); }
+  componentWillUnmount() {
+    if (this._sync) { window.removeEventListener('f2p-change', this._sync); window.removeEventListener('storage', this._sync); }
+    clearTimeout(this._t);
+  }
+  add() { if (!this._m || !this.state.id) return; this._m.addToCart(this.state.id); this.setState({ toast: 'Added to cart' }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 1900); }
+  buy() { if (!this._m || !this.state.id) return; this._m.addToCart(this.state.id); location.href = 'Cart.dc.html'; }
+  renderVals() {
+    this.swapImgs();
+    const c = this._m && this.state.id ? this._m.courseById(this.state.id) : null;
+    if (!c) return { loaded: false, title: '', category: '', author: '', avatar: '', img: '', rating: '', reviews: '', blurb: '', priceLabel: '', meta: '', curriculum: [], outcomes: [], inCart: false, notInCart: false, enrolled: false, notEnrolled: true, hasToast: false, toast: '', onAdd: () => {}, onBuy: () => {} };
+    const inCart = (this.state.cartIds || []).includes(c.id);
+    const enrolled = (this.state.enrolledIds || []).includes(c.id);
+    const curriculum = Array.from({ length: c.sessions }, (_, i) => ({
+      n: i + 1,
+      title: i === 0 ? 'Introduction & getting started' : (i === c.sessions - 1 ? 'Bringing it all together' : 'Module ' + (i + 1) + ': core concepts'),
+      len: (8 + (i % 4) * 4) + ' min',
+    }));
+    const outcomes = [
+      'Understand each stage of the Fitness to Practise process',
+      'Apply your professional Code of Conduct in practice',
+      'Build confidence and emotional resilience',
+      'Identify and articulate your future learning needs',
+    ];
+    return {
+      loaded: true,
+      title: c.title, category: c.category, author: c.author, avatar: c.avatar, img: c.img,
+      rating: c.rating, reviews: c.reviews, blurb: c.blurb, priceLabel: '£' + c.price,
+      meta: c.sessions + (c.sessions === 1 ? ' session' : ' sessions') + ' · ' + c.hours + 'h · ' + c.level,
+      curriculum, outcomes,
+      inCart, notInCart: !inCart, enrolled, notEnrolled: !enrolled,
+      onAdd: () => this.add(), onBuy: () => this.buy(),
+      toast: this.state.toast, hasToast: !!this.state.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F4F0E6; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1E1230; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  .btn { transition: transform .15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  .lift { transition: transform .2s ease, box-shadow .2s ease; }
+  .lift:hover { transform: translateY(-4px); box-shadow: 0 26px 56px -32px rgba(30,18,48,0.4); }
+  @media (max-width:640px){ .mc-stats { grid-template-columns: 1fr 1fr !important; } }
+</style>
+</helmet>
+<div>
+  <dc-import name="Site Header" active="mycourses" hint-size="100%,72px"></dc-import>
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;">
+    <div style="position:absolute;top:-120px;right:-90px;width:380px;height:380px;border-radius:50%;border:1.5px solid rgba(39,22,64,0.05);"></div>
+    <div style="position:absolute;top:100px;left:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(28,138,94,0.07),transparent 70%);"></div>
+    <div style="position:absolute;bottom:-130px;left:14%;width:320px;height:320px;border-radius:50%;border:1.5px dashed rgba(28,138,94,0.08);"></div>
+  </div>
+
+
+  <section style="padding:36px 0 80px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:14px;color:#9A92A4;margin-bottom:6px;">Welcome back{{ nameComma }}</div>
+          <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.025em;font-size:clamp(30px,4vw,46px);margin:0;color:#20122F;">My learning</h1>
+        </div>
+        <a href="Courses.dc.html" class="btn" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:12px 24px;border-radius:999px;box-shadow:0 10px 24px -12px rgba(28,138,94,0.6);">Browse more courses</a>
+      </div>
+
+      <!-- Stats -->
+      <div class="mc-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:32px;color:#20122F;">{{ statEnrolled }}</div><div style="font-size:13.5px;color:#6B6275;margin-top:4px;">Courses enrolled</div></div>
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:32px;color:#20122F;">{{ statProgress }}</div><div style="font-size:13.5px;color:#6B6275;margin-top:4px;">Avg. completion</div></div>
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:32px;color:#20122F;">{{ statHours }}</div><div style="font-size:13.5px;color:#6B6275;margin-top:4px;">Hours of learning</div></div>
+        <div style="background:#1C8A5E;border-radius:18px;padding:22px;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:32px;color:#fff;">{{ statDone }}</div><div style="font-size:13.5px;color:rgba(255,255,255,0.9);margin-top:4px;">Completed</div></div>
+      </div>
+
+      <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:24px;padding:56px 32px;text-align:center;margin-top:26px;">
+          <div style="font-size:44px;margin-bottom:10px;">🎓</div>
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:24px;margin:0 0 8px;color:#20122F;">You're not enrolled yet</h2>
+          <p style="font-size:16px;color:#6B6275;margin:0 0 22px;">Pick your first course and start learning at your own pace.</p>
+          <a href="Courses.dc.html" class="btn" style="display:inline-block;background:#1C8A5E;color:#fff;font-weight:700;font-size:16px;padding:14px 30px;border-radius:999px;">Browse Courses</a>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ false }}">
+        <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:22px;margin:38px 0 18px;color:#20122F;">Continue learning</h2>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <sc-for list="{{ items }}" as="it" hint-placeholder-count="0">
+            <div class="lift" style="display:flex;gap:20px;align-items:center;background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:16px;flex-wrap:wrap;">
+              <img data-img="{{ it.img }}" alt="{{ it.title }}" style="width:150px;height:100px;border-radius:14px;object-fit:cover;flex-shrink:0;background:#EFEAE0;">
+              <div style="flex:1 1 280px;min-width:0;">
+                <div style="font-size:12px;color:#9A92A4;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">{{ it.category }}</div>
+                <div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;color:#20122F;margin:4px 0 12px;line-height:1.25;">{{ it.title }}</div>
+                <div style="display:flex;align-items:center;gap:12px;"><div style="flex:1;height:9px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div style="height:100%;border-radius:999px;background:{{ it.barColor }};width:{{ it.pctLabel }};"></div></div><span style="font-size:13px;font-weight:700;color:#15724C;white-space:nowrap;">{{ it.pctLabel }}</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
+                <button onClick="{{ it.onContinue }}" class="btn" style="background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:14.5px;padding:11px 22px;border-radius:12px;cursor:pointer;">{{ it.actionLabel }}</button>
+                <a href="{{ it.detailHref }}" style="text-align:center;font-size:13px;color:#6B6275;font-weight:600;">Details</a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <dc-import name="Site Footer" hint-size="100%,360px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { enrolledIds: [], progress: {}, ready: false, name: '' };
+  async componentDidMount() {
+    this._m = await import('./cart.js');
+    let name = '';
+    try { const u = JSON.parse(localStorage.getItem('f2p_user') || 'null'); if (u && u.name) name = u.name; } catch (e) {}
+    this._sync = () => { try { this.setState({ enrolledIds: this._m.getEnrolled(), progress: this._m.getProgress(), ready: true }); } catch (e) {} };
+    window.addEventListener('f2p-change', this._sync);
+    window.addEventListener('storage', this._sync);
+    this.setState({ enrolledIds: this._m.getEnrolled(), progress: this._m.getProgress(), ready: true, name });
+  }
+  componentDidUpdate() { this.swapImgs(); }
+  swapImgs() { requestAnimationFrame(() => { try { document.querySelectorAll('img[data-img]').forEach(im => { const v = im.getAttribute('data-img'); if (v && v.indexOf('{{') < 0 && im.getAttribute('src') !== v) im.setAttribute('src', v); }); } catch (e) {} }); }
+  componentWillUnmount() { if (this._sync) { window.removeEventListener('f2p-change', this._sync); window.removeEventListener('storage', this._sync); } }
+  advance(id, cur) { if (!this._m) return; this._m.setProgress(id, cur >= 100 ? 100 : Math.min(100, cur + 25)); }
+  renderVals() {
+    this.swapImgs();
+    if (!this._m) return { empty: false, hasItems: false, items: [], nameComma: '', statEnrolled: 0, statProgress: '0%', statHours: '0h', statDone: 0 };
+    const ids = this.state.enrolledIds || [];
+    const prog = this.state.progress || {};
+    const items = ids.map(id => this._m.courseById(id)).filter(Boolean).map(c => {
+      const pct = Math.round(prog[c.id] || 0);
+      return { ...c, pct, pctLabel: pct + '%',
+        barColor: pct >= 100 ? '#15724C' : '#1C8A5E',
+        actionLabel: pct >= 100 ? 'Review' : (pct > 0 ? 'Continue' : 'Start'),
+        detailHref: 'Course%20Detail.dc.html?c=' + c.id,
+        onContinue: () => this.advance(c.id, pct) };
+    });
+    const avg = items.length ? Math.round(items.reduce((s, i) => s + i.pct, 0) / items.length) : 0;
+    const hours = items.reduce((s, i) => s + i.hours, 0);
+    const done = items.filter(i => i.pct >= 100).length;
+    return {
+      empty: this.state.ready && items.length === 0,
+      hasItems: items.length > 0,
+      items,
+      nameComma: this.state.name ? ', ' + this.state.name : '',
+      statEnrolled: items.length, statProgress: avg + '%', statHours: hours + 'h', statDone: done,
+    };
+  }
+}
+</script>
+</body>
+</html>

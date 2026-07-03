@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F4F0E6; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1E1230; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  ::selection { background: rgba(28,138,94,0.22); }
+  .fp-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+  .fp-scroll::-webkit-scrollbar-thumb { background: #DCD5C7; border-radius: 8px; }
+  .navitem { transition: background .15s ease, color .15s ease; }
+  .navitem:hover { background: #F1ECF4; }
+  .lift { transition: transform .18s ease, box-shadow .18s ease; }
+  .lift:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -30px rgba(30,18,48,0.4); }
+  .btn { transition: transform .15s ease, box-shadow .15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  .f2pin { width:100%; padding:13px 15px; border:1px solid #E0D9CC; border-radius:12px; font-family:'Hanken Grotesk'; font-size:15px; color:#20122F; outline:none; background:#FBF8F1; transition:border-color .15s ease; }
+  .f2pin:focus { border-color:#1C8A5E; background:#fff; }
+  .lessonrow { transition: background .15s ease; }
+  .lessonrow:hover { background:#F1ECF4; }
+  @media (max-width: 1000px) {
+    .fp-side { width: 74px !important; }
+    .fp-side .lbl { display: none !important; }
+    .fp-side .upsell { display: none !important; }
+    .fp-brandfull { display: none !important; }
+    .fp-branddot { display: block !important; }
+  }
+  @media (max-width: 780px) {
+    .fp-topsearch { display: none !important; }
+    .two-col { flex-direction: column !important; }
+    .three-col { grid-template-columns: 1fr !important; }
+  }
+</style>
+</helmet>
+
+<div style="display:flex;min-height:100vh;">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="fp-side" style="width:248px;flex-shrink:0;background:#fff;border-right:1px solid #ECE6DA;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;padding:22px 16px;">
+    <div style="padding:6px 10px 22px;">
+      <img class="fp-brandfull" src="https://fit2practise.com/wp-content/uploads/2025/03/F2P-logo-09-2.png" alt="Fit to Practise" style="height:40px;width:auto;display:block;">
+      <img class="fp-branddot" src="https://fit2practise.com/wp-content/uploads/2025/03/F2P-logo-09-2.png" alt="F2P" style="height:34px;width:auto;display:none;object-fit:cover;object-position:left;">
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:5px;">
+      <sc-for list="{{ nav }}" as="item" hint-placeholder-count="6">
+        <button onClick="{{ item.onClick }}" class="navitem" style="display:flex;align-items:center;gap:13px;width:100%;text-align:left;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:600;font-size:15px;padding:12px 14px;border-radius:13px;background:{{ item.bg }};color:{{ item.color }};">
+          <span style="width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;">{{ item.icon }}</span>
+          <span class="lbl">{{ item.label }}</span>
+        </button>
+      </sc-for>
+    </nav>
+    <div class="upsell" style="margin-top:auto;background:linear-gradient(160deg,#F1ECF4,#EAF6F0);border:1px solid #E7E1D4;border-radius:18px;padding:18px;">
+      <div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:15px;color:#20122F;line-height:1.25;">Need 1:1 support?</div>
+      <p style="font-size:12.5px;line-height:1.5;color:#6B6275;margin:6px 0 12px;">Book mentorship with a professional who's been through it.</p>
+      <button onClick="{{ goCourses }}" class="btn" style="background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;">Get mentorship</button>
+    </div>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <div class="fp-scroll" style="flex:1;min-width:0;display:flex;flex-direction:column;height:100vh;overflow-y:auto;">
+
+    <!-- Top bar -->
+    <header style="position:sticky;top:0;z-index:30;background:rgba(244,240,230,0.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #ECE6DA;padding:16px 30px;display:flex;align-items:center;gap:20px;">
+      <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.02em;font-size:26px;margin:0;color:#20122F;flex-shrink:0;">{{ pageTitle }}</h1>
+      <div class="fp-topsearch" style="flex:1;max-width:460px;margin:0 auto;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ECE6DA;border-radius:999px;padding:10px 18px;">
+        <span style="color:#9A92A4;">⌕</span>
+        <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="Search here…" style="border:none;outline:none;background:transparent;font-family:'Hanken Grotesk';font-size:14.5px;width:100%;color:#20122F;">
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;margin-left:auto;flex-shrink:0;">
+        <span style="font-size:13.5px;color:#6B6275;font-weight:600;">🇬🇧 Eng (UK)</span>
+        <span style="position:relative;font-size:17px;cursor:pointer;">🔔<span style="position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:#1C8A5E;border:1.5px solid #F4F0E6;"></span></span>
+        <a href="Fit%20to%20Practise%20Home%20v2.dc.html" title="Back to website" style="font-size:16px;">🌐</a>
+        <div style="display:flex;align-items:center;gap:10px;padding-left:14px;border-left:1px solid #E3DCCD;">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(150deg,#1E9466,#0F6647);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Schibsted Grotesk';font-weight:700;font-size:14px;">{{ initials }}</div>
+          <div style="line-height:1.2;"><div style="font-weight:700;font-size:13.5px;color:#20122F;">{{ userName }}</div><div style="font-size:11.5px;color:#9A92A4;">{{ roleLabel }}</div></div>
+        </div>
+        <button onClick="{{ logout }}" class="btn" title="Log out" style="background:#fff;border:1px solid #E3DCCD;border-radius:10px;padding:8px 10px;cursor:pointer;font-size:14px;">⏻</button>
+      </div>
+    </header>
+
+    <div style="padding:26px 30px 40px;">
+
+      <!-- ============ LEARNER DASHBOARD ============ -->
+      <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;gap:22px;align-items:flex-start;" class="two-col">
+          <div style="flex:1;min-width:0;">
+            <!-- promo banner -->
+            <div style="position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(120deg,#1E9466,#0F6647);padding:30px 32px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+              <div style="max-width:60%;">
+                <h2 style="font-family:'Schibsted Grotesk';font-weight:800;font-size:clamp(20px,2.4vw,28px);line-height:1.15;margin:0;">Keeping you fit to practise</h2>
+                <p style="font-size:14.5px;line-height:1.55;color:rgba(255,255,255,0.9);margin:10px 0 18px;">Mentorship and courses from professionals who bring real, lived experience of the process.</p>
+                <button onClick="{{ goCourses }}" class="btn" style="background:#fff;color:#15724C;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:14px;padding:11px 22px;border-radius:999px;cursor:pointer;">Explore courses</button>
+              </div>
+              <div aria-hidden="true" style="position:absolute;right:-30px;top:-30px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.16),transparent 70%);"></div>
+              <div style="font-size:76px;flex-shrink:0;">🩺</div>
+            </div>
+
+            <!-- stat cards -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;" class="three-col">
+              <div style="background:#E7F2EC;border-radius:18px;padding:22px;"><div style="width:44px;height:44px;border-radius:12px;background:#1C8A5E;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;margin-bottom:14px;">✓</div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;">{{ statCompleted }}</div><div style="font-size:13.5px;color:#6B6275;margin-top:2px;">Completed courses</div></div>
+              <div style="background:#FBEFD3;border-radius:18px;padding:22px;"><div style="width:44px;height:44px;border-radius:12px;background:#D9A62B;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;margin-bottom:14px;">◐</div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;">{{ statProgress }}</div><div style="font-size:13.5px;color:#6B6275;margin-top:2px;">In progress</div></div>
+              <div style="background:#271640;border-radius:18px;padding:22px;"><div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;margin-bottom:14px;">🔖</div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#fff;">{{ statUpcoming }}</div><div style="font-size:13.5px;color:rgba(255,255,255,0.82);margin-top:2px;">Available to start</div></div>
+            </div>
+
+            <!-- learning activity -->
+            <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;margin-top:20px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0;color:#20122F;">Learning activity</h3>
+                <div style="display:flex;gap:16px;font-size:12.5px;color:#6B6275;"><span style="display:flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:50%;background:#1C8A5E;"></span>This week</span><span style="display:flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:50%;background:#D9A62B;"></span>Last week</span></div>
+              </div>
+              <svg viewBox="0 0 580 200" style="width:100%;height:auto;display:block;">
+                <line x1="30" y1="20" x2="30" y2="170" stroke="#EFEAE0" stroke-width="1"></line>
+                <line x1="30" y1="170" x2="570" y2="170" stroke="#EFEAE0" stroke-width="1"></line>
+                <line x1="30" y1="115" x2="570" y2="115" stroke="#F3EFE6" stroke-width="1"></line>
+                <line x1="30" y1="60" x2="570" y2="60" stroke="#F3EFE6" stroke-width="1"></line>
+                <polyline points="60,140 135,95 210,120 285,70 360,100 435,55 510,80" fill="none" stroke="#D9A62B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <polyline points="60,120 135,130 210,80 285,95 360,60 435,75 510,40" fill="none" stroke="#1C8A5E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle cx="360" cy="60" r="5" fill="#1C8A5E"></circle>
+                <g font-family="Hanken Grotesk" font-size="11" fill="#9A92A4" text-anchor="middle">
+                  <text x="60" y="188">Mon</text><text x="135" y="188">Tue</text><text x="210" y="188">Wed</text><text x="285" y="188">Thu</text><text x="360" y="188">Fri</text><text x="435" y="188">Sat</text><text x="510" y="188">Sun</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- right rail -->
+          <div style="width:330px;flex-shrink:0;display:flex;flex-direction:column;gap:20px;">
+            <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;text-align:center;">
+              <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0 0 16px;color:#20122F;">My progress</h3>
+              <svg viewBox="0 0 120 120" style="width:150px;height:150px;transform:rotate(-90deg);">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#EFEAE0" stroke-width="14"></circle>
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#1C8A5E" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{ progressDash }}"></circle>
+              </svg>
+              <div style="margin-top:-98px;margin-bottom:60px;font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;">{{ statAvg }}</div>
+              <p style="font-size:13.5px;line-height:1.5;color:#6B6275;margin:14px 0 0;">Keep going — you're making steady progress across your enrolled courses.</p>
+            </div>
+            <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;"><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0;color:#20122F;">Upcoming schedule</h3></div>
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <div style="display:flex;gap:13px;align-items:center;"><div style="width:46px;height:46px;border-radius:12px;background:#E7F2EC;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Schibsted Grotesk';font-weight:800;font-size:16px;color:#15724C;line-height:1;">14</span><span style="font-size:10px;color:#6B6275;">Jul</span></div><div><div style="font-weight:700;font-size:14.5px;color:#20122F;">Reflection Writing — live Q&amp;A</div><div style="font-size:12.5px;color:#9A92A4;">10:00 – 11:00 · Cathryn Watters</div></div></div>
+                <div style="display:flex;gap:13px;align-items:center;"><div style="width:46px;height:46px;border-radius:12px;background:#FBEFD3;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Schibsted Grotesk';font-weight:800;font-size:16px;color:#9A7414;line-height:1;">18</span><span style="font-size:10px;color:#6B6275;">Jul</span></div><div><div style="font-weight:700;font-size:14.5px;color:#20122F;">Hearing prep · 1:1 mentorship</div><div style="font-size:12.5px;color:#9A92A4;">14:00 – 15:00 · Adam Watters</div></div></div>
+                <div style="display:flex;gap:13px;align-items:center;"><div style="width:46px;height:46px;border-radius:12px;background:#F1ECF4;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Schibsted Grotesk';font-weight:800;font-size:16px;color:#5B3E86;line-height:1;">22</span><span style="font-size:10px;color:#6B6275;">Jul</span></div><div><div style="font-weight:700;font-size:14.5px;color:#20122F;">Code of Conduct workshop</div><div style="font-size:12.5px;color:#9A92A4;">11:00 – 12:30 · Cathryn Watters</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ COURSES ============ -->
+      <sc-if value="{{ isCourses }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:8px;"><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;margin:0 0 14px;color:#20122F;">Popular this week</h3></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:30px;">
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:12px;"><span style="width:40px;height:40px;border-radius:11px;background:#E7F2EC;display:flex;align-items:center;justify-content:center;font-size:18px;">🧭</span><div><div style="font-weight:700;font-size:14.5px;color:#20122F;">NMC Process</div><div style="font-size:12px;color:#9A92A4;">Understand each stage</div></div></div>
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:12px;"><span style="width:40px;height:40px;border-radius:11px;background:#FBEFD3;display:flex;align-items:center;justify-content:center;font-size:18px;">✍️</span><div><div style="font-weight:700;font-size:14.5px;color:#20122F;">Reflective Practice</div><div style="font-size:12px;color:#9A92A4;">Write with confidence</div></div></div>
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:12px;"><span style="width:40px;height:40px;border-radius:11px;background:#F1ECF4;display:flex;align-items:center;justify-content:center;font-size:18px;">💬</span><div><div style="font-weight:700;font-size:14.5px;color:#20122F;">Confidence</div><div style="font-size:12px;color:#9A92A4;">Rebuild after FtP</div></div></div>
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:12px;"><span style="width:40px;height:40px;border-radius:11px;background:#E7F2EC;display:flex;align-items:center;justify-content:center;font-size:18px;">⚖️</span><div><div style="font-weight:700;font-size:14.5px;color:#20122F;">Hearings</div><div style="font-size:12px;color:#9A92A4;">Know what to expect</div></div></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;margin:0;color:#20122F;">All courses</h3></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+          <sc-for list="{{ courses }}" as="c" hint-placeholder-count="0">
+            <div class="lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;">
+              <div style="position:relative;aspect-ratio:16/10;overflow:hidden;"><img data-img="{{ c.img }}" alt="{{ c.title }}" style="width:100%;height:100%;object-fit:cover;background:#EFEAE0;"><span style="position:absolute;top:12px;right:12px;background:#fff;color:#15724C;font-weight:800;font-size:14px;padding:5px 12px;border-radius:999px;">{{ c.priceLabel }}</span></div>
+              <div style="padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;">
+                <h4 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:17px;line-height:1.25;margin:0 0 8px;color:#20122F;">{{ c.title }}</h4>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12.5px;color:#9A92A4;"><img data-img="{{ c.avatar }}" style="width:22px;height:22px;border-radius:50%;background:#EFEAE0;">{{ c.author }} · <span style="color:#C99A2E;font-weight:700;">★ {{ c.rating }}</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px solid #F0EBE0;"><span style="font-size:12.5px;color:#9A92A4;">📚 {{ c.contentLabel }}</span><button onClick="{{ c.onOpen }}" style="background:none;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:700;font-size:13.5px;color:#1C8A5E;">View details →</button></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ COURSE DETAIL / PLAYER ============ -->
+      <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ goCourses }}" style="background:none;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:600;font-size:14px;color:#6B6275;margin-bottom:16px;">‹ Back to courses</button>
+        <div style="display:flex;gap:22px;align-items:flex-start;" class="two-col">
+          <div style="flex:1;min-width:0;">
+            <h2 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.02em;font-size:clamp(24px,3vw,34px);margin:0;color:#20122F;">{{ selTitle }}</h2>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:12px 0 20px;font-size:13.5px;color:#6B6275;"><span style="color:#C99A2E;font-weight:700;">★ {{ selRating }}</span><span>Review (1k)</span><span>·</span><span>10k students</span><span>·</span><span style="display:flex;align-items:center;gap:6px;"><img data-img="{{ selAvatar }}" style="width:22px;height:22px;border-radius:50%;background:#EFEAE0;">{{ selAuthor }}</span></div>
+            <div style="position:relative;border-radius:22px;overflow:hidden;box-shadow:0 30px 70px -44px rgba(30,18,48,0.5);"><img data-img="{{ selImg }}" alt="{{ selTitle }}" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#EFEAE0;"><div style="position:absolute;inset:0;background:linear-gradient(rgba(39,22,64,0.05),rgba(39,22,64,0.28));"></div><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,0.95);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px rgba(0,0,0,0.3);cursor:pointer;"><span style="width:0;height:0;border-left:20px solid #1C8A5E;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px;"></span></div></div>
+            <div style="display:flex;gap:26px;border-bottom:1px solid #ECE6DA;margin:24px 0 20px;">
+              <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button onClick="{{ t.onClick }}" style="background:none;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:0 0 12px;color:{{ t.color }};border-bottom:2px solid {{ t.border }};">{{ t.label }}</button></sc-for>
+            </div>
+            <sc-if value="{{ tabAbout }}" hint-placeholder-val="{{ true }}">
+              <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;margin:0 0 10px;color:#20122F;">About course</h3>
+              <p style="font-size:15.5px;line-height:1.7;color:#5C5369;margin:0 0 14px;">{{ selBlurb }}</p>
+              <p style="font-size:15.5px;line-height:1.7;color:#5C5369;margin:0;">Learn at your own pace with lifetime access on mobile and desktop. Every lesson relates back to your professional Code of Conduct as well as your real workplace experience.</p>
+            </sc-if>
+            <sc-if value="{{ tabReviews }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <div style="background:#fff;border:1px solid #ECE6DA;border-radius:16px;padding:20px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><div style="width:36px;height:36px;border-radius:50%;background:#E7F2EC;display:flex;align-items:center;justify-content:center;font-weight:700;color:#15724C;">DW</div><div><div style="font-weight:700;font-size:14px;color:#20122F;">David Warner</div><div style="font-size:12px;color:#C99A2E;">★★★★★</div></div></div><p style="font-size:14.5px;line-height:1.6;color:#5C5369;margin:0;">The mentorship was so appreciated and acknowledged during the hearing — the panel gave me another chance. Thank you for everything.</p></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ tabDiscussion }}" hint-placeholder-val="{{ false }}">
+              <p style="font-size:15px;color:#6B6275;margin:0;">Join the discussion once you're enrolled — ask questions and share your reflections with fellow professionals.</p>
+            </sc-if>
+          </div>
+
+          <!-- curriculum rail -->
+          <div style="width:340px;flex-shrink:0;display:flex;flex-direction:column;gap:18px;">
+            <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:22px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:17px;margin:0;color:#20122F;">Progress</h3><span style="font-size:12.5px;color:#9A92A4;">{{ selProgLabel }}</span></div>
+              <div style="height:9px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div style="height:100%;border-radius:999px;background:#1C8A5E;width:{{ selProgPct }};"></div></div>
+              <div style="font-size:13px;color:#6B6275;margin-top:10px;">{{ selTitle }}</div>
+            </div>
+            <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:14px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px 12px;"><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:16px;margin:0;color:#20122F;">Course content</h3><span style="font-size:12px;color:#9A92A4;">{{ selLessonCount }}</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <sc-for list="{{ lessons }}" as="l" hint-placeholder-count="5">
+                  <div class="lessonrow" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:{{ l.bg }};cursor:pointer;">
+                    <span style="width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:{{ l.iconBg }};color:{{ l.iconColor }};font-size:13px;">{{ l.icon }}</span>
+                    <span style="flex:1;font-weight:600;font-size:14px;color:{{ l.textColor }};">{{ l.title }}</span>
+                    <span style="font-size:12px;color:{{ l.timeColor }};">{{ l.time }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ INSTRUCTORS ============ -->
+      <sc-if value="{{ isInstructors }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;">
+          <sc-for list="{{ instructors }}" as="p" hint-placeholder-count="0">
+            <div class="lift" style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;text-align:center;">
+              <img data-img="{{ p.img }}" alt="{{ p.name }}" style="width:88px;height:88px;border-radius:50%;object-fit:cover;margin:0 auto 14px;display:block;background:#EFEAE0;">
+              <div style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;color:#20122F;">{{ p.name }}</div>
+              <div style="font-size:13px;color:#1C8A5E;font-weight:600;margin:2px 0 10px;">{{ p.role }}</div>
+              <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;"><sc-for list="{{ p.tags }}" as="tag" hint-placeholder-count="3"><span style="background:#F4F0E6;border:1px solid #ECE6DA;color:#6B6275;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;">{{ tag }}</span></sc-for></div>
+              <div style="display:flex;justify-content:center;gap:22px;padding-top:14px;border-top:1px solid #F0EBE0;"><div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:18px;color:#20122F;">{{ p.students }}</div><div style="font-size:11px;color:#9A92A4;">Students</div></div><div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:18px;color:#20122F;">{{ p.rating }}</div><div style="font-size:11px;color:#9A92A4;">Rating</div></div></div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ PROFILE ============ -->
+      <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:22px;align-items:flex-start;" class="two-col">
+          <div style="flex:1;min-width:0;">
+            <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+              <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(150deg,#1E9466,#0F6647);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Schibsted Grotesk';font-weight:800;font-size:28px;flex-shrink:0;">{{ initials }}</div>
+              <div style="flex:1;min-width:0;"><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:24px;color:#20122F;">{{ userName }}</div><div style="font-size:13.5px;color:#9A92A4;margin-top:3px;">{{ userEmail }} · Member since 2025</div></div>
+              <button onClick="{{ openProfileSite }}" class="btn" style="background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:14px;padding:11px 22px;border-radius:999px;cursor:pointer;">Edit account</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;" class="three-col">
+              <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#9A92A4;font-weight:600;">Points</div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:28px;color:#20122F;margin-top:6px;">2,300</div></div>
+              <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#9A92A4;font-weight:600;">Certificates</div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:28px;color:#20122F;margin-top:6px;">{{ statCompleted }}</div></div>
+              <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#9A92A4;font-weight:600;">Hours</div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:28px;color:#20122F;margin-top:6px;">{{ statHours }}</div></div>
+            </div>
+            <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;margin-top:20px;">
+              <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0 0 4px;color:#20122F;">Progress</h3>
+              <p style="font-size:13.5px;color:#9A92A4;margin:0 0 16px;">Your completion over time</p>
+              <svg viewBox="0 0 580 180" style="width:100%;height:auto;display:block;">
+                <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(28,138,94,0.25)"></stop><stop offset="1" stop-color="rgba(28,138,94,0)"></stop></linearGradient></defs>
+                <polyline points="20,150 100,120 180,130 260,90 340,100 420,55 500,70 560,40" fill="none" stroke="#1C8A5E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <polygon points="20,150 100,120 180,130 260,90 340,100 420,55 500,70 560,40 560,160 20,160" fill="url(#pg)"></polygon>
+              </svg>
+            </div>
+          </div>
+          <div style="width:330px;flex-shrink:0;display:flex;flex-direction:column;gap:20px;">
+            <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;">
+              <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0 0 16px;color:#20122F;">Current courses</h3>
+              <sc-if value="{{ hasEnrolled }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                  <sc-for list="{{ enrolledItems }}" as="e" hint-placeholder-count="0">
+                    <div><div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:7px;"><span style="font-weight:600;font-size:13.5px;color:#20122F;line-height:1.3;">{{ e.title }}</span><span style="font-size:12.5px;font-weight:700;color:#15724C;">{{ e.pctLabel }}</span></div><div style="height:7px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div style="height:100%;border-radius:999px;background:{{ e.barColor }};width:{{ e.pctLabel }};"></div></div></div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ noEnrolled }}" hint-placeholder-val="{{ true }}">
+                <p style="font-size:14px;color:#9A92A4;margin:0;">No courses yet. <button onClick="{{ goCourses }}" style="background:none;border:none;color:#1C8A5E;font-weight:700;cursor:pointer;font-family:'Hanken Grotesk';font-size:14px;">Browse courses →</button></p>
+              </sc-if>
+            </div>
+            <div style="background:linear-gradient(160deg,#1E9466,#0F6647);border-radius:20px;padding:24px;color:#fff;">
+              <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0 0 14px;">Achievements</h3>
+              <div style="display:flex;flex-direction:column;gap:13px;">
+                <div style="display:flex;align-items:center;gap:12px;"><span style="width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:17px;">🏆</span><div><div style="font-weight:700;font-size:14px;">{{ statCompleted }} certificates earned</div><div style="font-size:12px;color:rgba(255,255,255,0.8);">Keep going to unlock more</div></div></div>
+                <div style="display:flex;align-items:center;gap:12px;"><span style="width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:17px;">📚</span><div><div style="font-weight:700;font-size:14px;">{{ statHours }} of learning</div><div style="font-size:12px;color:rgba(255,255,255,0.8);">Across your courses</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ SCHEDULE ============ -->
+      <sc-if value="{{ isSchedule }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;">
+          <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;margin:0 0 18px;color:#20122F;">Your schedule</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ schedule }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;gap:16px;align-items:center;background:#FBF9F4;border:1px solid #F0EBE0;border-radius:14px;padding:16px 18px;">
+                <div style="width:52px;height:52px;border-radius:13px;background:{{ s.chipBg }};display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-family:'Schibsted Grotesk';font-weight:800;font-size:18px;color:{{ s.chipColor }};line-height:1;">{{ s.day }}</span><span style="font-size:10px;color:#6B6275;">{{ s.month }}</span></div>
+                <div style="flex:1;"><div style="font-weight:700;font-size:15px;color:#20122F;">{{ s.title }}</div><div style="font-size:13px;color:#9A92A4;">{{ s.meta }}</div></div>
+                <span style="font-size:13px;font-weight:600;color:#6B6275;">{{ s.time }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ ACTIVITY ============ -->
+      <sc-if value="{{ isActivity }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;max-width:760px;">
+          <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;margin:0 0 18px;color:#20122F;">Recent activity</h3>
+          <div style="display:flex;flex-direction:column;">
+            <sc-for list="{{ activity }}" as="a" hint-placeholder-count="4">
+              <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #F0EBE0;"><span style="width:38px;height:38px;border-radius:11px;background:{{ a.bg }};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">{{ a.icon }}</span><div><div style="font-weight:600;font-size:14.5px;color:#20122F;">{{ a.text }}</div><div style="font-size:12.5px;color:#9A92A4;">{{ a.when }}</div></div></div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ OWNER: ANALYTICS ============ -->
+      <sc-if value="{{ isAnalytics }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;" class="three-col">
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12.5px;color:#9A92A4;font-weight:600;">Total revenue</span><span style="color:#15724C;font-size:12px;font-weight:700;">▲ 18%</span></div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;margin-top:8px;">£24,860</div></div>
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12.5px;color:#9A92A4;font-weight:600;">Active users</span><span style="color:#15724C;font-size:12px;font-weight:700;">▲ 12%</span></div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;margin-top:8px;">1,284</div></div>
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:18px;padding:22px;"><div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12.5px;color:#9A92A4;font-weight:600;">Enrolments</span><span style="color:#15724C;font-size:12px;font-weight:700;">▲ 9%</span></div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#20122F;margin-top:8px;">3,912</div></div>
+          <div style="background:#271640;border-radius:18px;padding:22px;"><div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12.5px;color:rgba(255,255,255,0.75);font-weight:600;">Avg. completion</span></div><div style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;color:#fff;margin-top:8px;">68%</div></div>
+        </div>
+        <div style="display:flex;gap:20px;margin-top:20px;align-items:flex-start;" class="two-col">
+          <div style="flex:1;min-width:0;background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0;color:#20122F;">Revenue this year</h3><span style="font-size:12.5px;color:#9A92A4;">2026</span></div>
+            <svg viewBox="0 0 580 200" style="width:100%;height:auto;display:block;">
+              <line x1="30" y1="170" x2="570" y2="170" stroke="#EFEAE0" stroke-width="1"></line>
+              <g fill="#1C8A5E">
+                <rect x="46" y="110" width="26" height="60" rx="5"></rect><rect x="92" y="90" width="26" height="80" rx="5"></rect><rect x="138" y="120" width="26" height="50" rx="5"></rect><rect x="184" y="70" width="26" height="100" rx="5"></rect><rect x="230" y="85" width="26" height="85" rx="5"></rect><rect x="276" y="55" width="26" height="115" rx="5"></rect>
+              </g>
+              <g fill="#D9A62B">
+                <rect x="322" y="75" width="26" height="95" rx="5"></rect><rect x="368" y="45" width="26" height="125" rx="5"></rect><rect x="414" y="65" width="26" height="105" rx="5"></rect>
+              </g>
+              <g fill="#E4DDD0">
+                <rect x="460" y="95" width="26" height="75" rx="5"></rect><rect x="506" y="80" width="26" height="90" rx="5"></rect>
+              </g>
+              <g font-family="Hanken Grotesk" font-size="10" fill="#9A92A4" text-anchor="middle">
+                <text x="59" y="186">Jan</text><text x="105" y="186">Feb</text><text x="151" y="186">Mar</text><text x="197" y="186">Apr</text><text x="243" y="186">May</text><text x="289" y="186">Jun</text><text x="335" y="186">Jul</text><text x="381" y="186">Aug</text><text x="427" y="186">Sep</text><text x="473" y="186">Oct</text><text x="519" y="186">Nov</text>
+              </g>
+            </svg>
+          </div>
+          <div style="width:320px;flex-shrink:0;background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:24px;">
+            <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0 0 16px;color:#20122F;">Enrolments by course</h3>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <sc-for list="{{ enrolBreakdown }}" as="b" hint-placeholder-count="0">
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;font-weight:600;color:#20122F;">{{ b.title }}</span><span style="font-size:12.5px;color:#9A92A4;">{{ b.count }}</span></div><div style="height:8px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div style="height:100%;border-radius:999px;background:{{ b.color }};width:{{ b.width }};"></div></div></div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ OWNER: USERS ============ -->
+      <sc-if value="{{ isUsers }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:8px 8px 4px;overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;min-width:720px;">
+            <thead><tr style="text-align:left;">
+              <th style="font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#9A92A4;font-weight:600;padding:16px 18px;">Member</th>
+              <th style="font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#9A92A4;font-weight:600;padding:16px 18px;">Regulator</th>
+              <th style="font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#9A92A4;font-weight:600;padding:16px 18px;">Courses</th>
+              <th style="font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#9A92A4;font-weight:600;padding:16px 18px;">Progress</th>
+              <th style="font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#9A92A4;font-weight:600;padding:16px 18px;">Status</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ users }}" as="u" hint-placeholder-count="6">
+                <tr style="border-top:1px solid #F0EBE0;">
+                  <td style="padding:14px 18px;"><div style="display:flex;align-items:center;gap:12px;"><div style="width:38px;height:38px;border-radius:50%;background:{{ u.avBg }};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">{{ u.initials }}</div><div><div style="font-weight:700;font-size:14px;color:#20122F;">{{ u.name }}</div><div style="font-size:12px;color:#9A92A4;">{{ u.email }}</div></div></div></td>
+                  <td style="padding:14px 18px;font-size:13.5px;color:#3A2F4A;">{{ u.regulator }}</td>
+                  <td style="padding:14px 18px;font-size:13.5px;color:#3A2F4A;">{{ u.courses }}</td>
+                  <td style="padding:14px 18px;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:80px;height:7px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div style="height:100%;border-radius:999px;background:#1C8A5E;width:{{ u.progress }};"></div></div><span style="font-size:12.5px;color:#6B6275;">{{ u.progress }}</span></div></td>
+                  <td style="padding:14px 18px;"><span style="font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:{{ u.statusBg }};color:{{ u.statusColor }};">{{ u.status }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <!-- ===================== LOGIN GATE ===================== -->
+  <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+    <div style="position:fixed;inset:0;z-index:100;background:linear-gradient(150deg,#241338,#160B26);display:flex;align-items:center;justify-content:center;padding:24px;">
+      <div style="display:flex;width:100%;max-width:940px;background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 50px 120px -50px rgba(0,0,0,0.6);">
+        <div style="flex:1 1 380px;background:linear-gradient(160deg,#1E9466,#0F6647);padding:44px 40px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-width:0;">
+          <img src="https://fit2practise.com/wp-content/uploads/2025/04/F2P-logo-08-2.png" alt="Fit to Practise" style="height:42px;width:auto;align-self:flex-start;">
+          <div>
+            <h2 style="font-family:'Schibsted Grotesk';font-weight:800;font-size:30px;line-height:1.12;margin:0 0 12px;">Your learning &amp; mentorship portal</h2>
+            <p style="font-size:15.5px;line-height:1.6;color:rgba(255,255,255,0.9);margin:0;">Track courses and progress as a learner — or sign in as the business owner to see analytics and members.</p>
+          </div>
+          <div style="display:flex;gap:20px;font-size:13px;color:rgba(255,255,255,0.85);"><span>Lifetime access</span><span>1:1 mentorship</span></div>
+        </div>
+        <div style="flex:1 1 400px;padding:42px 40px;min-width:0;">
+          <h1 style="font-family:'Schibsted Grotesk';font-weight:800;font-size:26px;margin:0 0 6px;color:#20122F;">Sign in</h1>
+          <p style="font-size:14.5px;color:#6B6275;margin:0 0 22px;">Choose how you'd like to sign in.</p>
+          <div style="display:flex;gap:8px;background:#F4F0E6;border-radius:14px;padding:5px;margin-bottom:22px;">
+            <button onClick="{{ pickLearner }}" style="flex:1;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:700;font-size:14px;padding:11px;border-radius:10px;background:{{ learnerBg }};color:{{ learnerColor }};">Learner</button>
+            <button onClick="{{ pickOwner }}" style="flex:1;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:700;font-size:14px;padding:11px;border-radius:10px;background:{{ ownerBg }};color:{{ ownerColor }};">Business owner</button>
+          </div>
+          <form onSubmit="{{ onLogin }}" style="display:flex;flex-direction:column;gap:14px;">
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Email</label><input type="email" value="{{ email }}" onInput="{{ onEmail }}" class="f2pin" placeholder="{{ emailPlaceholder }}"></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Password</label><input type="password" value="{{ pw }}" onInput="{{ onPw }}" class="f2pin" placeholder="••••••••"></div>
+            <button type="submit" class="btn" style="margin-top:4px;background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:16px;padding:15px;border-radius:13px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">{{ loginCta }}</button>
+          </form>
+          <p style="text-align:center;font-size:12.5px;color:#9A92A4;margin:16px 0 0;">Demo portal — sign in with any details to explore.</p>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:840}}">
+class Component extends DCLogic {
+  state = { booted:false, role:null, pendingRole:'learner', view:'dashboard', sel:'navigating', tab:'about', search:'', email:'', pw:'', enrolled:[], progress:{} };
+
+  async componentDidMount() {
+    this._m = await import('./cart.js');
+    let role = null;
+    try { role = localStorage.getItem('f2p_portal_role'); } catch(e) {}
+    // seed a little demo progress so dashboards look alive
+    try {
+      if (!this._m.getEnrolled().length) { this._m.enroll('navigating'); this._m.enroll('reflection'); this._m.setProgress('navigating', 60); this._m.setProgress('reflection', 100); }
+    } catch(e) {}
+    this._sync = () => { try { this.setState({ enrolled:this._m.getEnrolled(), progress:this._m.getProgress() }); } catch(e){} };
+    window.addEventListener('f2p-change', this._sync);
+    const startView = role === 'owner' ? 'analytics' : 'dashboard';
+    this.setState({ booted:true, role, view:startView, enrolled:this._m.getEnrolled(), progress:this._m.getProgress() });
+  }
+  componentWillUnmount(){ if(this._sync) window.removeEventListener('f2p-change', this._sync); }
+  componentDidUpdate(){ this.swapImgs(); }
+  swapImgs(){ requestAnimationFrame(()=>{ try{ document.querySelectorAll('img[data-img]').forEach(im=>{ const v=im.getAttribute('data-img'); if(v&&v.indexOf('{{')<0&&im.getAttribute('src')!==v) im.setAttribute('src',v); }); }catch(e){} }); }
+
+  login(e){ e.preventDefault(); const role=this.state.pendingRole; try{ localStorage.setItem('f2p_portal_role', role); }catch(e2){} this.setState({ role, view: role==='owner'?'analytics':'dashboard' }); }
+  logout(){ try{ localStorage.removeItem('f2p_portal_role'); }catch(e){} this.setState({ role:null, email:'', pw:'' }); }
+  nav(v){ this.setState({ view:v }); }
+
+  renderVals(){
+    this.swapImgs();
+    const m = this._m;
+    const role = this.state.role;
+    const view = this.state.view;
+    const owner = role === 'owner';
+
+    // ---- nav ----
+    const learnerNav = [['dashboard','Dashboard','▦'],['courses','Courses','📖'],['coursedetail',null,null],['schedule','Schedule','🗓'],['instructors','Instructors','🎓'],['profile','Profile','👤'],['activity','Activity','📈']];
+    const ownerNav = [['analytics','Dashboard','▦'],['courses','Courses','📖'],['instructors','Instructors','🎓'],['users','Members','👥'],['profile','Profile','👤']];
+    const items = (owner ? ownerNav : learnerNav).filter(x=>x[1]);
+    const activeMap = { coursedetail:'courses' };
+    const nav = items.map(([v,label,icon])=>{
+      const on = view===v || activeMap[view]===v;
+      return { label, icon, onClick:()=>this.nav(v),
+        bg: on ? '#1C8A5E' : 'transparent', color: on ? '#fff' : '#3A2F4A' };
+    });
+
+    const titles = { dashboard:'Dashboard', analytics:'Dashboard', courses:'Courses', coursedetail:'Courses', schedule:'Schedule', instructors:'Instructors', profile:'Profile', activity:'Activity', users:'Members' };
+
+    // ---- user identity ----
+    const userName = owner ? 'Cathryn Watters' : 'Jane Smith';
+    const userEmail = owner ? 'cathryn@fit2practise.com' : 'jane.smith@example.com';
+    const initials = userName.split(' ').map(w=>w[0]).slice(0,2).join('');
+
+    // ---- courses ----
+    const courses = (m?m.COURSES:[]).map(c=>({ ...c, priceLabel:'£'+c.price, contentLabel:c.sessions+'+ lessons',
+      onOpen:()=>this.setState({ view:'coursedetail', sel:c.id, tab:'about' }) }));
+
+    // ---- enrolled / progress ----
+    const prog = this.state.progress||{};
+    const enrolledItems = (m?(this.state.enrolled||[]).map(id=>m.courseById(id)).filter(Boolean):[]).map(c=>{
+      const pct=Math.round(prog[c.id]||0); return { title:c.title, pct, pctLabel:pct+'%', hours:c.hours, barColor:pct>=100?'#15724C':'#1C8A5E' };
+    });
+    const avg = enrolledItems.length?Math.round(enrolledItems.reduce((s,i)=>s+i.pct,0)/enrolledItems.length):0;
+    const done = enrolledItems.filter(i=>i.pct>=100).length;
+    const hours = enrolledItems.reduce((s,i)=>s+i.hours,0);
+    const totalCourses = m?m.COURSES.length:5;
+    const circ = 2*Math.PI*52;
+    const progressDash = ((avg/100)*circ).toFixed(1)+' '+circ.toFixed(1);
+
+    // ---- selected course detail ----
+    const sc = m?m.courseById(this.state.sel):null;
+    const selProg = sc?Math.round(prog[sc.id]||0):0;
+    const lessons = sc?Array.from({length:sc.sessions},(_,i)=>{
+      const unlocked = i===0 || (selProg/100)*sc.sessions > i;
+      const active = i===0;
+      return { title: i===0?'Introduction':(i===sc.sessions-1?'Bringing it together':'Module '+(i+1)),
+        time:'0'+(1+ (i%5))+':00', icon: active?'▶':(unlocked?'✓':'🔒'),
+        bg: active?'#1C8A5E':'#FBF9F4', iconBg: active?'rgba(255,255,255,0.22)':(unlocked?'#E7F2EC':'#EFEAE0'),
+        iconColor: active?'#fff':(unlocked?'#15724C':'#9A92A4'),
+        textColor: active?'#fff':'#20122F', timeColor: active?'rgba(255,255,255,0.85)':'#9A92A4' };
+    }):[];
+    const tabsDef=[['about','About'],['reviews','Reviews'],['discussion','Discussion']];
+    const tabs=tabsDef.map(([id,label])=>({label,onClick:()=>this.setState({tab:id}),
+      color:this.state.tab===id?'#1C8A5E':'#9A92A4', border:this.state.tab===id?'#1C8A5E':'transparent'}));
+
+    // ---- instructors ----
+    const instructors = [
+      { name:'Cathryn Watters', role:'Founder & Mentor', img:'https://fit2practise.com/wp-content/uploads/2025/03/cathryn.jpg', tags:['NMC','Mentorship','Reflection'], students:'1.2k', rating:'5.0' },
+      { name:'Adam Watters', role:'Mentor', img:'https://fit2practise.com/wp-content/uploads/2026/03/Nurse-Smiling-750x500.jpg', tags:['Hearings','NMC'], students:'840', rating:'5.0' },
+      { name:'Simon Holborn', role:'Board Member', img:'https://fit2practise.com/wp-content/uploads/2025/05/Simon-Holborn.jpg', tags:['HR','Employment'], students:'320', rating:'4.9' },
+      { name:'Kenny Brady', role:'Board Member', img:'https://fit2practise.com/wp-content/uploads/2025/05/Kenny-Headshot.jpg', tags:['Safeguarding','Recovery'], students:'280', rating:'4.9' },
+      { name:'Maria Trewern', role:'Board Member', img:'https://fit2practise.com/wp-content/uploads/2025/05/Maria-Headshot.jpg', tags:['Clinical','Leadership'], students:'410', rating:'5.0' },
+      { name:'Ruth Rowse', role:'Board Member', img:'https://fit2practise.com/wp-content/uploads/2025/06/Ruth-Headshot.jpg', tags:['Education','Radiography'], students:'260', rating:'4.8' },
+    ];
+
+    // ---- schedule / activity ----
+    const schedule=[
+      { day:'14', month:'Jul', chipBg:'#E7F2EC', chipColor:'#15724C', title:'Reflection Writing — live Q&A', meta:'Cathryn Watters', time:'10:00–11:00' },
+      { day:'18', month:'Jul', chipBg:'#FBEFD3', chipColor:'#9A7414', title:'Hearing prep · 1:1 mentorship', meta:'Adam Watters', time:'14:00–15:00' },
+      { day:'22', month:'Jul', chipBg:'#F1ECF4', chipColor:'#5B3E86', title:'Code of Conduct workshop', meta:'Cathryn Watters', time:'11:00–12:30' },
+      { day:'29', month:'Jul', chipBg:'#E7F2EC', chipColor:'#15724C', title:'Rebuilding Confidence group session', meta:'Cathryn Watters', time:'10:00–11:00' },
+    ];
+    const activity=[
+      { icon:'✓', bg:'#E7F2EC', text:'You completed “Reflection Writing for the FtP Process”', when:'2 days ago' },
+      { icon:'▶', bg:'#FBEFD3', text:'You started “Navigating Your FtP Journey”', when:'4 days ago' },
+      { icon:'🏆', bg:'#F1ECF4', text:'You earned a certificate of completion', when:'1 week ago' },
+      { icon:'📅', bg:'#E7F2EC', text:'You booked a 1:1 mentorship session', when:'1 week ago' },
+    ];
+
+    // ---- owner analytics ----
+    const enrolBreakdown=[
+      { title:'Navigating Your FtP Journey', count:'1,240', width:'92%', color:'#1C8A5E' },
+      { title:'Code of Conduct', count:'980', width:'74%', color:'#1C8A5E' },
+      { title:'Reflection Writing', count:'860', width:'64%', color:'#D9A62B' },
+      { title:'Rebuilding Confidence', count:'520', width:'40%', color:'#D9A62B' },
+      { title:'Attending a Hearing', count:'312', width:'24%', color:'#5B3E86' },
+    ];
+    const users=[
+      { name:'Sarah Okafor', email:'sarah.o@example.com', regulator:'NMC', courses:'3', progress:'82%', status:'Active', statusBg:'#E7F2EC', statusColor:'#15724C', initials:'SO', avBg:'#1C8A5E' },
+      { name:'James Patel', email:'j.patel@example.com', regulator:'HCPC', courses:'2', progress:'45%', status:'Active', statusBg:'#E7F2EC', statusColor:'#15724C', initials:'JP', avBg:'#5B3E86' },
+      { name:'Emma Lewis', email:'emma.l@example.com', regulator:'NMC', courses:'1', progress:'100%', status:'Completed', statusBg:'#F1ECF4', statusColor:'#5B3E86', initials:'EL', avBg:'#D9A62B' },
+      { name:'David Warner', email:'d.warner@example.com', regulator:'NMC', courses:'4', progress:'60%', status:'Active', statusBg:'#E7F2EC', statusColor:'#15724C', initials:'DW', avBg:'#1C8A5E' },
+      { name:'Aisha Khan', email:'aisha.k@example.com', regulator:'GMC', courses:'2', progress:'30%', status:'At risk', statusBg:'#FBEAD3', statusColor:'#9A7414', initials:'AK', avBg:'#271640' },
+      { name:'Tom Byrne', email:'tom.b@example.com', regulator:'HCPC', courses:'1', progress:'12%', status:'At risk', statusBg:'#FBEAD3', statusColor:'#9A7414', initials:'TB', avBg:'#5B3E86' },
+    ];
+
+    return {
+      booted:this.state.booted, loggedOut: this.state.booted && !role,
+      nav, goCourses:()=>this.nav('courses'), logout:()=>this.logout(),
+      pageTitle: titles[view]||'Dashboard', search:this.state.search, onSearch:e=>this.setState({search:e.target.value}),
+      userName, userEmail, initials, roleLabel: owner?'Business owner':'Learner',
+      openProfileSite:()=>{ location.href='Profile.dc.html'; },
+
+      isDash: !owner && view==='dashboard',
+      isCourses: view==='courses', isDetail: view==='coursedetail',
+      isInstructors: view==='instructors', isProfile: view==='profile',
+      isSchedule: view==='schedule', isActivity: view==='activity',
+      isAnalytics: owner && view==='analytics', isUsers: owner && view==='users',
+
+      statCompleted: done, statProgress: enrolledItems.filter(i=>i.pct>0&&i.pct<100).length,
+      statUpcoming: Math.max(0, totalCourses - enrolledItems.length), statAvg: avg+'%', statHours: hours+'h',
+      progressDash,
+
+      courses,
+      enrolledItems, hasEnrolled: enrolledItems.length>0, noEnrolled: enrolledItems.length===0,
+
+      selTitle: sc?sc.title:'', selAuthor: sc?sc.author:'', selAvatar: sc?sc.avatar:'', selImg: sc?sc.img:'',
+      selRating: sc?sc.rating:'', selBlurb: sc?sc.blurb:'', selLessonCount:'('+ (sc?sc.sessions:0) +' lessons)',
+      selProgLabel: selProg+'% complete', selProgPct: selProg+'%',
+      lessons, tabs, tabAbout:this.state.tab==='about', tabReviews:this.state.tab==='reviews', tabDiscussion:this.state.tab==='discussion',
+
+      instructors, schedule, activity, enrolBreakdown, users,
+
+      // login gate
+      pickLearner:()=>this.setState({pendingRole:'learner'}), pickOwner:()=>this.setState({pendingRole:'owner'}),
+      learnerBg:this.state.pendingRole==='learner'?'#fff':'transparent', learnerColor:this.state.pendingRole==='learner'?'#20122F':'#6B6275',
+      ownerBg:this.state.pendingRole==='owner'?'#fff':'transparent', ownerColor:this.state.pendingRole==='owner'?'#20122F':'#6B6275',
+      email:this.state.email, pw:this.state.pw, onEmail:e=>this.setState({email:e.target.value}), onPw:e=>this.setState({pw:e.target.value}),
+      onLogin:e=>this.login(e), loginCta: this.state.pendingRole==='owner'?'Sign in as owner':'Sign in as learner',
+      emailPlaceholder: this.state.pendingRole==='owner'?'cathryn@fit2practise.com':'you@example.com',
+    };
+  }
+}
+</script>
+</body>
+</html>

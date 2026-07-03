@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .shx * { box-sizing: border-box; }
+  .shx a { text-decoration: none; color: inherit; }
+  .shx-nav { display: flex; }
+  .shx-burger { display: none; }
+  .shx-udl { background-image: linear-gradient(#1C8A5E,#1C8A5E); background-size: 0% 2px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .3s ease; }
+  .shx-udl:hover { background-size: 100% 2px; color: #1C8A5E; }
+  .shx-lift { transition: transform .18s ease, box-shadow .18s ease; }
+  .shx-lift:hover { transform: translateY(-2px); }
+  @media (max-width: 940px) { .shx-nav { display: none; } .shx-burger { display: flex; } .shx-hidem { display: none; } }
+</style>
+</helmet>
+<div class="shx" style="font-family:'Hanken Grotesk',system-ui,sans-serif;position:sticky;top:0;z-index:90;background:rgba(244,240,230,0.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #E7E1D4;">
+  <div style="max-width:1280px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;">
+    <a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="flex-shrink:0;display:flex;align-items:center;"><img src="https://fit2practise.com/wp-content/uploads/2025/03/F2P-logo-09-2.png" alt="Fit to Practise" style="height:42px;width:auto;display:block;"></a>
+    <nav class="shx-nav" style="align-items:center;gap:28px;font-weight:500;font-size:15px;color:#3A2F4A;">
+      <a class="shx-udl" href="Fit%20to%20Practise%20Home%20v2.dc.html">Home</a>
+      <a class="shx-udl" href="Courses.dc.html">Courses</a>
+      <a class="shx-udl" href="My%20Courses.dc.html">My Courses</a>
+      <a class="shx-udl" href="About.dc.html">About</a>
+      <a class="shx-udl" href="FAQs.dc.html">FAQs</a>
+      <a class="shx-udl" href="Articles.dc.html">Articles</a>
+      <a class="shx-udl" href="Contact.dc.html">Contact</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+      <a href="Cart.dc.html" class="shx-lift" style="position:relative;width:44px;height:44px;border-radius:12px;border:1px solid #E3DCCD;background:#fff;display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:18px;">🛒</span>
+        <sc-if value="{{ hasCart }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#1C8A5E;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ cartN }}</span></sc-if>
+      </a>
+      <a href="Fit%20to%20Practise%20Portal.dc.html" class="shx-hidem" style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;color:#3A2F4A;"><span style="width:28px;height:28px;border-radius:50%;background:#E7F2EC;display:flex;align-items:center;justify-content:center;font-size:13px;">👤</span>Log in</a>
+      <a href="Courses.dc.html" class="shx-lift shx-hidem" style="background:#1C8A5E;color:#fff;font-weight:600;font-size:14.5px;padding:11px 20px;border-radius:999px;box-shadow:0 8px 20px rgba(28,138,94,0.28);">Browse Courses</a>
+      <button class="shx-burger" onClick="{{ onMenu }}" style="width:44px;height:44px;border-radius:12px;border:1px solid #E3DCCD;background:#fff;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:4px;">
+        <span style="width:18px;height:2px;background:#271640;border-radius:2px;"></span>
+        <span style="width:18px;height:2px;background:#271640;border-radius:2px;"></span>
+        <span style="width:18px;height:2px;background:#271640;border-radius:2px;"></span>
+      </button>
+    </div>
+  </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:8px 24px 16px;">
+      <div style="background:#fff;border:1px solid #ECE6DA;border-radius:16px;padding:8px;display:flex;flex-direction:column;box-shadow:0 24px 50px -30px rgba(30,18,48,0.4);">
+        <a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="padding:12px 14px;border-radius:11px;font-weight:600;">Home</a>
+        <a href="Courses.dc.html" style="padding:12px 14px;border-radius:11px;">Courses</a>
+        <a href="My%20Courses.dc.html" style="padding:12px 14px;border-radius:11px;">My Courses</a>
+        <a href="Profile.dc.html" style="padding:12px 14px;border-radius:11px;">Profile</a>
+        <a href="About.dc.html" style="padding:12px 14px;border-radius:11px;">About</a>
+        <a href="FAQs.dc.html" style="padding:12px 14px;border-radius:11px;">FAQs</a>
+        <a href="Articles.dc.html" style="padding:12px 14px;border-radius:11px;">Articles</a>
+        <a href="Contact.dc.html" style="padding:12px 14px;border-radius:11px;">Contact</a>
+        <a href="Fit%20to%20Practise%20Portal.dc.html" style="padding:12px 14px;border-radius:11px;">Login / Register</a>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:76},&quot;active&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { cartN: 0, menuOpen: false };
+  async componentDidMount() {
+    try {
+      const m = await import('./cart.js');
+      this._m = m;
+      this._h = () => { try { this.setState({ cartN: this._m.cartCount() }); } catch (e) {} };
+      this._h();
+      window.addEventListener('f2p-change', this._h);
+      window.addEventListener('storage', this._h);
+    } catch (e) {}
+  }
+  componentWillUnmount() {
+    if (this._h) { window.removeEventListener('f2p-change', this._h); window.removeEventListener('storage', this._h); }
+  }
+  renderVals() {
+    return {
+      cartN: this.state.cartN,
+      hasCart: this.state.cartN > 0,
+      menuOpen: this.state.menuOpen,
+      onMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+    };
+  }
+}
+</script>
+</body>
+</html>

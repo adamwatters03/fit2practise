@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F4F0E6; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1E1230; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  .f2pin { width: 100%; padding: 14px 16px; border: 1px solid #E0D9CC; border-radius: 12px; font-family: 'Hanken Grotesk'; font-size: 15px; color: #20122F; outline: none; background: #FBF8F1; transition: border-color .15s ease; }
+  .f2pin:focus { border-color: #1C8A5E; background: #fff; }
+  .btn { transition: transform .15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  @media (max-width: 860px) { .lg-brand { display: none !important; } }
+</style>
+</helmet>
+<div>
+  <dc-import name="Site Header" active="login" hint-size="100%,72px"></dc-import>
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;">
+    <div style="position:absolute;top:-120px;right:-90px;width:380px;height:380px;border-radius:50%;border:1.5px solid rgba(39,22,64,0.05);"></div>
+    <div style="position:absolute;top:100px;left:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(28,138,94,0.07),transparent 70%);"></div>
+    <div style="position:absolute;bottom:-130px;left:14%;width:320px;height:320px;border-radius:50%;border:1.5px dashed rgba(28,138,94,0.08);"></div>
+  </div>
+
+
+  <section style="padding:48px 0 90px;">
+    <div style="max-width:980px;margin:0 auto;padding:0 24px;">
+      <div style="display:flex;border-radius:28px;overflow:hidden;border:1px solid #ECE6DA;box-shadow:0 40px 90px -50px rgba(30,18,48,0.5);background:#fff;">
+        <!-- Brand panel -->
+        <div class="lg-brand" style="flex:1 1 380px;background:linear-gradient(160deg,#1E9466,#0F6647);padding:48px 40px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-width:0;">
+          <img src="https://fit2practise.com/wp-content/uploads/2025/04/F2P-logo-08-2.png" alt="Fit to Practise" style="height:44px;width:auto;align-self:flex-start;">
+          <div>
+            <div style="font-family:'Schibsted Grotesk';font-size:54px;line-height:0.6;color:rgba(255,255,255,0.4);height:30px;">“</div>
+            <p style="font-size:18px;line-height:1.6;color:#fff;margin:0 0 18px;">The mentorship work was so appreciated and acknowledged during the hearing — the panel gave me another chance. Thank you for everything.</p>
+            <div style="display:flex;align-items:center;gap:12px;"><img src="https://fit2practise.com/wp-content/uploads/2025/02/coach-choose2.jpg" alt="David Warner" style="width:46px;height:46px;border-radius:50%;object-fit:cover;"><div><div style="font-weight:700;">David Warner</div><div style="font-size:13px;color:rgba(255,255,255,0.8);">Someone We Helped</div></div></div>
+          </div>
+          <div style="display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,0.85);"><span>Lifetime access</span><span>1:1 mentorship</span></div>
+        </div>
+        <!-- Form -->
+        <div style="flex:1 1 420px;padding:44px 40px;min-width:0;">
+          <div style="display:flex;gap:6px;background:#F4F0E6;border-radius:14px;padding:5px;margin-bottom:28px;">
+            <button onClick="{{ onLoginTab }}" class="btn" style="flex:1;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:11px;border-radius:10px;background:{{ loginBg }};color:{{ loginColor }};">Login</button>
+            <button onClick="{{ onRegTab }}" class="btn" style="flex:1;border:none;cursor:pointer;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:11px;border-radius:10px;background:{{ regBg }};color:{{ regColor }};">Register</button>
+          </div>
+          <h1 style="font-family:'Schibsted Grotesk';font-weight:800;font-size:28px;margin:0 0 6px;color:#20122F;">{{ heading }}</h1>
+          <p style="font-size:15px;color:#6B6275;margin:0 0 24px;">{{ subheading }}</p>
+          <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:14px;">
+            <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+              <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Full name</label><input value="{{ name }}" onInput="{{ onName }}" class="f2pin" placeholder="Jane Smith" required="required"></div>
+            </sc-if>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Email address</label><input type="email" value="{{ email }}" onInput="{{ onEmail }}" class="f2pin" placeholder="you@example.com" required="required"></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Password</label><input type="password" value="{{ pw }}" onInput="{{ onPw }}" class="f2pin" placeholder="••••••••" required="required"></div>
+            <button type="submit" class="btn" style="margin-top:6px;background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:16px;padding:15px;border-radius:13px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">{{ cta }}</button>
+          </form>
+          <p style="text-align:center;font-size:13.5px;color:#9A92A4;margin:20px 0 0;">{{ switchPrompt }} <button onClick="{{ onToggle }}" style="background:none;border:none;color:#1C8A5E;font-weight:700;font-family:'Hanken Grotesk';font-size:13.5px;cursor:pointer;">{{ switchAction }}</button></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Site Footer" hint-size="100%,360px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { tab: 'login', name: '', email: '', pw: '' };
+  submit(e) {
+    e.preventDefault();
+    const name = this.state.tab === 'register' ? (this.state.name || 'Member') : (this.state.email.split('@')[0] || 'Member');
+    try { localStorage.setItem('f2p_user', JSON.stringify({ name, email: this.state.email })); window.dispatchEvent(new Event('f2p-change')); } catch (e2) {}
+    location.href = 'My%20Courses.dc.html';
+  }
+  renderVals() {
+    const reg = this.state.tab === 'register';
+    const acc = '#1C8A5E';
+    return {
+      isRegister: reg,
+      loginBg: reg ? 'transparent' : '#FFFFFF', loginColor: reg ? '#6B6275' : '#20122F',
+      regBg: reg ? '#FFFFFF' : 'transparent', regColor: reg ? '#20122F' : '#6B6275',
+      heading: reg ? 'Create your account' : 'Welcome back',
+      subheading: reg ? 'Join Fit to Practise and start learning today.' : 'Log in to continue your learning journey.',
+      cta: reg ? 'Create account' : 'Log in',
+      switchPrompt: reg ? 'Already have an account?' : "Don't have an account?",
+      switchAction: reg ? 'Log in' : 'Register',
+      name: this.state.name, email: this.state.email, pw: this.state.pw,
+      onName: (e) => this.setState({ name: e.target.value }),
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      onPw: (e) => this.setState({ pw: e.target.value }),
+      onLoginTab: () => this.setState({ tab: 'login' }),
+      onRegTab: () => this.setState({ tab: 'register' }),
+      onToggle: () => this.setState(s => ({ tab: s.tab === 'register' ? 'login' : 'register' })),
+      onSubmit: (e) => this.submit(e),
+    };
+  }
+}
+</script>
+</body>
+</html>

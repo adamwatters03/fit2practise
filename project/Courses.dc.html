@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F4F0E6; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1E1230; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  .lift { transition: transform .2s ease, box-shadow .2s ease; }
+  .lift:hover { transform: translateY(-5px); box-shadow: 0 26px 56px -30px rgba(30,18,48,0.4); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn { transition: transform .15s ease; }
+  @keyframes f2pUp { from { opacity:0; transform: translateY(14px);} to {opacity:1; transform:none;} }
+</style>
+</helmet>
+<div>
+  <dc-import name="Site Header" active="courses" hint-size="100%,72px"></dc-import>
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;">
+    <div style="position:absolute;top:-120px;right:-90px;width:380px;height:380px;border-radius:50%;border:1.5px solid rgba(39,22,64,0.05);"></div>
+    <div style="position:absolute;top:100px;left:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(28,138,94,0.07),transparent 70%);"></div>
+    <div style="position:absolute;bottom:-130px;left:14%;width:320px;height:320px;border-radius:50%;border:1.5px dashed rgba(28,138,94,0.08);"></div>
+  </div>
+
+
+  <!-- Page head -->
+  <section style="padding:38px 0 8px;">
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
+      <div style="font-size:13.5px;color:#9A92A4;margin-bottom:14px;"><a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="color:#9A92A4;">Home</a> <span style="margin:0 6px;">›</span> <span style="color:#1C8A5E;font-weight:600;">Courses</span></div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+        <div>
+          <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.025em;line-height:1.05;font-size:clamp(34px,4.6vw,52px);margin:0;color:#20122F;">Explore our courses</h1>
+          <p style="font-size:17px;line-height:1.6;color:#5C5369;margin:12px 0 0;max-width:560px;">Clinically relevant, affordable courses built by professionals who have been through the Fitness to Practise process themselves.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #ECE6DA;border-radius:999px;padding:7px 8px 7px 18px;box-shadow:0 14px 30px -24px rgba(30,18,48,0.5);">
+          <span style="color:#9A92A4;">⌕</span>
+          <input value="{{ q }}" onInput="{{ onSearch }}" placeholder="Search courses…" style="border:none;outline:none;background:transparent;font-family:'Hanken Grotesk';font-size:14.5px;width:170px;color:#20122F;">
+        </div>
+      </div>
+      <!-- filter chips -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;">
+        <sc-for list="{{ catChips }}" as="chip" hint-placeholder-count="5">
+          <button onClick="{{ chip.onClick }}" class="btn" style="border:1px solid {{ chip.border }};background:{{ chip.bg }};color:{{ chip.color }};font-family:'Hanken Grotesk';font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;cursor:pointer;">{{ chip.name }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grid -->
+  <section style="padding:30px 0 80px;">
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
+      <p style="font-size:14px;color:#8A8194;margin:0 0 20px;">{{ count }} courses</p>
+      <sc-if value="{{ loaded }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;">
+        <sc-for list="{{ courses }}" as="course" hint-placeholder-count="0">
+          <div class="lift" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;">
+            <a href="{{ course.detailHref }}" style="position:relative;display:block;aspect-ratio:16/10;overflow:hidden;">
+              <img data-img="{{ course.img }}" alt="{{ course.title }}" style="width:100%;height:100%;object-fit:cover;background:#EFEAE0;">
+              <span style="position:absolute;top:12px;left:12px;background:#fff;color:#15724C;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;">{{ course.priceLabel }}</span>
+              <span style="position:absolute;top:12px;right:12px;background:rgba(39,22,64,0.78);color:#fff;font-weight:600;font-size:11.5px;padding:4px 11px;border-radius:999px;">{{ course.category }}</span>
+            </a>
+            <div style="padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;">
+              <div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:#9A92A4;margin-bottom:9px;"><span style="color:#C99A2E;font-weight:700;">★ {{ course.rating }}</span><span>·</span><span>{{ course.meta }}</span></div>
+              <a href="{{ course.detailHref }}"><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18.5px;line-height:1.25;margin:0 0 14px;color:#20122F;">{{ course.title }}</h3></a>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;"><img data-img="{{ course.avatar }}" alt="{{ course.author }}" style="width:26px;height:26px;border-radius:50%;background:#EFEAE0;"><span style="font-size:13px;color:#6B6275;">{{ course.author }}</span></div>
+              <div style="margin-top:auto;display:flex;gap:9px;">
+                <sc-if value="{{ course.inCart }}" hint-placeholder-val="{{ false }}">
+                  <a href="Cart.dc.html" style="flex:1;text-align:center;background:#E7F2EC;color:#15724C;font-weight:700;font-size:14px;padding:11px;border-radius:12px;">In cart ✓</a>
+                </sc-if>
+                <sc-if value="{{ course.notInCart }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ course.onAdd }}" class="btn" style="flex:1;background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:14px;padding:11px;border-radius:12px;cursor:pointer;">Add to cart</button>
+                </sc-if>
+                <a href="{{ course.detailHref }}" class="btn" style="width:46px;display:flex;align-items:center;justify-content:center;border:1px solid #E0D9CC;border-radius:12px;color:#20122F;font-size:16px;">→</a>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <dc-import name="Site Footer" hint-size="100%,360px"></dc-import>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:200;background:#271640;color:#fff;font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:999px;box-shadow:0 20px 44px -16px rgba(0,0,0,0.5);display:flex;align-items:center;gap:10px;">✓ {{ toast }} <a href="Cart.dc.html" style="color:#5BD6A0;font-weight:700;">View cart</a></div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { cat: 'All', q: '', courses: [], cartIds: [], toast: '' };
+  async componentDidMount() {
+    this._m = await import('./cart.js');
+    this._sync = () => { try { this.setState({ cartIds: this._m.getCart() }); } catch (e) {} };
+    window.addEventListener('f2p-change', this._sync);
+    window.addEventListener('storage', this._sync);
+    this.setState({ courses: this._m.COURSES, cartIds: this._m.getCart() });
+    this.swapImgs();
+  }
+  componentDidUpdate() { this.swapImgs(); }
+  swapImgs() {
+    requestAnimationFrame(() => {
+      try {
+        document.querySelectorAll('img[data-img]').forEach(im => {
+          const v = im.getAttribute('data-img');
+          if (v && v.indexOf('{{') < 0 && im.getAttribute('src') !== v) im.setAttribute('src', v);
+        });
+      } catch (e) {}
+    });
+  }
+  componentWillUnmount() {
+    if (this._sync) { window.removeEventListener('f2p-change', this._sync); window.removeEventListener('storage', this._sync); }
+    clearTimeout(this._t);
+  }
+  add(id) {
+    if (!this._m) return;
+    this._m.addToCart(id);
+    this.setState({ toast: 'Added to cart' });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: '' }), 1900);
+  }
+  renderVals() {
+    this.swapImgs();
+    const cats = ['All', 'NMC', 'Reflective Practice', 'Confidence', 'Hearings'];
+    const q = this.state.q.toLowerCase().trim();
+    const cartIds = this.state.cartIds || [];
+    const list = (this.state.courses || []).filter(c =>
+      (this.state.cat === 'All' || c.category === this.state.cat) &&
+      (!q || c.title.toLowerCase().includes(q) || c.category.toLowerCase().includes(q) || c.author.toLowerCase().includes(q))
+    );
+    const courses = list.map(c => ({
+      ...c,
+      priceLabel: '£' + c.price,
+      meta: c.sessions + (c.sessions === 1 ? ' session' : ' sessions') + ' · ' + c.hours + 'h',
+      inCart: cartIds.includes(c.id),
+      notInCart: !cartIds.includes(c.id),
+      onAdd: () => this.add(c.id),
+      detailHref: 'Course%20Detail.dc.html?c=' + c.id,
+    }));
+    const catChips = cats.map(name => {
+      const active = this.state.cat === name;
+      return { name, onClick: () => this.setState({ cat: name }),
+        bg: active ? '#1C8A5E' : '#FFFFFF', color: active ? '#FFFFFF' : '#3A2F4A', border: active ? '#1C8A5E' : '#E3DCCD' };
+    });
+    return { loaded: (this.state.courses || []).length > 0, courses, catChips, count: courses.length, q: this.state.q,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      toast: this.state.toast, hasToast: !!this.state.toast };
+  }
+}
+</script>
+</body>
+</html>

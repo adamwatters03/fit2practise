@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F4F0E6; font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #1E1230; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  .f2pin { width: 100%; padding: 13px 15px; border: 1px solid #E0D9CC; border-radius: 12px; font-family: 'Hanken Grotesk'; font-size: 15px; color: #20122F; outline: none; background: #FBF8F1; transition: border-color .15s ease; }
+  .f2pin:focus { border-color: #1C8A5E; background: #fff; }
+  .btn { transition: transform .15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  @media (max-width:860px){ .ct-split { flex-direction: column !important; } }
+</style>
+</helmet>
+<div>
+  <dc-import name="Site Header" active="contact" hint-size="100%,72px"></dc-import>
+
+  <!-- Hero band: image + dark purple overlay -->
+  <section style="position:relative;background:linear-gradient(rgba(27,15,46,0.82),rgba(27,15,46,0.9)),url('https://fit2practise.com/wp-content/uploads/2025/06/Healthcare-professional-on-laptop-750x500.jpg') center/cover;color:#fff;">
+    <div style="max-width:1100px;margin:0 auto;padding:60px 24px 66px;text-align:center;">
+      <div style="font-size:13.5px;color:rgba(255,255,255,0.7);margin-bottom:16px;"><a href="Fit%20to%20Practise%20Home%20v2.dc.html" style="color:rgba(255,255,255,0.7);">Home</a> <span style="margin:0 6px;">›</span> <span style="color:#5BD6A0;font-weight:600;">Contact</span></div>
+      <span style="display:inline-block;background:rgba(91,214,160,0.18);color:#5BD6A0;font-weight:700;font-size:12.5px;letter-spacing:0.06em;padding:7px 16px;border-radius:999px;">Get in touch</span>
+      <h1 style="font-family:'Schibsted Grotesk';font-weight:800;letter-spacing:-0.025em;line-height:1.08;font-size:clamp(32px,4.6vw,52px);margin:18px 0 0;">We're here to help</h1>
+      <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,0.85);margin:14px auto 0;max-width:560px;">Whether you have a question about a course or need support through your process, reach out — we'll get back to you as soon as we can.</p>
+    </div>
+  </section>
+
+  <section style="background:#F4F0E6;">
+    <div style="max-width:1120px;margin:0 auto;padding:56px 24px 80px;">
+      <div class="ct-split" style="display:flex;gap:30px;align-items:stretch;">
+        <!-- Form -->
+        <div style="flex:1 1 540px;min-width:300px;background:#fff;border:1px solid #ECE6DA;border-radius:24px;padding:36px;box-shadow:0 30px 70px -46px rgba(30,18,48,0.4);">
+          <h2 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:24px;margin:0 0 6px;color:#20122F;">Send us a message</h2>
+          <p style="font-size:15px;color:#6B6275;margin:0 0 24px;">Fill in the form and we'll be in touch. Your information will never be shared with any third party.</p>
+          <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:15px;flex-wrap:wrap;">
+              <div style="flex:1 1 200px;"><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Full name</label><input value="{{ name }}" onInput="{{ onName }}" class="f2pin" placeholder="Jane Smith" required="required"></div>
+              <div style="flex:1 1 200px;"><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Email</label><input type="email" value="{{ email }}" onInput="{{ onEmail }}" class="f2pin" placeholder="you@example.com" required="required"></div>
+            </div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Subject</label><input value="{{ subject }}" onInput="{{ onSubject }}" class="f2pin" placeholder="How can we help?"></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Message</label><textarea value="{{ message }}" onInput="{{ onMessage }}" class="f2pin" rows="5" style="resize:vertical;" placeholder="Tell us a little about your situation…" required="required"></textarea></div>
+            <button type="submit" class="btn" style="background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:16px;padding:15px;border-radius:13px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">Send message</button>
+            <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}"><p style="font-size:14.5px;color:#15724C;font-weight:600;margin:2px 0 0;">✓ Thanks — your message has been sent. We'll be in touch soon.</p></sc-if>
+          </form>
+        </div>
+
+        <!-- Details -->
+        <div style="flex:1 1 320px;min-width:280px;display:flex;flex-direction:column;gap:18px;">
+          <div style="background:linear-gradient(160deg,#2C1A4A,#1B0F2E);border-radius:24px;padding:30px;color:#fff;">
+            <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;margin:0 0 18px;">Contact details</h3>
+            <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px;"><span style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;">✉</span><div><div style="font-size:12.5px;color:#A79EB5;">Email us</div><a href="mailto:hello@fit2practise.com" style="font-weight:700;font-size:15.5px;color:#fff;">hello@fit2practise.com</a></div></div>
+            <div style="display:flex;align-items:center;gap:13px;"><span style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;">⏱</span><div><div style="font-size:12.5px;color:#A79EB5;">Response time</div><div style="font-weight:700;font-size:15.5px;color:#fff;">Within 1–2 working days</div></div></div>
+          </div>
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:24px;padding:30px;">
+            <h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:18px;margin:0 0 10px;color:#20122F;">Prefer to learn first?</h3>
+            <p style="font-size:14.5px;line-height:1.6;color:#6B6275;margin:0 0 18px;">Browse our affordable, clinically relevant courses and start at your own pace.</p>
+            <a href="Courses.dc.html" class="btn" style="display:inline-block;background:#1C8A5E;color:#fff;font-weight:700;font-size:14.5px;padding:12px 24px;border-radius:999px;">Browse courses</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Site Footer" hint-size="100%,360px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { name: '', email: '', subject: '', message: '', sent: false };
+  submit(e) { e.preventDefault(); this.setState({ sent: true }); }
+  renderVals() {
+    return {
+      name: this.state.name, email: this.state.email, subject: this.state.subject, message: this.state.message, sent: this.state.sent,
+      onName: e => this.setState({ name: e.target.value, sent: false }),
+      onEmail: e => this.setState({ email: e.target.value, sent: false }),
+      onSubject: e => this.setState({ subject: e.target.value, sent: false }),
+      onMessage: e => this.setState({ message: e.target.value, sent: false }),
+      onSubmit: e => this.submit(e),
+    };
+  }
+}
+</script>
+</body>
+</html>

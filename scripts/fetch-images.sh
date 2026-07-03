@@ -16,7 +16,6 @@ mkdir -p "$DEST"
 
 UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 BASE="https://fit2practise.com/wp-content/uploads"
-GRAV="https://secure.gravatar.com/avatar"
 
 get() { # url dest
   echo "→ $2"
@@ -39,7 +38,5 @@ get "$BASE/2025/05/Simon-Holborn.jpg"                              "Simon-Holbor
 get "$BASE/2025/05/Kenny-Headshot.jpg"                            "Kenny-Headshot.jpg"
 get "$BASE/2025/05/Maria-Headshot.jpg"                            "Maria-Headshot.jpg"
 get "$BASE/2025/06/Ruth-Headshot.jpg"                              "Ruth-Headshot.jpg"
-get "$GRAV/f2751a284394e7a922fa52c1c575be655d9094359323268157a3416186762053?s=160&d=mm&r=g" "avatar-cathryn.jpg"
-get "$GRAV/e0596093fee00ed2385fc78ed41e12e01288a3131233361dba9a3e1b3139e2f5?s=160&d=mm&r=g" "avatar-adam.jpg"
 
 echo "Done. Real brand images are now in $DEST/"

@@ -68,14 +68,16 @@ npx vercel
 - **Placeholder content** — the homepage stats (`00+`), FAQ answers, and Articles posts are drafts; swap in your real numbers/copy.
 - **Portal** — a front-end demo. Login accepts any details; the role (learner vs owner) is what changes the views. Analytics figures and the members list are realistic demo data.
 
-## All-access demo login
+## Demo logins
 
-Sign in on **`login.html`** (or as a **Learner** in the portal) with:
+Password is anything (front-end only — no real auth yet). Both are defined in `assets/js/cart.js`.
 
-- **Email:** `member@fit2practise.com`
-- **Password:** anything
+| Account | Email | What you get |
+|---------|-------|--------------|
+| **All-access learner** | `member@fit2practise.com` | Every course unlocked/enrolled — full My Courses + learner dashboard |
+| **Admin (business owner)** | `admin@fit2practise.com` | Opens the portal's owner dashboard — revenue/user analytics + members table |
 
-…and every course is unlocked (enrolled) so you can see the full My Courses / dashboard experience. This is defined in `assets/js/cart.js` (`ALL_ACCESS_EMAILS`) — front-end only; wire it to real auth/entitlements when you add a backend.
+Sign in from **`login.html`** (there are one-click "fill" buttons for each) or from the **portal** gate. The admin email always opens the owner dashboard, whichever role tab is selected. Wire these to real auth/entitlements when you add a backend (`ALL_ACCESS_EMAILS` / `ADMIN_EMAILS` in `cart.js`).
 
 ## Design source
 

@@ -48,8 +48,8 @@
         </form>
         <p style="text-align:center;font-size:13.5px;color:#9A92A4;margin:20px 0 0;"><span id="lgPrompt">Don't have an account?</span> <button id="lgToggle" style="background:none;border:none;color:#1C8A5E;font-weight:700;font-family:'Hanken Grotesk';font-size:13.5px;cursor:pointer;">Register</button></p>
         <div style="margin-top:18px;padding:12px 14px;background:#E7F2EC;border:1px solid #C9E6D6;border-radius:12px;text-align:center;">
-          <div style="font-size:12px;font-weight:700;color:#15724C;text-transform:uppercase;letter-spacing:0.05em;">All-access demo login</div>
-          <div style="font-size:13.5px;color:#20122F;margin-top:4px;">Sign in with <button id="fillDemo" style="background:none;border:none;padding:0;font-family:'Hanken Grotesk';font-weight:700;color:#1C8A5E;cursor:pointer;text-decoration:underline;">member@fit2practise.com</button> (any password) to unlock every course.</div>
+          <div style="font-size:12px;font-weight:700;color:#15724C;text-transform:uppercase;letter-spacing:0.05em;">Demo logins</div>
+          <div style="font-size:13.5px;color:#20122F;margin-top:4px;line-height:1.5;">All courses: <button id="fillDemo" style="background:none;border:none;padding:0;font-family:'Hanken Grotesk';font-weight:700;color:#1C8A5E;cursor:pointer;text-decoration:underline;">member@fit2practise.com</button><br>Admin dashboard: <button id="fillAdmin" style="background:none;border:none;padding:0;font-family:'Hanken Grotesk';font-weight:700;color:#5B3E86;cursor:pointer;text-decoration:underline;">admin@fit2practise.com</button><br><span style="color:#6B6275;">(any password)</span></div>
         </div>
       </div>
     </div>
@@ -90,11 +90,22 @@
     if (tab !== 'login') { tab = 'login'; paint(); }
     els.email.value = 'member@fit2practise.com'; els.pw.value = 'fit2practise'; els.email.focus();
   });
+  var fillAdmin = document.getElementById('fillAdmin');
+  if (fillAdmin) fillAdmin.addEventListener('click', function () {
+    if (tab !== 'login') { tab = 'login'; paint(); }
+    els.email.value = 'admin@fit2practise.com'; els.pw.value = 'fit2practise'; els.email.focus();
+  });
   els.form.addEventListener('submit', function (e) {
     e.preventDefault();
     var email = els.email.value;
     var name = tab === 'register' ? (els.name.value || 'Member') : ((email.split('@')[0]) || 'Member');
     try { localStorage.setItem('f2p_user', JSON.stringify({ name: name, email: email })); } catch (e2) {}
+    // Admin account -> open the portal as business owner (analytics + members).
+    if (window.F2P && window.F2P.isAdmin(email)) {
+      try { localStorage.setItem('f2p_portal_role', 'owner'); } catch (e5) {}
+      location.href = 'portal.html';
+      return;
+    }
     // Demo all-access account: unlock every course on sign-in.
     try { if (window.F2P) window.F2P.grantIfAllAccess(email); } catch (e3) {}
     try { window.dispatchEvent(new Event('f2p-change')); } catch (e4) {}

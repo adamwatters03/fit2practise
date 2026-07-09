@@ -342,7 +342,7 @@
             '<div><label style="display:block;font-size:13px;font-weight:600;color:#3A2F4A;margin-bottom:6px;">Password</label><input type="password" class="f2pin" placeholder="••••••••"></div>' +
             '<button type="submit" class="btn" style="margin-top:4px;background:#1C8A5E;color:#fff;border:none;font-family:\'Hanken Grotesk\';font-weight:700;font-size:16px;padding:15px;border-radius:13px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);">' + (learnerOn ? 'Sign in as learner' : 'Sign in as owner') + '</button>' +
           '</form>' +
-          '<p style="text-align:center;font-size:12.5px;color:#9A92A4;margin:16px 0 0;">Demo portal — sign in with any details to explore.<br>Learner <b>member@fit2practise.com</b> unlocks every course.</p>' +
+          '<p style="text-align:center;font-size:12.5px;color:#9A92A4;margin:16px 0 0;line-height:1.6;">Demo portal — sign in with any details to explore.<br>Learner <b>member@fit2practise.com</b> unlocks every course.<br>Admin <b>admin@fit2practise.com</b> opens the owner dashboard.</p>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -437,9 +437,11 @@
     var gate = app.querySelector('#gateForm');
     if (gate) gate.addEventListener('submit', function (e) {
       e.preventDefault();
-      var role = state.pendingRole;
       var emailInput = gate.querySelector('input[type=email]');
       var email = emailInput ? emailInput.value : '';
+      var role = state.pendingRole;
+      // The admin account always signs in as the business owner, whichever tab is selected.
+      if (F.isAdmin(email)) role = 'owner';
       try { localStorage.setItem('f2p_portal_role', role); } catch (e2) {}
       // Demo all-access learner: unlock every course.
       if (role === 'learner') { try { F.grantIfAllAccess(email); } catch (e5) {} }

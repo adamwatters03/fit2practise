@@ -3,17 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Articles &amp; resources — Fit to Practise</title>
-<meta name="description" content="Practical advice and lived experience to help you navigate the Fitness to Practise process with confidence.">
+<title>Fitness to Practise Articles & Guides for Nurses | Fit 2 Practise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
 <link rel="apple-touch-icon" href="assets/img/favicon.png">
+<!-- seo -->
+<meta name="description" content="Practical guides on NMC referrals, investigations, hearings, reflective writing, insight and remediation — written by healthcare professionals with lived experience.">
+<link rel="canonical" href="https://fit2practise.vercel.app/articles">
+<meta property="og:url" content="https://fit2practise.vercel.app/articles">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fit 2 Practise">
+<meta property="og:title" content="Fitness to Practise Articles & Guides for Nurses | Fit 2 Practise">
+<meta property="og:description" content="Practical guides on NMC referrals, investigations, hearings, reflective writing, insight and remediation — written by healthcare professionals with lived experience.">
+<meta property="og:image" content="https://fit2practise.vercel.app/assets/img/logo-main.png">
+<meta name="twitter:card" content="summary">
+<!-- /seo -->
 <link rel="stylesheet" href="assets/css/site.css">
 <script src="assets/js/cart.js"></script>
 <script src="assets/js/icons.js"></script>
 <script src="assets/js/site.js"></script>
+<script src="assets/js/posts.js"></script>
 <style>
   @media (max-width:820px){ .ar-feat { flex-direction: column !important; } }
 </style>
@@ -31,35 +42,41 @@
   </div>
 </section>
 
-<!-- Featured -->
+<!-- Featured + grid (rendered from shared posts data) -->
 <section style="background:#F4F0E6;">
-  <div style="max-width:1200px;margin:0 auto;padding:56px 24px 20px;">
-    <a href="article.html?id=nmc-referral" class="lift ar-feat js-rv from-s" style="display:flex;gap:0;background:#fff;border:1px solid #ECE6DA;border-radius:24px;overflow:hidden;box-shadow:0 30px 70px -44px rgba(30,18,48,0.4);">
-      <div style="flex:1 1 460px;min-width:280px;"><img src="assets/img/Nurse-Smiling-750x500.jpg" alt="Featured article" style="width:100%;height:100%;min-height:300px;object-fit:cover;display:block;"></div>
-      <div style="flex:1 1 420px;min-width:280px;padding:42px 40px;display:flex;flex-direction:column;justify-content:center;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;"><span style="background:#E7F2EC;color:#15724C;font-weight:700;font-size:12px;padding:5px 12px;border-radius:999px;">Featured</span><span style="font-size:13px;color:#9A92A4;">8 min read</span></div>
-        <h2 style="font-family:'Schibsted Grotesk';font-weight:700;letter-spacing:-0.02em;line-height:1.15;font-size:clamp(24px,2.8vw,32px);margin:0;color:#20122F;">Receiving an NMC referral: your first five steps</h2>
-        <p style="font-size:16px;line-height:1.6;color:#5C5369;margin:14px 0 22px;">A referral letter can feel overwhelming. Here's a calm, practical guide to the very first things to do — and what not to do — when you first hear from your regulator.</p>
-        <span style="font-weight:700;font-size:14.5px;color:#1C8A5E;">Read article →</span>
-      </div>
-    </a>
+  <div style="max-width:1200px;margin:0 auto;padding:56px 24px 20px;" id="featuredWrap"></div>
+</section>
+<section style="background:#F4F0E6;">
+  <div style="max-width:1200px;margin:0 auto;padding:24px 24px 70px;">
+    <div id="postGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;"></div>
   </div>
 </section>
 
-<!-- Grid -->
-<section style="background:#F4F0E6;">
-  <div style="max-width:1200px;margin:0 auto;padding:24px 24px 70px;">
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;">
-      <a href="article.html?id=reflection-standards" class="lift js-rv" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="assets/img/Reflection-Writing-1-750x500.jpg" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;"><div style="padding:20px 22px 24px;"><div style="display:flex;gap:9px;align-items:center;font-size:12.5px;color:#9A92A4;margin-bottom:10px;"><span style="color:#15724C;font-weight:700;">Reflective Practice</span><span>·</span><span>5 min</span></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;line-height:1.3;margin:0 0 8px;color:#20122F;">How to write a reflection that meets regulatory standards</h3><p style="font-size:14.5px;line-height:1.55;color:#6B6275;margin:0;">Structure, tone and the key elements panels look for in a strong reflective piece.</p></div></a>
-      <a href="article.html?id=hearing-what-happens" class="lift js-rv" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="assets/img/Healthcare-professional-on-laptop-750x500.jpg" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;"><div style="padding:20px 22px 24px;"><div style="display:flex;gap:9px;align-items:center;font-size:12.5px;color:#9A92A4;margin-bottom:10px;"><span style="color:#15724C;font-weight:700;">Hearings</span><span>·</span><span>6 min</span></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;line-height:1.3;margin:0 0 8px;color:#20122F;">What actually happens at a Fitness to Practise hearing</h3><p style="font-size:14.5px;line-height:1.55;color:#6B6275;margin:0;">A walk-through of the room, the people, and the order of events on the day.</p></div></a>
-      <a href="article.html?id=rebuild-confidence" class="lift js-rv" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="assets/img/Rebuilding-Confidence-750x500.jpg" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;"><div style="padding:20px 22px 24px;"><div style="display:flex;gap:9px;align-items:center;font-size:12.5px;color:#9A92A4;margin-bottom:10px;"><span style="color:#15724C;font-weight:700;">Confidence</span><span>·</span><span>4 min</span></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;line-height:1.3;margin:0 0 8px;color:#20122F;">Rebuilding your confidence after a suspension</h3><p style="font-size:14.5px;line-height:1.55;color:#6B6275;margin:0;">Small, practical steps to return to practice feeling steady and prepared.</p></div></a>
-      <a href="article.html?id=the-code-explained" class="lift js-rv" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="assets/img/Code-of-Conduct-750x500.jpg" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;"><div style="padding:20px 22px 24px;"><div style="display:flex;gap:9px;align-items:center;font-size:12.5px;color:#9A92A4;margin-bottom:10px;"><span style="color:#15724C;font-weight:700;">NMC</span><span>·</span><span>7 min</span></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;line-height:1.3;margin:0 0 8px;color:#20122F;">The Code, explained: what each section means for you</h3><p style="font-size:14.5px;line-height:1.55;color:#6B6275;margin:0;">A plain-English breakdown of the NMC Code and how it applies in practice.</p></div></a>
-      <a href="article.html?id=mentorship-outcome" class="lift js-rv" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="assets/img/Group-Brainstorming-Graphic-2.jpg" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;"><div style="padding:20px 22px 24px;"><div style="display:flex;gap:9px;align-items:center;font-size:12.5px;color:#9A92A4;margin-bottom:10px;"><span style="color:#15724C;font-weight:700;">Mentorship</span><span>·</span><span>5 min</span></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;line-height:1.3;margin:0 0 8px;color:#20122F;">How mentorship changes the outcome of a hearing</h3><p style="font-size:14.5px;line-height:1.55;color:#6B6275;margin:0;">Why having someone who has been through it makes a real difference.</p></div></a>
-      <a href="article.html?id=mental-health" class="lift js-rv" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;"><img src="assets/img/Healthcare-Professional-on-Laptop.jpg" alt="" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;"><div style="padding:20px 22px 24px;"><div style="display:flex;gap:9px;align-items:center;font-size:12.5px;color:#9A92A4;margin-bottom:10px;"><span style="color:#15724C;font-weight:700;">Wellbeing</span><span>·</span><span>6 min</span></div><h3 style="font-family:'Schibsted Grotesk';font-weight:700;font-size:19px;line-height:1.3;margin:0 0 8px;color:#20122F;">Looking after your mental health during an investigation</h3><p style="font-size:14.5px;line-height:1.55;color:#6B6275;margin:0;">Practical wellbeing strategies for a stressful and uncertain time.</p></div></a>
-    </div>
-    <p style="text-align:center;font-size:13.5px;color:#9A92A4;margin:34px 0 0;">Sample articles shown — swap in your real blog posts anytime.</p>
-  </div>
-</section>
+<script>
+(function () {
+  var POSTS = window.F2P_POSTS, ORDER = window.F2P_POST_ORDER;
+  function esc(x) { return String(x).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+  var featured = ORDER[0], rest = ORDER.slice(1);
+  var f = POSTS[featured];
+  document.getElementById('featuredWrap').innerHTML =
+    '<a href="article.html?id=' + featured + '" class="lift ar-feat js-rv from-s" style="display:flex;gap:0;background:#fff;border:1px solid #ECE6DA;border-radius:24px;overflow:hidden;box-shadow:0 30px 70px -44px rgba(30,18,48,0.4);">' +
+      '<div style="flex:1 1 460px;min-width:280px;"><img src="' + f.img + '" alt="' + esc(f.title) + '" style="width:100%;height:100%;min-height:300px;object-fit:cover;display:block;"></div>' +
+      '<div style="flex:1 1 420px;min-width:280px;padding:42px 40px;display:flex;flex-direction:column;justify-content:center;">' +
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;"><span style="background:#E7F2EC;color:#15724C;font-weight:700;font-size:12px;padding:5px 12px;border-radius:999px;">Featured</span><span style="font-size:13px;color:#9A92A4;">' + esc(f.read) + '</span></div>' +
+        '<h2 style="font-family:\'Schibsted Grotesk\';font-weight:700;letter-spacing:-0.02em;line-height:1.15;font-size:clamp(24px,2.8vw,32px);margin:0;color:#20122F;">' + esc(f.title) + '</h2>' +
+        '<p style="font-size:16px;line-height:1.6;color:#5C5369;margin:14px 0 22px;">' + esc(f.lead) + '</p>' +
+        '<span style="font-weight:700;font-size:14.5px;color:#1C8A5E;">Read article →</span>' +
+      '</div></a>';
+  document.getElementById('postGrid').innerHTML = rest.map(function (k) {
+    var p = POSTS[k];
+    return '<a href="article.html?id=' + k + '" class="lift js-rv" style="display:flex;flex-direction:column;background:#fff;border:1px solid #ECE6DA;border-radius:22px;overflow:hidden;">' +
+      '<img src="' + p.img + '" alt="' + esc(p.title) + '" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;">' +
+      '<div style="padding:20px 22px 24px;"><div style="display:flex;gap:9px;align-items:center;font-size:12.5px;color:#9A92A4;margin-bottom:10px;"><span style="color:#15724C;font-weight:700;">' + esc(p.cat) + '</span><span>·</span><span>' + esc(p.read) + '</span></div>' +
+      '<h3 style="font-family:\'Schibsted Grotesk\';font-weight:700;font-size:19px;line-height:1.3;margin:0 0 8px;color:#20122F;">' + esc(p.title) + '</h3>' +
+      '<p style="font-size:14.5px;line-height:1.55;color:#6B6275;margin:0;">' + esc(p.lead).slice(0, 130) + '…</p></div></a>';
+  }).join('');
+})();
+</script>
 
 <div id="site-footer"></div>
 </body>

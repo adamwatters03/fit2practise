@@ -15,6 +15,7 @@
   var NAV = [
     ['index.html', 'Home', 'home'],
     ['courses.html', 'Courses', 'courses'],
+    ['nmc-fitness-to-practise.html', 'FtP Guide', 'guide'],
     ['mentorship.html', 'Mentorship', 'mentorship'],
     ['about.html', 'About', 'about'],
     ['faqs.html', 'FAQs', 'faqs'],
@@ -31,7 +32,7 @@
       'my-courses.html': 'mycourses', 'cart.html': 'cart',
       'about.html': 'about', 'faqs.html': 'faqs', 'articles.html': 'articles',
       'contact.html': 'contact', 'profile.html': 'profile', 'login.html': 'login',
-      'portal.html': 'portal'
+      'portal.html': 'portal', 'nmc-fitness-to-practise.html': 'guide'
     };
     return map[f] || 'home';
   }
@@ -75,7 +76,7 @@
         '<div class="sfx-grid">' +
           '<div><img src="' + LOGO_DARK + '" alt="Fit to Practise" style="height:44px;width:auto;margin-bottom:14px;"><p style="font-size:14.5px;line-height:1.6;color:#A79EB5;max-width:300px;margin:0;">We are passionate about helping healthcare professionals regain and maintain their Fitness to Practise.</p></div>' +
           '<div><h4>Explore</h4><div class="sfx-col">' +
-            '<a class="sfx-udl" href="index.html">Home</a><a class="sfx-udl" href="courses.html">Courses</a><a class="sfx-udl" href="mentorship.html">Mentorship</a><a class="sfx-udl" href="about.html">About</a><a class="sfx-udl" href="articles.html">Articles</a>' +
+            '<a class="sfx-udl" href="index.html">Home</a><a class="sfx-udl" href="courses.html">Courses</a><a class="sfx-udl" href="nmc-fitness-to-practise.html">NMC FtP Guide</a><a class="sfx-udl" href="mentorship.html">Mentorship</a><a class="sfx-udl" href="about.html">About</a><a class="sfx-udl" href="articles.html">Articles</a>' +
           '</div></div>' +
           '<div><h4>Account</h4><div class="sfx-col">' +
             '<a class="sfx-udl" href="portal.html">Login / Register</a><a class="sfx-udl" href="my-courses.html">My Courses</a><a class="sfx-udl" href="profile.html">Profile</a><a class="sfx-udl" href="cart.html">Cart</a>' +

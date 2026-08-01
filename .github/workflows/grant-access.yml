@@ -1,0 +1,42 @@
+name: Grant course access
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: 'Email to grant access to'
+        required: true
+      courses:
+        description: 'Courses (csv of ids, or "all")'
+        required: false
+        default: 'all'
+
+permissions:
+  contents: write
+
+jobs:
+  grant:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Grant access
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          GRANT_EMAIL: ${{ inputs.email }}
+          GRANT_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          GRANT_COURSES: ${{ inputs.courses }}
+        run: node infra/grant-user.mjs 2>&1 | tee grant-output.txt
+      - name: Report result as commit comment
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BODY=$(printf 'Grant access output (run %s):\n\n```\n%s\n```' "${{ github.run_id }}" "$(tail -c 4000 grant-output.txt)")
+          jq -n --arg body "$BODY" '{body: $body}' | \
+          curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }}/comments" \
+            -d @- -o /dev/null -w "comment HTTP %{http_code}\n"

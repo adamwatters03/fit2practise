@@ -83,13 +83,35 @@ for (const [key, value] of Object.entries(wanted)) {
 
 // 5. Trigger production deployment from main
 const repoId = project.link && project.link.repoId;
+let depId = null;
 if (repoId) {
   const d = await vercel('/v13/deployments', {
     method: 'POST',
     body: JSON.stringify({ name: PROJECT, project: project.id, target: 'production', gitSource: { type: 'github', repoId, ref: 'main' } })
   });
+  depId = d.ok ? d.j.id : null;
   console.log('Deployment triggered:', d.ok ? (d.j.url || d.j.id) : JSON.stringify(d.j));
 } else {
-  console.log('No repo link found — push to main to deploy.');
+  console.log('No repo link found — connect the repo once at vercel.com/new, then re-run.');
+}
+
+// 6. Wait for the deployment to be READY, then smoke test the live site
+if (depId) {
+  for (let i = 0; i < 40; i++) {
+    await new Promise(r => setTimeout(r, 8000));
+    const d = await vercel('/v13/deployments/' + depId);
+    const state = d.j.readyState || d.j.state;
+    process.stdout.write('  deploy state: ' + state + '\n');
+    if (state === 'READY') break;
+    if (state === 'ERROR' || state === 'CANCELED') { console.error('Deployment failed'); process.exit(1); }
+  }
+  const home = await fetch(SITE_URL + '/index.html');
+  console.log('smoke home:', home.status, (await home.text()).includes('Fit to Practise') ? 'brand OK' : 'brand MISSING');
+  const co = await fetch(SITE_URL + '/api/checkout', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ items: ['hearing'] })
+  });
+  const coj = await co.json().catch(() => ({}));
+  console.log('smoke checkout:', co.status, coj.url ? 'session URL created ✓' : JSON.stringify(coj));
 }
 console.log('DONE. Site:', SITE_URL);

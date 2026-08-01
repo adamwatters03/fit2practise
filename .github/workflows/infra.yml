@@ -1,0 +1,28 @@
+name: Infrastructure setup
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Apply database schema (when SUPABASE_DB_URL is set)
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -n "$SUPABASE_DB_URL" ]; then
+            psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f infra/schema.sql && echo "schema applied"
+          else
+            echo "SUPABASE_DB_URL not set — skipping schema (set it and re-run to enable purchase records)"
+          fi
+      - name: Configure Vercel + Stripe, deploy, smoke test
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+        run: node infra/setup.mjs

@@ -141,9 +141,6 @@ body::before {
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 
-/* Images/iframes never jank while loading */
-img { background-color: rgba(236,230,218,0.35); }
-
 /* Reduce heavy shadows on touch devices (perf) */
 @media (hover: none) {
   .lift:hover { transform: none; box-shadow: none; }

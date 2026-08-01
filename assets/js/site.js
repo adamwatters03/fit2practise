@@ -9,8 +9,8 @@
   // Set the reveal state before the body paints to avoid a flash of visible-then-hidden content.
   if (!reduceMotion) document.documentElement.classList.add('reveal-on');
 
-  var LOGO_LIGHT = 'assets/img/F2P-logo-09-2.png'; // header (cream bg)
-  var LOGO_DARK  = 'assets/img/F2P-logo-08-2.png'; // footer (dark bg)
+  var LOGO_LIGHT = 'assets/img/logo-main.png'; // header (cream bg)
+  var LOGO_DARK  = 'assets/img/logo-main-white.png'; // footer (dark bg)
 
   var NAV = [
     ['index.html', 'Home', 'home'],

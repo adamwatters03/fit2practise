@@ -36,11 +36,23 @@
   .prose th, .prose td { border: 1px solid #ECE6DA; padding: 10px 14px; text-align: left; }
   .prose th { background: #FBF9F4; font-weight: 700; }
   .prose pre, .prose .wp-block-preformatted { background: #FBF9F4; border: 1px solid #ECE6DA; border-radius: 14px; padding: 16px 20px; white-space: pre-wrap; font-family: 'Hanken Grotesk'; font-size: 15px; }
-  .pdf-card { display: flex !important; align-items: center; gap: 14px; background: #FBF9F4; border: 1px solid #ECE6DA; border-radius: 16px; padding: 16px 18px; margin: 14px 0; text-decoration: none !important; transition: transform .15s ease, box-shadow .15s ease; }
-  .pdf-card:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -22px rgba(30,18,48,0.4); }
-  .pdf-card .pdf-ic { width: 44px; height: 44px; border-radius: 12px; background: #271640; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; flex-shrink: 0; }
-  .pdf-card strong { display: block; color: #20122F; font-size: 15px; }
-  .pdf-card em { font-style: normal; font-size: 12.5px; color: #9A92A4; }
+  .pdf-card { display: flex !important; align-items: center; gap: 15px; background: #fff; border: 1.5px solid #E7E1D4; border-radius: 18px; padding: 16px 20px; margin: 16px 0; text-decoration: none !important; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .pdf-card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(30,18,48,0.05), 0 20px 44px -22px rgba(28,138,94,0.35); border-color: rgba(28,138,94,0.45); }
+  .pdf-card .pdf-ic { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(140deg, #1E9466, #5B3E86); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 10px 22px -10px rgba(28,138,94,0.55); }
+  .pdf-card .pdf-body { flex: 1; min-width: 0; }
+  .pdf-card strong { display: block; color: #20122F; font-family: 'Schibsted Grotesk'; font-weight: 700; font-size: 15.5px; line-height: 1.3; }
+  .pdf-card em { font-style: normal; font-size: 12.5px; color: #9A92A4; font-weight: 600; }
+  .pdf-card .pdf-cta { flex-shrink: 0; background: #E7F2EC; color: #15724C; font-weight: 700; font-size: 13px; padding: 9px 18px; border-radius: 999px; transition: background .15s ease, color .15s ease; }
+  .pdf-card:hover .pdf-cta { background: #1C8A5E; color: #fff; }
+  /* video facade */
+  .vfacade { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 16px; overflow: hidden; cursor: pointer; margin: 10px 0 18px; background: linear-gradient(140deg, #2C1A4A 0%, #22123B 55%, #0F6647 130%); box-shadow: 0 26px 60px -34px rgba(30,18,48,0.55); outline-offset: 3px; }
+  .vfacade-poster { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform .5s cubic-bezier(.16,1,.3,1); }
+  .vfacade:hover .vfacade-poster { transform: scale(1.04); }
+  .vfacade-shade { position: absolute; inset: 0; background: linear-gradient(rgba(27,15,46,0.18), rgba(27,15,46,0.5)); }
+  .vfacade-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 76px; height: 76px; border-radius: 50%; background: #1C8A5E; display: flex; align-items: center; justify-content: center; box-shadow: 0 18px 44px -12px rgba(0,0,0,0.55), 0 0 0 10px rgba(255,255,255,0.16); transition: transform .2s ease, box-shadow .2s ease; }
+  .vfacade-btn svg { margin-left: 5px; }
+  .vfacade:hover .vfacade-btn { transform: translate(-50%, -50%) scale(1.09); box-shadow: 0 22px 54px -12px rgba(0,0,0,0.6), 0 0 0 14px rgba(255,255,255,0.2); }
+  .vfacade-label { position: absolute; left: 18px; bottom: 15px; color: #fff; font-weight: 700; font-size: 13.5px; background: rgba(27,15,46,0.55); backdrop-filter: blur(6px); padding: 8px 15px; border-radius: 999px; }
   /* quiz */
   .qz-head { display: inline-flex; align-items: center; gap: 8px; background: #E7F2EC; color: #15724C; font-weight: 700; font-size: 13px; padding: 8px 16px; border-radius: 999px; margin-bottom: 6px; }
   .qz-q { background: #FBF9F4; border: 1px solid #F0EBE0; border-radius: 18px; padding: 22px 24px; margin: 16px 0; transition: border-color .2s ease; }
@@ -125,15 +137,54 @@
     html = html.replace(/\sdata-(?:start|end|is-last-node|is-only-node)="[^"]*"/g, '');
     html = html.replace(/\[[a-z_]+[^\]]*\]/g, '');
     html = html.replace(/(?:<p[^>]*>)?\s*https:\/\/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?[^\s<]*\s*(?:<\/p>)?/gi, function (m, id, h) {
-      return '<iframe class="video-embed" src="https://player.vimeo.com/video/' + id + (h ? '?h=' + h : '') + '" allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+      var src = 'https://player.vimeo.com/video/' + id + '?' + (h ? 'h=' + h + '&' : '') + 'autoplay=1';
+      return videoFacade(src, 'vimeo', id, h || '');
     });
     html = html.replace(/(?:<p[^>]*>)?\s*https:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)[^\s<]*\s*(?:<\/p>)?/gi, function (m, id) {
-      return '<iframe class="video-embed" src="https://www.youtube-nocookie.com/embed/' + id + '" allow="fullscreen" allowfullscreen loading="lazy"></iframe>';
+      return videoFacade('https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1', 'youtube', id, '');
     });
-    html = html.replace(/<a([^>]*href="[^"]+\.pdf"[^>]*)>([^<]*)<\/a>/gi, function (m, attrs, label) {
-      return '<a' + attrs.replace(/>$/, '') + ' target="_blank" rel="noopener" class="pdf-card"><span class="pdf-ic">PDF</span><span><strong>' + (label || 'Download PDF') + '</strong><em>Opens in a new tab</em></span></a>';
+    html = html.replace(/<a[^>]*href="([^"]+\.pdf)"[^>]*>([^<]*)<\/a>/gi, function (m, href, label) {
+      var file = decodeURIComponent(href.split('/').pop());
+      var pretty = (label || file.replace(/\.pdf$/i, '')).replace(/-/g, ' ').trim();
+      return '<a href="' + href + '" download="' + file + '" class="pdf-card">' +
+        '<span class="pdf-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></span>' +
+        '<span class="pdf-body"><strong>' + pretty + '</strong><em>PDF · click to download</em></span>' +
+        '<span class="pdf-cta">Download</span></a>';
     });
     return html;
+  }
+
+  function videoFacade(src, kind, id, hash) {
+    var poster = kind === 'youtube' ? ' style="background-image:url(\'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg\')"' : '';
+    return '<div class="vfacade" data-src="' + src + '" data-kind="' + kind + '" data-vid="' + id + '" data-vh="' + hash + '" role="button" tabindex="0" aria-label="Play video">' +
+      '<div class="vfacade-poster"' + poster + '></div>' +
+      '<div class="vfacade-shade"></div>' +
+      '<span class="vfacade-btn"><svg viewBox="0 0 24 24" width="26" height="26" fill="#fff" aria-hidden="true"><path d="M8 5.2v13.6L19 12 8 5.2Z"/></svg></span>' +
+      '<span class="vfacade-label">Watch lesson video</span>' +
+    '</div>';
+  }
+
+  function initFacades(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('.vfacade'), function (f) {
+      // Fetch the real Vimeo thumbnail for the poster (graceful if it fails).
+      if (f.getAttribute('data-kind') === 'vimeo') {
+        var vurl = 'https://vimeo.com/' + f.getAttribute('data-vid') + (f.getAttribute('data-vh') ? '/' + f.getAttribute('data-vh') : '');
+        fetch('https://vimeo.com/api/oembed.json?url=' + encodeURIComponent(vurl) + '&width=1280')
+          .then(function (r) { return r.json(); })
+          .then(function (d) { if (d && d.thumbnail_url) f.querySelector('.vfacade-poster').style.backgroundImage = 'url("' + d.thumbnail_url + '")'; })
+          .catch(function () {});
+      }
+      function play() {
+        var ifr = document.createElement('iframe');
+        ifr.className = 'video-embed';
+        ifr.src = f.getAttribute('data-src');
+        ifr.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+        ifr.setAttribute('allowfullscreen', '');
+        f.replaceWith(ifr);
+      }
+      f.addEventListener('click', play);
+      f.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
+    });
   }
 
   // ---------- interactive quiz ----------
@@ -172,6 +223,7 @@
           '<div id="qzScore" style="display:none;font-family:\'Schibsted Grotesk\';font-weight:800;font-size:18px;"></div>' +
         '</div>';
       if (window.F2PIconScan) window.F2PIconScan(container);
+      initFacades(container);
 
       Array.prototype.forEach.call(container.querySelectorAll('.qz-opt input'), function (inp) {
         inp.addEventListener('change', function () {
@@ -271,6 +323,7 @@
       renderQuiz(s, c);
     } else {
       c.innerHTML = renderHtml(s.html);
+      initFacades(c);
     }
     document.getElementById('plPrev').style.visibility = idx === 0 ? 'hidden' : 'visible';
     var nextBtn = document.getElementById('plNext');

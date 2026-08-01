@@ -93,8 +93,21 @@
       b.addEventListener('click', function () { F.removeFromCart(b.getAttribute('data-remove')); });
     });
     document.getElementById('checkoutBtn').addEventListener('click', function () {
-      F.enrollCart();
-      location.href = 'my-courses.html';
+      var btn = document.getElementById('checkoutBtn');
+      btn.disabled = true; btn.textContent = 'Redirecting to secure payment…';
+      var email = null;
+      try { var u = JSON.parse(localStorage.getItem('f2p_user') || 'null'); if (u && u.email) email = u.email; } catch (e) {}
+      fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: F.getCart(), email: email })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d && d.url) { location.href = d.url; return; }
+        throw new Error((d && d.error) || 'Checkout unavailable');
+      }).catch(function (err) {
+        btn.disabled = false; btn.textContent = 'Checkout securely';
+        alert('Sorry — checkout is temporarily unavailable. ' + err.message);
+      });
     });
   }
 

@@ -107,6 +107,25 @@
     });
   }
 
+  // Returning from Stripe Checkout: verify the payment server-side, then unlock.
+  (function () {
+    var sid;
+    try { sid = new URLSearchParams(location.search).get('session_id'); } catch (e) {}
+    if (!sid) return;
+    fetch('/api/confirm?session_id=' + encodeURIComponent(sid))
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.paid && d.courses && d.courses.length) {
+          d.courses.forEach(function (id) { F.enroll(id); });
+          F.setCart([]);
+          if (d.email) { try { var u = JSON.parse(localStorage.getItem('f2p_user') || 'null') || {}; if (!u.email) { u.email = d.email; u.name = u.name || d.email.split('@')[0]; localStorage.setItem('f2p_user', JSON.stringify(u)); } } catch (e) {}
+          }
+          history.replaceState(null, '', 'my-courses.html');
+          render();
+        }
+      }).catch(function () {});
+  })();
+
   window.addEventListener('f2p-change', render);
   window.addEventListener('storage', render);
   render();

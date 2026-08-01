@@ -63,10 +63,21 @@
     crumb.innerHTML = '<a href="index.html" style="color:#9A92A4;">Home</a> <span style="margin:0 6px;">›</span> <a href="courses.html" style="color:#9A92A4;">Courses</a> <span style="margin:0 6px;">›</span> <span style="color:#1C8A5E;font-weight:600;">' + esc(c.category) + '</span>';
 
     var curriculum = '';
-    for (var i = 0; i < c.sessions; i++) {
-      var t = i === 0 ? 'Introduction &amp; getting started' : (i === c.sessions - 1 ? 'Bringing it all together' : 'Module ' + (i + 1) + ': core concepts');
-      var len = (8 + (i % 4) * 4) + ' min';
-      curriculum += '<div style="display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #ECE6DA;border-radius:14px;padding:15px 18px;"><span style="width:32px;height:32px;border-radius:9px;background:#F1ECF4;color:#5B3E86;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;">' + (i + 1) + '</span><span style="font-weight:600;font-size:15.5px;color:#20122F;flex:1;">' + t + '</span><span style="font-size:13px;color:#9A92A4;">' + len + '</span></div>';
+    var steps = c.outline || [];
+    if (steps.length) {
+      for (var i = 0; i < steps.length; i++) {
+        var s = steps[i];
+        var isQuiz = s.type === 'quiz';
+        var badge = isQuiz
+          ? '<span style="width:32px;height:32px;border-radius:9px;background:#E7F2EC;color:#15724C;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">Q</span>'
+          : '<span style="width:32px;height:32px;border-radius:9px;background:#F1ECF4;color:#5B3E86;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;">' + (i + 1) + '</span>';
+        var tag = isQuiz ? 'Quiz' : (s.type === 'topic' ? 'Module' : 'Lesson');
+        curriculum += '<div style="display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #ECE6DA;border-radius:14px;padding:15px 18px;">' + badge + '<span style="font-weight:600;font-size:15.5px;color:#20122F;flex:1;">' + esc(s.title) + '</span><span style="font-size:13px;color:#9A92A4;">' + tag + '</span></div>';
+      }
+    } else {
+      for (var j = 0; j < c.sessions; j++) {
+        curriculum += '<div style="display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #ECE6DA;border-radius:14px;padding:15px 18px;"><span style="width:32px;height:32px;border-radius:9px;background:#F1ECF4;color:#5B3E86;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;">' + (j + 1) + '</span><span style="font-weight:600;font-size:15.5px;color:#20122F;flex:1;">Module ' + (j + 1) + '</span></div>';
+      }
     }
     var outHtml = outcomes.map(function (o) {
       return '<div style="display:flex;align-items:flex-start;gap:11px;font-size:15.5px;color:#3A2F4A;line-height:1.5;"><span style="width:22px;height:22px;border-radius:50%;background:#E7F2EC;color:#1C8A5E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px;">✓</span>' + esc(o) + '</div>';

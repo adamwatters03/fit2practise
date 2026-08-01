@@ -32,7 +32,10 @@ module.exports = async (req, res) => {
       success_url: site + '/my-courses.html?session_id={CHECKOUT_SESSION_ID}',
       cancel_url: site + '/cart.html',
       'metadata[courses]': ids.join(','),
-      allow_promotion_codes: 'false'
+      allow_promotion_codes: 'false',
+      // Account has Managed Payments on by default; opt out per-session so
+      // standard processing applies (no product tax codes required).
+      'managed_payments[enabled]': 'false'
     };
     if (email) params.customer_email = email;
     ids.forEach((id, i) => {

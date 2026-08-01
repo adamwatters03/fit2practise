@@ -18,9 +18,9 @@ jobs:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
         run: |
           if [ -n "$SUPABASE_DB_URL" ]; then
-            psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f infra/schema.sql && echo "schema applied"
+            psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f infra/schema.sql 2>&1 | tee -a db-output.txt && echo "schema applied" | tee -a db-output.txt
           else
-            echo "SUPABASE_DB_URL not set — skipping schema (set it and re-run to enable purchase records)"
+            echo "SUPABASE_DB_URL not set — schema skipped" | tee -a db-output.txt
           fi
       - name: Seed gated course content
         env:
@@ -41,11 +41,11 @@ jobs:
               fs.writeFileSync("/tmp/seed.sql", sql);
               console.log("seed.sql built for", Object.keys(data).length, "courses");
             '
-            psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f /tmp/seed.sql && echo "content seeded"
-            psql "$SUPABASE_DB_URL" -t -c "select course_id, jsonb_array_length(data->'steps') from public.course_content order by course_id;"
+            psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f /tmp/seed.sql 2>&1 | tee -a db-output.txt && echo "content seeded" | tee -a db-output.txt
+            psql "$SUPABASE_DB_URL" -t -c "select course_id, jsonb_array_length(data->'steps') from public.course_content order by course_id;" 2>&1 | tee -a db-output.txt
             rm -f /tmp/content.json /tmp/seed.sql
           else
-            echo "content seeding skipped (missing SUPABASE_DB_URL / CONTENT_KEY / content.enc)"
+            echo "content seeding skipped (missing prerequisites)" | tee -a db-output.txt
           fi
       - name: Configure Vercel + Stripe, deploy, smoke test
         env:
@@ -59,7 +59,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          BODY=$(printf 'Infra setup output (run %s):\n\n```\n%s\n```' "${{ github.run_id }}" "$(tail -c 6000 setup-output.txt)")
+          BODY=$(printf 'Infra setup output (run %s):\n\n```\n%s\n```' "${{ github.run_id }}" "$(cat db-output.txt setup-output.txt 2>/dev/null | tail -c 6000)")
           jq -n --arg body "$BODY" '{body: $body}' | \
           curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \

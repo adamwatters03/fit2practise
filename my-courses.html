@@ -12,6 +12,8 @@
 <script src="assets/js/cart.js"></script>
 <script src="assets/js/icons.js"></script>
 <script src="assets/js/site.js"></script>
+<script src="assets/js/vendor/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
 <style>
   @media (max-width:640px){ .mc-stats { grid-template-columns: 1fr 1fr !important; } }
 </style>
@@ -90,7 +92,7 @@
             '<div style="display:flex;align-items:center;gap:12px;"><div style="flex:1;height:9px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div style="height:100%;border-radius:999px;background:' + barColor + ';width:' + pct + '%;"></div></div><span style="font-size:13px;font-weight:700;color:#15724C;white-space:nowrap;">' + pct + '%</span></div>' +
           '</div>' +
           '<div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">' +
-            '<button data-continue="' + c.id + '" data-pct="' + pct + '" class="btn" style="background:#1C8A5E;color:#fff;border:none;font-family:\'Hanken Grotesk\';font-weight:700;font-size:14.5px;padding:11px 22px;border-radius:12px;cursor:pointer;">' + action + '</button>' +
+            '<a href="player.html?c=' + c.id + '" class="btn" style="display:inline-block;text-align:center;background:#1C8A5E;color:#fff;font-family:\'Hanken Grotesk\';font-weight:700;font-size:14.5px;padding:11px 22px;border-radius:12px;">' + action + '</a>' +
             '<a href="course.html?c=' + c.id + '" style="text-align:center;font-size:13px;color:#6B6275;font-weight:600;">Details</a>' +
           '</div>' +
         '</div>';
@@ -125,6 +127,18 @@
         }
       }).catch(function () {});
   })();
+
+  // Signed-in users: pull purchases + progress from their account.
+  if (window.F2PAuth && window.F2PAuth.sb()) {
+    window.F2PAuth.hydrate().then(function (s) {
+      if (!s) return null;
+      return window.F2PAuth.loadProgress().then(function (prog) {
+        Object.keys(prog || {}).forEach(function (k) {
+          if ((prog[k] || 0) > Math.round((F.getProgress()[k] || 0))) F.setProgress(k, prog[k]);
+        });
+      });
+    }).then(render).catch(function () {});
+  }
 
   window.addEventListener('f2p-change', render);
   window.addEventListener('storage', render);

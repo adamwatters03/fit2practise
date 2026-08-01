@@ -54,7 +54,13 @@
               window.F2PIcon('cart', { size: 20 }) +
               '<span id="shx-cart-badge" style="display:none;position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#1C8A5E;color:#fff;font-size:11px;font-weight:700;align-items:center;justify-content:center;">0</span>' +
             '</a>' +
-            '<a href="portal.html" class="shx-hidem" style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;color:#3A2F4A;"><span style="width:28px;height:28px;border-radius:50%;background:#E7F2EC;color:#15724C;display:flex;align-items:center;justify-content:center;">' + window.F2PIcon('user', { size: 15 }) + '</span>Log in</a>' +
+            (function () {
+              var u = null;
+              try { u = JSON.parse(localStorage.getItem('f2p_user') || 'null'); } catch (e) {}
+              var label = u && u.name ? String(u.name).split(' ')[0].slice(0, 14) : 'Log in';
+              var href = u && u.name ? 'my-courses.html' : 'login.html';
+              return '<a href="' + href + '" class="shx-hidem" style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;color:#3A2F4A;"><span style="width:28px;height:28px;border-radius:50%;background:#E7F2EC;color:#15724C;display:flex;align-items:center;justify-content:center;">' + window.F2PIcon('user', { size: 15 }) + '</span>' + label.replace(/</g, '&lt;') + '</a>';
+            })() +
             '<a href="courses.html" class="shx-lift shx-hidem" style="background:#1C8A5E;color:#fff;font-weight:600;font-size:14.5px;padding:11px 20px;border-radius:999px;box-shadow:0 8px 20px rgba(28,138,94,0.28);">Browse Courses</a>' +
             '<button class="shx-burger" id="shx-burger" aria-label="Menu"><span></span><span></span><span></span></button>' +
           '</div>' +

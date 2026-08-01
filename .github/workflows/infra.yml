@@ -22,6 +22,31 @@ jobs:
           else
             echo "SUPABASE_DB_URL not set — skipping schema (set it and re-run to enable purchase records)"
           fi
+      - name: Seed gated course content
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          CONTENT_KEY: ${{ secrets.CONTENT_KEY }}
+        run: |
+          if [ -n "$SUPABASE_DB_URL" ] && [ -n "$CONTENT_KEY" ] && [ -f infra/content.enc ]; then
+            openssl enc -d -aes-256-cbc -pbkdf2 -in infra/content.enc -pass "pass:$CONTENT_KEY" -out /tmp/content.json
+            node -e '
+              const fs = require("fs");
+              const data = JSON.parse(fs.readFileSync("/tmp/content.json", "utf8"));
+              let sql = "";
+              for (const [id, course] of Object.entries(data)) {
+                const j = JSON.stringify(course).replace(/\$SEED\$/g, "");
+                const t = (course.title || id).replace(/'\''/g, "'\'''\''");
+                sql += `insert into public.course_content (course_id, title, data) values ('\''${id}'\'', '\''${t}'\'', $SEED$${j}$SEED$::jsonb) on conflict (course_id) do update set title = excluded.title, data = excluded.data, updated_at = now();\n`;
+              }
+              fs.writeFileSync("/tmp/seed.sql", sql);
+              console.log("seed.sql built for", Object.keys(data).length, "courses");
+            '
+            psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f /tmp/seed.sql && echo "content seeded"
+            psql "$SUPABASE_DB_URL" -t -c "select course_id, jsonb_array_length(data->'steps') from public.course_content order by course_id;"
+            rm -f /tmp/content.json /tmp/seed.sql
+          else
+            echo "content seeding skipped (missing SUPABASE_DB_URL / CONTENT_KEY / content.enc)"
+          fi
       - name: Configure Vercel + Stripe, deploy, smoke test
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course player — Fit to Practise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/F2P-logo-09-2.png">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/vendor/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
+<style>
+  .pl-wrap { display: flex; gap: 24px; align-items: flex-start; }
+  .pl-side { width: 320px; flex-shrink: 0; position: sticky; top: 90px; }
+  .pl-step { display: flex; align-items: center; gap: 11px; padding: 12px 13px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px; color: #20122F; transition: background .15s ease; }
+  .pl-step:hover { background: #F1ECF4; }
+  .pl-step.active { background: #1C8A5E; color: #fff; }
+  .pl-step.active .pl-tag { color: rgba(255,255,255,0.8); }
+  .pl-tag { font-size: 11px; color: #9A92A4; flex-shrink: 0; }
+  .prose h1,.prose h2,.prose h3 { font-family: 'Schibsted Grotesk'; color: #20122F; line-height: 1.2; }
+  .prose h2 { font-size: 24px; margin: 30px 0 12px; }
+  .prose h3 { font-size: 19px; margin: 24px 0 10px; }
+  .prose p, .prose li { font-size: 16.5px; line-height: 1.7; color: #3A2F4A; }
+  .prose ul, .prose ol { padding-left: 22px; }
+  .prose img { max-width: 100%; border-radius: 14px; }
+  .prose a { color: #1C8A5E; font-weight: 600; }
+  .prose iframe { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 14px; }
+  .video-embed { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 16px; box-shadow: 0 26px 60px -34px rgba(30,18,48,0.5); margin: 10px 0 18px; }
+  @media (max-width: 900px) { .pl-wrap { flex-direction: column; } .pl-side { position: static; width: 100%; } }
+</style>
+</head>
+<body>
+<div id="site-header" data-active="mycourses"></div>
+
+<section style="padding:30px 0 80px;">
+  <div style="max-width:1240px;margin:0 auto;padding:0 24px;">
+    <div id="plGate" style="display:none;background:#fff;border:1px solid #ECE6DA;border-radius:24px;padding:56px 32px;text-align:center;max-width:640px;margin:40px auto;">
+      <div style="color:#1C8A5E;margin-bottom:12px;"><span data-icon="lock" data-size="44"></span></div>
+      <h2 id="plGateTitle" style="font-family:'Schibsted Grotesk';font-weight:700;font-size:24px;margin:0 0 8px;color:#20122F;">Checking your access…</h2>
+      <p id="plGateMsg" style="font-size:16px;color:#6B6275;margin:0 0 22px;"></p>
+      <div id="plGateActions" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;"></div>
+    </div>
+    <div id="plApp" style="display:none;">
+      <div style="font-size:13.5px;color:#9A92A4;margin-bottom:14px;"><a href="my-courses.html" style="color:#9A92A4;">My learning</a> <span style="margin:0 6px;">›</span> <span id="plCrumb" style="color:#1C8A5E;font-weight:600;"></span></div>
+      <div class="pl-wrap">
+        <aside class="pl-side">
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:20px;padding:16px;">
+            <h3 id="plCourseTitle" style="font-family:'Schibsted Grotesk';font-weight:700;font-size:17px;margin:4px 6px 12px;color:#20122F;"></h3>
+            <div style="margin:0 6px 14px;"><div style="height:8px;border-radius:999px;background:#EFEAE0;overflow:hidden;"><div id="plBar" style="height:100%;border-radius:999px;background:#1C8A5E;width:0%;"></div></div><div id="plPct" style="font-size:12.5px;font-weight:700;color:#15724C;margin-top:6px;">0% complete</div></div>
+            <div id="plSteps" style="display:flex;flex-direction:column;gap:4px;"></div>
+          </div>
+        </aside>
+        <main style="flex:1;min-width:0;">
+          <div style="background:#fff;border:1px solid #ECE6DA;border-radius:22px;padding:32px 34px;">
+            <div id="plStepTag" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#1C8A5E;margin-bottom:6px;"></div>
+            <h1 id="plStepTitle" style="font-family:'Schibsted Grotesk';font-weight:800;font-size:clamp(24px,3vw,32px);margin:0 0 18px;color:#20122F;"></h1>
+            <div id="plContent" class="prose"></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;margin-top:34px;padding-top:22px;border-top:1px solid #F0EBE0;">
+              <button id="plPrev" class="btn" style="background:#fff;border:1px solid #E0D9CC;color:#20122F;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:12px 24px;border-radius:999px;cursor:pointer;">← Previous</button>
+              <button id="plNext" class="btn" style="background:#1C8A5E;border:none;color:#fff;font-family:'Hanken Grotesk';font-weight:700;font-size:15px;padding:12px 26px;border-radius:999px;cursor:pointer;box-shadow:0 12px 26px -12px rgba(28,138,94,0.6);">Mark complete &amp; continue →</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script>
+(function () {
+  var courseId;
+  try { courseId = new URLSearchParams(location.search).get('c'); } catch (e) {}
+  var course = courseId && window.F2P.courseById(courseId);
+  var gate = document.getElementById('plGate');
+  var app = document.getElementById('plApp');
+
+  function showGate(title, msg, actions) {
+    gate.style.display = 'block'; app.style.display = 'none';
+    document.getElementById('plGateTitle').textContent = title;
+    document.getElementById('plGateMsg').textContent = msg;
+    document.getElementById('plGateActions').innerHTML = actions || '';
+    if (window.F2PIconScan) window.F2PIconScan(gate);
+  }
+  if (!course) { showGate('Course not found', 'That course does not exist.', '<a href="courses.html" class="btn" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Browse courses</a>'); return; }
+
+  // Turn bare Vimeo/YouTube URLs (WordPress-style embeds) into players, and
+  // strip block-editor comments.
+  function renderHtml(html) {
+    html = (html || '').replace(/<!--[\s\S]*?-->/g, '');
+    html = html.replace(/(?:<p>)?\s*https:\/\/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?\s*(?:<\/p>)?/gi, function (m, id, h) {
+      return '<iframe class="video-embed" src="https://player.vimeo.com/video/' + id + (h ? '?h=' + h : '') + '" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>';
+    });
+    html = html.replace(/(?:<p>)?\s*https:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)[^\s<]*\s*(?:<\/p>)?/gi, function (m, id) {
+      return '<iframe class="video-embed" src="https://www.youtube-nocookie.com/embed/' + id + '" allow="fullscreen" allowfullscreen></iframe>';
+    });
+    return html;
+  }
+
+  var steps = [], idx = 0, done = {};
+  var DONE_KEY = 'f2p_steps_' + courseId;
+  try { done = JSON.parse(localStorage.getItem(DONE_KEY) || '{}'); } catch (e) {}
+
+  function pct() {
+    var n = steps.length || 1;
+    var d = steps.filter(function (s, i) { return done[i]; }).length;
+    return Math.round((d / n) * 100);
+  }
+  function paintProgress() {
+    var p = pct();
+    document.getElementById('plBar').style.width = p + '%';
+    document.getElementById('plPct').textContent = p + '% complete';
+    window.F2P.setProgress(courseId, p);
+    if (window.F2PAuth) window.F2PAuth.saveProgress(courseId, p);
+  }
+  function renderSteps() {
+    var el = document.getElementById('plSteps');
+    el.innerHTML = steps.map(function (s, i) {
+      var tag = s.type === 'quiz' ? 'Quiz' : (s.type === 'topic' ? 'Module' : 'Lesson');
+      var mark = done[i] ? '✓ ' : '';
+      return '<div class="pl-step' + (i === idx ? ' active' : '') + '" data-i="' + i + '"><span style="flex:1;">' + mark + s.title.replace(/</g, '&lt;') + '</span><span class="pl-tag">' + tag + '</span></div>';
+    }).join('');
+    Array.prototype.forEach.call(el.querySelectorAll('.pl-step'), function (d) {
+      d.addEventListener('click', function () { idx = parseInt(d.getAttribute('data-i'), 10); show(); });
+    });
+  }
+  function show() {
+    var s = steps[idx];
+    document.getElementById('plStepTag').textContent = (s.type === 'quiz' ? 'Quiz' : (s.type === 'topic' ? 'Module' : 'Lesson')) + ' · ' + (idx + 1) + ' of ' + steps.length;
+    document.getElementById('plStepTitle').textContent = s.title;
+    var c = document.getElementById('plContent');
+    if (s.type === 'quiz') {
+      var qs = s.questions || [];
+      c.innerHTML = '<p style="font-size:15px;color:#6B6275;">Work through each question, then mark the quiz complete. Your certificate is issued when every step is done.</p>' +
+        qs.map(function (q, qi) {
+          return '<div style="background:#FBF9F4;border:1px solid #F0EBE0;border-radius:16px;padding:20px 22px;margin:14px 0;"><div style="font-weight:700;color:#20122F;margin-bottom:8px;">Q' + (qi + 1) + '. ' + q.title.replace(/</g, '&lt;') + '</div><div>' + renderHtml(q.html) + '</div></div>';
+        }).join('');
+    } else {
+      c.innerHTML = renderHtml(s.html);
+    }
+    document.getElementById('plPrev').style.visibility = idx === 0 ? 'hidden' : 'visible';
+    document.getElementById('plNext').textContent = idx === steps.length - 1 ? (done[idx] ? 'Course complete ✓' : 'Mark complete ✓') : 'Mark complete & continue →';
+    renderSteps();
+    window.scrollTo(0, 0);
+  }
+
+  document.getElementById('plPrev').addEventListener('click', function () { if (idx > 0) { idx--; show(); } });
+  document.getElementById('plNext').addEventListener('click', function () {
+    done[idx] = true;
+    try { localStorage.setItem(DONE_KEY, JSON.stringify(done)); } catch (e) {}
+    paintProgress();
+    if (idx < steps.length - 1) { idx++; }
+    show();
+  });
+
+  // ---- access flow ----
+  showGate('Checking your access…', 'One moment.');
+  if (!window.F2PAuth || !window.F2PAuth.sb()) {
+    showGate('Please log in', 'Log in to access your course.', '<a href="login.html?next=' + encodeURIComponent('player.html?c=' + courseId) + '" class="btn" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Log in</a>');
+    return;
+  }
+  window.F2PAuth.session().then(function (s) {
+    if (!s) {
+      showGate('Please log in', 'Log in with the email you used at checkout to access your course.',
+        '<a href="login.html?next=' + encodeURIComponent('player.html?c=' + courseId) + '" class="btn" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Log in</a>');
+      return;
+    }
+    return window.F2PAuth.getContent(courseId).then(function (data) {
+      if (!data || !data.steps || !data.steps.length) {
+        showGate('Purchase required', 'This course isn\'t on your account yet. If you\'ve just paid, make sure you logged in with the same email you used at checkout.',
+          '<a href="course.html?c=' + courseId + '" class="btn" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">View course</a>' +
+          '<a href="contact.html" class="btn" style="background:#fff;border:1px solid #E0D9CC;color:#20122F;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Get help</a>');
+        return;
+      }
+      steps = data.steps;
+      document.title = course.title + ' — Fit to Practise';
+      document.getElementById('plCrumb').textContent = course.title;
+      document.getElementById('plCourseTitle').textContent = course.title;
+      gate.style.display = 'none'; app.style.display = 'block';
+      // resume at first incomplete step
+      idx = 0; while (idx < steps.length - 1 && done[idx]) idx++;
+      paintProgress(); show();
+    });
+  });
+})();
+</script>
+</body>
+</html>

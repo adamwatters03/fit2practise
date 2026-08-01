@@ -12,6 +12,8 @@
 <script src="assets/js/cart.js"></script>
 <script src="assets/js/icons.js"></script>
 <script src="assets/js/site.js"></script>
+<script src="assets/js/vendor/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
 <style>
   .f2pin { width: 100%; padding: 14px 16px; border: 1px solid #E0D9CC; border-radius: 12px; font-family: 'Hanken Grotesk'; font-size: 15px; color: #20122F; outline: none; background: #FBF8F1; transition: border-color .15s ease; }
   .f2pin:focus { border-color: #1C8A5E; background: #fff; }
@@ -47,10 +49,7 @@
           <button type="submit" class="btn" style="margin-top:6px;background:#1C8A5E;color:#fff;border:none;font-family:'Hanken Grotesk';font-weight:700;font-size:16px;padding:15px;border-radius:13px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(28,138,94,0.6);"><span id="lgCta">Log in</span></button>
         </form>
         <p style="text-align:center;font-size:13.5px;color:#9A92A4;margin:20px 0 0;"><span id="lgPrompt">Don't have an account?</span> <button id="lgToggle" style="background:none;border:none;color:#1C8A5E;font-weight:700;font-family:'Hanken Grotesk';font-size:13.5px;cursor:pointer;">Register</button></p>
-        <div style="margin-top:18px;padding:12px 14px;background:#E7F2EC;border:1px solid #C9E6D6;border-radius:12px;text-align:center;">
-          <div style="font-size:12px;font-weight:700;color:#15724C;text-transform:uppercase;letter-spacing:0.05em;">Demo logins</div>
-          <div style="font-size:13.5px;color:#20122F;margin-top:4px;line-height:1.5;">All courses: <button id="fillDemo" style="background:none;border:none;padding:0;font-family:'Hanken Grotesk';font-weight:700;color:#1C8A5E;cursor:pointer;text-decoration:underline;">member@fit2practise.com</button><br>Admin dashboard: <button id="fillAdmin" style="background:none;border:none;padding:0;font-family:'Hanken Grotesk';font-weight:700;color:#5B3E86;cursor:pointer;text-decoration:underline;">admin@fit2practise.com</button><br><span style="color:#6B6275;">(any password)</span></div>
-        </div>
+        <p id="lgStatus" style="display:none;margin-top:16px;padding:12px 14px;border-radius:12px;font-size:14px;text-align:center;"></p>
       </div>
     </div>
   </div>
@@ -85,33 +84,55 @@
   els.tabLogin.addEventListener('click', function () { tab = 'login'; paint(); });
   els.tabReg.addEventListener('click', function () { tab = 'register'; paint(); });
   els.toggle.addEventListener('click', function () { tab = tab === 'register' ? 'login' : 'register'; paint(); });
-  var fillDemo = document.getElementById('fillDemo');
-  if (fillDemo) fillDemo.addEventListener('click', function () {
-    if (tab !== 'login') { tab = 'login'; paint(); }
-    els.email.value = 'member@fit2practise.com'; els.pw.value = 'fit2practise'; els.email.focus();
-  });
-  var fillAdmin = document.getElementById('fillAdmin');
-  if (fillAdmin) fillAdmin.addEventListener('click', function () {
-    if (tab !== 'login') { tab = 'login'; paint(); }
-    els.email.value = 'admin@fit2practise.com'; els.pw.value = 'fit2practise'; els.email.focus();
-  });
+  var statusEl = document.getElementById('lgStatus');
+  function status(msg, ok) {
+    statusEl.style.display = 'block';
+    statusEl.style.background = ok ? '#E7F2EC' : '#FBEAEA';
+    statusEl.style.color = ok ? '#15724C' : '#8A2F3B';
+    statusEl.textContent = msg;
+  }
+  var busy = false;
   els.form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var email = els.email.value;
-    var name = tab === 'register' ? (els.name.value || 'Member') : ((email.split('@')[0]) || 'Member');
-    try { localStorage.setItem('f2p_user', JSON.stringify({ name: name, email: email })); } catch (e2) {}
-    // Admin account -> open the portal as business owner (analytics + members).
-    if (window.F2P && window.F2P.isAdmin(email)) {
-      try { localStorage.setItem('f2p_portal_role', 'owner'); } catch (e5) {}
-      location.href = 'portal.html';
-      return;
+    if (busy) return;
+    var email = els.email.value.trim();
+    var pw = els.pw.value;
+    if (!window.F2PAuth || !window.F2PAuth.sb()) { status('Sign-in service unavailable — please try again shortly.', false); return; }
+    busy = true; els.cta.textContent = tab === 'register' ? 'Creating account…' : 'Signing in…';
+
+    function done() { busy = false; paint(); }
+    function next() {
+      var params = new URLSearchParams(location.search);
+      location.href = params.get('next') || 'my-courses.html';
     }
-    // Demo all-access account: unlock every course on sign-in.
-    try { if (window.F2P) window.F2P.grantIfAllAccess(email); } catch (e3) {}
-    try { window.dispatchEvent(new Event('f2p-change')); } catch (e4) {}
-    location.href = 'my-courses.html';
+
+    if (tab === 'register') {
+      window.F2PAuth.signUp(email, pw, els.name.value.trim())
+        .then(function (d) {
+          if (d.session) { return window.F2PAuth.hydrate().then(next); }
+          status('Account created — check your email to confirm your address, then log in here.', true);
+          tab = 'login'; done();
+        })
+        .catch(function (err) { status(err.message || 'Could not create the account.', false); done(); });
+    } else {
+      window.F2PAuth.signIn(email, pw)
+        .then(function () { return window.F2PAuth.hydrate(); })
+        .then(function () {
+          // Business owner goes straight to the portal dashboard.
+          if (window.F2P && window.F2P.isAdmin(email)) {
+            try { localStorage.setItem('f2p_portal_role', 'owner'); } catch (e2) {}
+            location.href = 'portal.html'; return;
+          }
+          next();
+        })
+        .catch(function (err) { status(err.message || 'Could not sign you in.', false); done(); });
+    }
   });
   paint();
+  // Already signed in? Go straight through.
+  if (window.F2PAuth) window.F2PAuth.session().then(function (s) {
+    if (s) { window.F2PAuth.hydrate().then(function () { location.href = 'my-courses.html'; }); }
+  });
 })();
 </script>
 </body>

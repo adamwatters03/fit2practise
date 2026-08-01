@@ -31,6 +31,34 @@
   .prose a { color: #1C8A5E; font-weight: 600; }
   .prose iframe { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 14px; }
   .video-embed { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 16px; box-shadow: 0 26px 60px -34px rgba(30,18,48,0.5); margin: 10px 0 18px; }
+  .prose blockquote { border-left: 4px solid #1C8A5E; background: #FBF9F4; margin: 18px 0; padding: 14px 20px; border-radius: 0 14px 14px 0; }
+  .prose table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; }
+  .prose th, .prose td { border: 1px solid #ECE6DA; padding: 10px 14px; text-align: left; }
+  .prose th { background: #FBF9F4; font-weight: 700; }
+  .prose pre, .prose .wp-block-preformatted { background: #FBF9F4; border: 1px solid #ECE6DA; border-radius: 14px; padding: 16px 20px; white-space: pre-wrap; font-family: 'Hanken Grotesk'; font-size: 15px; }
+  .pdf-card { display: flex !important; align-items: center; gap: 14px; background: #FBF9F4; border: 1px solid #ECE6DA; border-radius: 16px; padding: 16px 18px; margin: 14px 0; text-decoration: none !important; transition: transform .15s ease, box-shadow .15s ease; }
+  .pdf-card:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -22px rgba(30,18,48,0.4); }
+  .pdf-card .pdf-ic { width: 44px; height: 44px; border-radius: 12px; background: #271640; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; flex-shrink: 0; }
+  .pdf-card strong { display: block; color: #20122F; font-size: 15px; }
+  .pdf-card em { font-style: normal; font-size: 12.5px; color: #9A92A4; }
+  /* quiz */
+  .qz-head { display: inline-flex; align-items: center; gap: 8px; background: #E7F2EC; color: #15724C; font-weight: 700; font-size: 13px; padding: 8px 16px; border-radius: 999px; margin-bottom: 6px; }
+  .qz-q { background: #FBF9F4; border: 1px solid #F0EBE0; border-radius: 18px; padding: 22px 24px; margin: 16px 0; transition: border-color .2s ease; }
+  .qz-q.qz-right { border-color: #9CD3B6; } .qz-q.qz-wrong { border-color: #E4B7B7; }
+  .qz-title { font-weight: 700; font-size: 16.5px; color: #20122F; margin-bottom: 14px; line-height: 1.4; }
+  .qz-hint { font-size: 12.5px; color: #9A92A4; margin: 0 0 8px; }
+  .qz-opt { display: flex; align-items: center; gap: 12px; background: #fff; border: 1.5px solid #ECE6DA; border-radius: 13px; padding: 13px 16px; margin: 8px 0; cursor: pointer; font-size: 15px; color: #3A2F4A; transition: border-color .15s ease, background .15s ease; }
+  .qz-opt:hover { border-color: #1C8A5E; }
+  .qz-opt:has(input:checked) { border-color: #1C8A5E; background: #F2FAF6; }
+  .qz-opt.is-correct { border-color: #1C8A5E; background: #E7F2EC; }
+  .qz-opt.is-correct .qz-mark::after { content: '✓'; color: #15724C; font-weight: 800; }
+  .qz-opt.is-wrong { border-color: #D98A8A; background: #FBEAEA; }
+  .qz-opt.is-wrong .qz-mark::after { content: '✕'; color: #B0566A; font-weight: 800; }
+  .qz-mark { margin-left: auto; }
+  .qz-essay { width: 100%; border: 1.5px solid #ECE6DA; border-radius: 13px; padding: 14px 16px; font-family: 'Hanken Grotesk'; font-size: 15px; color: #20122F; background: #fff; outline: none; resize: vertical; }
+  .qz-essay:focus { border-color: #1C8A5E; }
+  .qz-fb { margin-top: 12px; padding: 11px 15px; border-radius: 11px; font-size: 14px; font-weight: 600; }
+  .qz-fb.ok { background: #E7F2EC; color: #15724C; } .qz-fb.no { background: #FBEAEA; color: #8A2F3B; }
   @media (max-width: 900px) { .pl-wrap { flex-direction: column; } .pl-side { position: static; width: 100%; } }
 </style>
 </head>
@@ -90,17 +118,121 @@
   }
   if (!course) { showGate('Course not found', 'That course does not exist.', '<a href="courses.html" class="btn" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Browse courses</a>'); return; }
 
-  // Turn bare Vimeo/YouTube URLs (WordPress-style embeds) into players, and
-  // strip block-editor comments.
+  // Turn bare Vimeo/YouTube URLs (WordPress-style embeds) into players, strip
+  // editor artifacts, and upgrade PDF links into download cards.
   function renderHtml(html) {
     html = (html || '').replace(/<!--[\s\S]*?-->/g, '');
-    html = html.replace(/(?:<p>)?\s*https:\/\/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?\s*(?:<\/p>)?/gi, function (m, id, h) {
-      return '<iframe class="video-embed" src="https://player.vimeo.com/video/' + id + (h ? '?h=' + h : '') + '" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>';
+    html = html.replace(/\sdata-(?:start|end|is-last-node|is-only-node)="[^"]*"/g, '');
+    html = html.replace(/\[[a-z_]+[^\]]*\]/g, '');
+    html = html.replace(/(?:<p[^>]*>)?\s*https:\/\/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?[^\s<]*\s*(?:<\/p>)?/gi, function (m, id, h) {
+      return '<iframe class="video-embed" src="https://player.vimeo.com/video/' + id + (h ? '?h=' + h : '') + '" allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
     });
-    html = html.replace(/(?:<p>)?\s*https:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)[^\s<]*\s*(?:<\/p>)?/gi, function (m, id) {
-      return '<iframe class="video-embed" src="https://www.youtube-nocookie.com/embed/' + id + '" allow="fullscreen" allowfullscreen></iframe>';
+    html = html.replace(/(?:<p[^>]*>)?\s*https:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)[^\s<]*\s*(?:<\/p>)?/gi, function (m, id) {
+      return '<iframe class="video-embed" src="https://www.youtube-nocookie.com/embed/' + id + '" allow="fullscreen" allowfullscreen loading="lazy"></iframe>';
+    });
+    html = html.replace(/<a([^>]*href="[^"]+\.pdf"[^>]*)>([^<]*)<\/a>/gi, function (m, attrs, label) {
+      return '<a' + attrs.replace(/>$/, '') + ' target="_blank" rel="noopener" class="pdf-card"><span class="pdf-ic">PDF</span><span><strong>' + (label || 'Download PDF') + '</strong><em>Opens in a new tab</em></span></a>';
     });
     return html;
+  }
+
+  // ---------- interactive quiz ----------
+  function renderQuiz(s, container) {
+    var qs = s.questions || [];
+    if (!qs.length) {
+      container.innerHTML = '<p style="font-size:15px;color:#6B6275;">This quiz has no questions yet.</p>';
+      return;
+    }
+    var state = qs.map(function () { return { picked: [], text: '' }; });
+    var submitted = false;
+
+    function optionHtml(q, qi) {
+      if (q.type === 'essay') {
+        return '<textarea data-qi="' + qi + '" class="qz-essay" rows="5" placeholder="Write your reflection here…"></textarea>';
+      }
+      var multi = q.type === 'multiple';
+      return (multi ? '<p class="qz-hint">Select all that apply</p>' : '') +
+        q.answers.map(function (a, ai) {
+          return '<label class="qz-opt" data-qi="' + qi + '" data-ai="' + ai + '">' +
+            '<input type="' + (multi ? 'checkbox' : 'radio') + '" name="q' + qi + '" value="' + ai + '" style="accent-color:#1C8A5E;width:18px;height:18px;flex-shrink:0;">' +
+            '<span>' + a.text.replace(/</g, '&lt;') + '</span><span class="qz-mark"></span></label>';
+        }).join('');
+    }
+
+    function paint() {
+      var gradable = qs.filter(function (q) { return q.type !== 'essay'; }).length;
+      container.innerHTML =
+        '<div class="qz-head"><span data-icon="check" data-size="17"></span> ' + qs.length + ' questions' + (gradable ? ' · pass mark 70%' : '') + '</div>' +
+        qs.map(function (q, qi) {
+          return '<div class="qz-q" id="qzq' + qi + '"><div class="qz-title">Q' + (qi + 1) + '. ' + q.title.replace(/</g, '&lt;') + '</div>' +
+            '<div class="qz-opts">' + optionHtml(q, qi) + '</div><div class="qz-fb" style="display:none;"></div></div>';
+        }).join('') +
+        '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:22px;">' +
+          '<button id="qzSubmit" class="btn" style="background:#1C8A5E;border:none;color:#fff;font-family:\'Hanken Grotesk\';font-weight:700;font-size:15px;padding:13px 28px;border-radius:999px;cursor:pointer;box-shadow:0 12px 26px -12px rgba(28,138,94,0.6);">Check my answers</button>' +
+          '<div id="qzScore" style="display:none;font-family:\'Schibsted Grotesk\';font-weight:800;font-size:18px;"></div>' +
+        '</div>';
+      if (window.F2PIconScan) window.F2PIconScan(container);
+
+      Array.prototype.forEach.call(container.querySelectorAll('.qz-opt input'), function (inp) {
+        inp.addEventListener('change', function () {
+          var qi = parseInt(inp.name.slice(1), 10);
+          var picked = Array.prototype.filter.call(container.querySelectorAll('[name="q' + qi + '"]'), function (x) { return x.checked; })
+            .map(function (x) { return parseInt(x.value, 10); });
+          state[qi].picked = picked;
+        });
+      });
+      Array.prototype.forEach.call(container.querySelectorAll('.qz-essay'), function (ta) {
+        ta.addEventListener('input', function () { state[parseInt(ta.getAttribute('data-qi'), 10)].text = ta.value; });
+      });
+      container.querySelector('#qzSubmit').addEventListener('click', grade);
+    }
+
+    function grade() {
+      if (submitted) { state = qs.map(function () { return { picked: [], text: '' }; }); submitted = false; paint(); return; }
+      var right = 0, gradable = 0;
+      qs.forEach(function (q, qi) {
+        var qEl = container.querySelector('#qzq' + qi);
+        var fb = qEl.querySelector('.qz-fb');
+        if (q.type === 'essay') {
+          fb.style.display = 'block'; fb.className = 'qz-fb ok';
+          fb.textContent = 'Saved — reflective answers are for your own development.';
+          return;
+        }
+        gradable++;
+        var correctSet = q.answers.map(function (a, ai) { return a.correct ? ai : -1; }).filter(function (x) { return x >= 0; });
+        var picked = state[qi].picked;
+        var isRight = picked.length === correctSet.length && picked.every(function (p) { return correctSet.indexOf(p) >= 0; });
+        if (isRight) right++;
+        qEl.classList.add(isRight ? 'qz-right' : 'qz-wrong');
+        Array.prototype.forEach.call(qEl.querySelectorAll('.qz-opt'), function (opt) {
+          var ai = parseInt(opt.getAttribute('data-ai'), 10);
+          if (correctSet.indexOf(ai) >= 0) opt.classList.add('is-correct');
+          else if (picked.indexOf(ai) >= 0) opt.classList.add('is-wrong');
+          opt.querySelector('input').disabled = true;
+        });
+        fb.style.display = 'block';
+        fb.className = 'qz-fb ' + (isRight ? 'ok' : 'no');
+        fb.textContent = isRight ? (q.correctMsg || 'Correct — well done!') : (q.incorrectMsg || 'Not quite. The correct answer is highlighted above.');
+      });
+      var pct = gradable ? Math.round((right / gradable) * 100) : 100;
+      var passed = pct >= 70;
+      var scoreEl = container.querySelector('#qzScore');
+      scoreEl.style.display = 'block';
+      scoreEl.style.color = passed ? '#15724C' : '#8A2F3B';
+      scoreEl.textContent = 'Score: ' + right + '/' + gradable + ' (' + pct + '%)' + (passed ? ' — passed ✓' : ' — 70% needed, try again');
+      var btn = container.querySelector('#qzSubmit');
+      btn.textContent = 'Retake quiz';
+      btn.style.background = '#271640';
+      submitted = true;
+      if (passed) {
+        done[idx] = true;
+        try { localStorage.setItem(DONE_KEY, JSON.stringify(done)); } catch (e) {}
+        paintProgress(); renderSteps();
+        document.getElementById('plNext').style.display = '';
+      }
+      scoreEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    paint();
   }
 
   var steps = [], idx = 0, done = {};
@@ -136,16 +268,14 @@
     document.getElementById('plStepTitle').textContent = s.title;
     var c = document.getElementById('plContent');
     if (s.type === 'quiz') {
-      var qs = s.questions || [];
-      c.innerHTML = '<p style="font-size:15px;color:#6B6275;">Work through each question, then mark the quiz complete. Your certificate is issued when every step is done.</p>' +
-        qs.map(function (q, qi) {
-          return '<div style="background:#FBF9F4;border:1px solid #F0EBE0;border-radius:16px;padding:20px 22px;margin:14px 0;"><div style="font-weight:700;color:#20122F;margin-bottom:8px;">Q' + (qi + 1) + '. ' + q.title.replace(/</g, '&lt;') + '</div><div>' + renderHtml(q.html) + '</div></div>';
-        }).join('');
+      renderQuiz(s, c);
     } else {
       c.innerHTML = renderHtml(s.html);
     }
     document.getElementById('plPrev').style.visibility = idx === 0 ? 'hidden' : 'visible';
-    document.getElementById('plNext').textContent = idx === steps.length - 1 ? (done[idx] ? 'Course complete ✓' : 'Mark complete ✓') : 'Mark complete & continue →';
+    var nextBtn = document.getElementById('plNext');
+    nextBtn.style.display = s.type === 'quiz' && !done[idx] ? 'none' : '';
+    nextBtn.textContent = idx === steps.length - 1 ? (done[idx] ? 'Course complete ✓' : 'Mark complete ✓') : (done[idx] ? 'Continue →' : 'Mark complete & continue →');
     renderSteps();
     window.scrollTo(0, 0);
   }
@@ -160,6 +290,24 @@
   });
 
   // ---- access flow ----
+  // Local-only demo mode for development: renders sample content so the player
+  // can be exercised without a database. Never active on the live site.
+  var isLocalDev = /^(localhost|127\.)/.test(location.hostname);
+  if (isLocalDev && new URLSearchParams(location.search).get('demo') === '1') {
+    steps = [
+      { type: 'lesson', title: 'Sample lesson', html: '<p data-start="1" data-end="2">Welcome to the demo lesson.</p> https://vimeo.com/1122468120/0a9ed31057?share=copy%20 <p>Read this <a href="https://example.com/file.pdf">Module PDF</a>.</p>' },
+      { type: 'quiz', title: 'Sample quiz', questions: [
+        { title: 'Two plus two equals?', type: 'single', answers: [{ text: 'Three', correct: false }, { text: 'Four', correct: true }], correctMsg: 'Spot on.', incorrectMsg: 'Try again.' },
+        { title: 'Pick the primary colours', type: 'multiple', answers: [{ text: 'Red', correct: true }, { text: 'Green', correct: false }, { text: 'Blue', correct: true }] },
+        { title: 'Reflect on your learning', type: 'essay', answers: [] }
+      ] }
+    ];
+    document.getElementById('plCrumb').textContent = course.title;
+    document.getElementById('plCourseTitle').textContent = course.title + ' (demo)';
+    gate.style.display = 'none'; app.style.display = 'block';
+    idx = 0; paintProgress(); show();
+    return;
+  }
   showGate('Checking your access…', 'One moment.');
   if (!window.F2PAuth || !window.F2PAuth.sb()) {
     showGate('Please log in', 'Log in to access your course.', '<a href="login.html?next=' + encodeURIComponent('player.html?c=' + courseId) + '" class="btn" style="background:#1C8A5E;color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Log in</a>');
